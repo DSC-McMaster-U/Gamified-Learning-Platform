@@ -1,9 +1,31 @@
+from enum import Enum
+from sqlalchemy import Enum as SQLAlchemyEnum
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import CheckConstraint
 from datetime import datetime, timezone, timedelta
 from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
+
+# Predefined grade selections
+class GradeEnum(Enum):
+    FIRST = '1st Grade'
+    SECOND = '2nd Grade'
+    THIRD = '3rd Grade'
+    FOURTH = '4th Grade'
+    FIFTH = '5th Grade'
+    SIXTH = '6th Grade'
+    SEVENTH = '7th Grade'
+    EIGHTH = '8th Grade'
+    NINTH = '9th Grade'
+    TENTH = '10th Grade'
+    ELEVENTH = '11th Grade'
+    TWELFTH = '12th Grade'
+    FRESHMAN = 'University Freshman'
+    SOPHMORE = 'University Sophmore'
+    JUNIOR = 'University Junior'
+    SENIOR = 'University Senior'
 
 # User model
 class User(db.Model):
@@ -14,6 +36,8 @@ class User(db.Model):
     email = db.Column(db.String(80), unique=True, nullable=False)
     registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
     favorite_subject = db.Column(db.String(50))
+    age = db.Column(db.Integer, CheckConstraint('age >= 0 AND age <= 100', name='check_age_range'))
+    grade = db.Column(SQLAlchemyEnum(GradeEnum), nullable=False)
     
     # Set user password
     def set_password(self, password):
