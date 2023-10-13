@@ -31,10 +31,10 @@ class GradeEnum(Enum):
 # User model
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(40), nullable=False)
-    username = db.Column(db.String(20), unique=True, nullable=False)
+    name = db.Column(db.String(150), nullable=False)
+    username = db.Column(db.String(40), unique=True, nullable=False)
     hashed_password = db.Column(db.String, nullable=False)
-    email = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
     age = db.Column(db.Integer, CheckConstraint('age >= 0 AND age <= 100', name='check_age_range'))
     grade = db.Column(SQLAlchemyEnum(GradeEnum), nullable=False)
     registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
