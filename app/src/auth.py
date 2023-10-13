@@ -41,9 +41,11 @@ def login_post():
 #     username = request.form.get('username')
 #     favorite_subject = request.form.get('favorite subject')
 
-#     user = User.query.filter_by(email=email).first() # Perform query to check if user already exists in database
+#     # perform query to check if email or username exists in database
+#     user_email = User.query.filter_by(email=email).first() 
+#     user_username = User.query.filter_by(username=username).first() 
 
-#     if user: # redirect back to signup page if the created user already exists
+#     if user_email or user_username: # redirect back to signup page if the created user already exists
 #         return redirect(url_for('auth.signup'))
     
 #     # create a user using the signup information
