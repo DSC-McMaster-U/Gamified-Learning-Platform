@@ -5,6 +5,29 @@ from . import db
 # create authentication blueprint for handling relevant routes (signup, login, logout, etc.)
 auth = Blueprint('auth', __name__)
 
+@auth.route('/login')
+def login():
+    return render_template('login.html')
+
+@auth.route('/login', methods=['POST'])
+def login_post():
+    # NOT SURE IF THIS REQUEST WILL WORK TO GET EMAIL OR USERNAME
+    input = request.form.get('email_or_username')
+    password = request.form.get('password')
+    remember = True if request.form.get('remember') else False # remember login info for user if they choose this
+
+    user = User.query.filter_by(email=input).first() # if email is inputted, check for the email in database
+
+    if not user:
+        user = User.query.filter_by(username=input).first() # if username is inputted, check for username
+
+    # if the user does not exist or password is wrong, redirect back to login page
+    if not user or not user.check_password(password):
+        return redirect(url_for('auth.login'))
+
+    # redirect to profile page if login is successful
+    return redirect(url_for('main.profile'))
+
 @auth.route('/signup')
 def signup():
     return render_template('signup.html')
