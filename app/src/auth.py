@@ -28,30 +28,31 @@ def login_post():
     # redirect to profile page if login is successful
     return redirect(url_for('main.profile'))
 
-@auth.route('/signup')
-def signup():
-    return render_template('signup.html')
 
-@auth.route('/signup', methods=['POST'])
-def signup_post():
-    email = request.form.get('email')
-    name = request.form.get('name')
-    password = request.form.get('password')
-    username = request.form.get('username')
-    favorite_subject = request.form.get('favorite subject')
+# @auth.route('/signup')
+# def signup():
+#     return render_template('signup.html')
 
-    user = User.query.filter_by(email=email).first() # Perform query to check if user already exists in database
+# @auth.route('/signup', methods=['POST'])
+# def signup_post():
+#     email = request.form.get('email')
+#     name = request.form.get('name')
+#     password = request.form.get('password')
+#     username = request.form.get('username')
+#     favorite_subject = request.form.get('favorite subject')
 
-    if user: # redirect back to signup page if the created user already exists
-        return redirect(url_for('auth.signup'))
+#     user = User.query.filter_by(email=email).first() # Perform query to check if user already exists in database
+
+#     if user: # redirect back to signup page if the created user already exists
+#         return redirect(url_for('auth.signup'))
     
-    # create a user using the signup information
-    new_user = User(email=email, name=name, username=username, favorite_subject=favorite_subject)
-    new_user.set_password(password)
+#     # create a user using the signup information
+#     new_user = User(email=email, name=name, username=username, favorite_subject=favorite_subject)
+#     new_user.set_password(password)
 
-    # add the user to the database
-    db.session.add(new_user)
-    db.session.commit()
+#     # add the user to the database
+#     db.session.add(new_user)
+#     db.session.commit()
 
-    # redirect user to login page after new user has been validated
-    return redirect(url_for('auth.login'))
+#     # redirect user to login page after new user has been validated
+#     return redirect(url_for('auth.login'))
