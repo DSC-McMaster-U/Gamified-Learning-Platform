@@ -9,6 +9,7 @@ bcrypt = Bcrypt()
 db = SQLAlchemy()
 
 # Predefined grade selections
+# Note: when adding a new user, use "grade=GradeEnum.NINTH" to assign a grade (in this example, 9th grade)
 class GradeEnum(Enum):
     FIRST = '1st Grade'
     SECOND = '2nd Grade'
@@ -34,10 +35,10 @@ class User(db.Model):
     username = db.Column(db.String(20), unique=True, nullable=False)
     hashed_password = db.Column(db.String, nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
-    registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
-    favorite_subject = db.Column(db.String(50))
     age = db.Column(db.Integer, CheckConstraint('age >= 0 AND age <= 100', name='check_age_range'))
     grade = db.Column(SQLAlchemyEnum(GradeEnum), nullable=False)
+    registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
+    favorite_subject = db.Column(db.String(50))
     
     # Set user password
     def set_password(self, password):
