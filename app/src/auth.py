@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from models import User
 from . import db
 
@@ -11,18 +11,16 @@ def login():
 
 @auth.route('/login', methods=['POST'])
 def login_post():
-    # NOT SURE IF THIS REQUEST WILL WORK TO GET EMAIL OR USERNAME
-    input = request.form.get('email_or_username')
+    # retrieve inputted login details 
+    email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False # remember login info for user if they choose this
 
-    user = User.query.filter_by(email=input).first() # if email is inputted, check for the email in database
-
-    if not user:
-        user = User.query.filter_by(username=input).first() # if username is inputted, check for username
+    user = User.query.filter_by(email=email).first() # if email is inputted, check for the email in database
 
     # if the user does not exist or password is wrong, redirect back to login page
     if not user or not user.check_password(password):
+        flash('Incorrect email or password.')
         return redirect(url_for('auth.login'))
 
     # redirect to profile page if login is successful
