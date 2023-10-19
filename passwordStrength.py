@@ -6,65 +6,33 @@ Password Validity
 4. At least 1 number or digit between [0-9].
 5. At least 1 character from [ _ or @ or $ ].
 '''
-import re
-from password_strength import PasswordStats
-
-specialCharacters=re.compile('[@_!#$%^&*()<>?/\|}{~:]')
 
 
-def validate_password(password):
-    #check password length
-    if(len(password)<=8):
-        return False
-    #check for lowercase character
-    elif not re.search("[a-z]", password):
-        return False
-    #check for upper case character
-    elif not re.search("[A-Z]", password):
-        return False
-    #check for number
-    elif not re.search("[0-9]", password):
-        return False
-    #check for space, newline, return, tab
-    elif re.search("\s", password):
-        return False
-    #check for special character
-    elif not re.search(specialCharacters, password):
-        return False
-    else:
-        return True
-    
-def strength(password):
-    stats = PasswordStats(password)
-    if(stats.strength()>0.5):
-        return 2
-    elif(stats.strength()<0.5 and stats.strength()>0.4):
-        return 1
-    else:
-        return 0
+from password_strength import PasswordPolicy
 
-def main(): 
-    password = input("Input your password: ")
-    valid = validate_password(password)
-    strength2 = strength(password)
 
-    not_valid = True
+# Define password policy
+policy = PasswordPolicy.from_names(
+    length=8,  # Minimum length
+    uppercase=1,  # At least 1 uppercase letter
+    numbers=1,  # At least 1 digit
+    special=1,  # At least 1 special character
+)
 
-    while not_valid:
-        if valid:
-            print("Valid password")
-            if strength2 == 2:
-                print('password score: strong')
-            not_valid = False
-        else:
-            print("Password does not meet the requirements, try again")
-            if strength2 == 2:
-                print('password score: strong')
-            elif strength2 == 1:
-                print('password score: weak')
-            else:
-                print('password score: very weak')
-            password = input("Input your password: ")
-            valid = validate_password(password)
+def check_password_strength(password):
+    result = policy.test(password)
+    if not result:
+        return None #password is strong enough
+    return result #return a list of suggestions
 
-main()
+'''
+To add to feature/register function (after getting email, username, password):
+result = check_password_strength(password)
+
+if not result:
+    flash("Password is not strong enough")
+else:
+    flash("Password is not strong enough. Here are some suggestions: " + ", ".join(result))
+    return redirect(url_for("register"))
+
+'''
