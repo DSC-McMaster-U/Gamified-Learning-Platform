@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
 from werkzeug.security import generate_password_hash
+from models import db, User
 app = Flask(__name__)
 
 @app.route('/')
@@ -16,7 +17,9 @@ def register():
         email = request.form.get("email")
         username = request.form.get("username")
         password = request.form.get("password")
-
+        confirm_password = request.form.get("confirm_password")
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
 
         #Check if the inputs are valid
         user_email = User.query.filter_by(email=email).first()
@@ -33,16 +36,22 @@ def register():
         if len(password) == 0:
             flash("You must provide a password.")
             return redirect(url_for("register"))
-
+        if confirm_password != password:
+            flash("The passwords are not matching!")
+            return redirect(url_for("register"))
+        if len(first_name) == 0:
+            flash("You must provide your first name.")
+            return redirect(url_for("register"))
+        if len(last_name) == 0:
+            flash("You must provide your last name.")
 
         #Add the user to database and login
-        new_user = User(email=email, username=username, password=generate_password_hash(password))
+        new_user = User(email=email, username=username, password=generate_password_hash(password), first_name=first_name, last_name=last_name)
         db.session.add(new_user)
         db.session.commit()
         flash("Registration Successful!")
 
-        return redirect(url_for("login"))
-
+        return redirect(url_for("user_profile"))
 
     #Display register screen
     else:
