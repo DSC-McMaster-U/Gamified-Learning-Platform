@@ -1,0 +1,171 @@
+/* base.css - contains styling for base template of website (headers, footers, etc.) */
+/**
+ * ========
+ * Imported Fonts
+ * ========
+**/
+
+/* Product Sans (Google's Logo Font) */
+@font-face {
+    font-family: "ProductSans";
+    src: url("../vendor/fonts/ProductSans/Product\ Sans\ Regular.ttf");
+}
+
+@font-face {
+    font-family: "ProductSans";
+    src: url("../vendor/fonts/ProductSans/Product\ Sans\ Italic.ttf");
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "ProductSansBold";
+    src: url("../vendor/fonts/ProductSans/Product\ Sans\ Bold.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "ProductSans";
+    src: url("../vendor/fonts/ProductSans/Product\ Sans\ Bold\ Italic.ttf");
+    font-style: italic;
+    font-weight: bold;
+}
+
+/**
+ * ========
+ * Variables
+ * ========
+**/
+
+:root {
+    /* Main Colours */
+    --logo-clr: #5D6166;
+    --acc-link-clr: #1A73E8;
+    --acc-link-bg-clr: #E8F0FE;
+
+    /* Font Families/Presets */
+    --nav-link-font-family: "ProductSans";
+    --logo-font-family: "ProductSans";    
+
+    --acc-link-font: normal 500 17px/36px var(--logo-font-family);
+    --logo-font: normal 300 23px/normal var(--logo-font-family);
+    --heading-font: normal 400 36px/normal var(--heading-font-family);
+    --body-font: normal 400 28px/normal var(--body-font-family);
+    --link-font: normal 00 24px/normal var(--body-font-family);
+    --body-sub-font: normal 400 20px/normal var(--body-font-family);
+
+    /* Borders & Shadows */
+
+    /* Animations & Transitions */
+    --transition-1: all 0.5s ease;
+}
+
+/**
+ * ========
+ * General Styling
+ * ========
+**/
+
+
+
+/**
+ * ========
+ * Navbar Logo + Mobile Styling
+ * ========
+**/
+
+#header {
+    display: flex;
+    border-bottom: 1px solid rgb(216, 216, 216);
+    box-shadow: 0px 0px 7px 3px rgba(41, 41, 41, 0.4);
+    background-color: #FFFFFF;
+    width: 100%;
+    height: 60px;
+    margin-top: 0;
+    padding: 0;
+    vertical-align: middle;
+    position: sticky;
+    z-index: 500;
+}
+
+#header .navbar {
+    display: flex;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 20px;
+    justify-content: space-between;
+}
+
+.header-mobile {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+    vertical-align: middle;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    transition: var(--transition-1);
+}
+
+#header-logo {
+    cursor: pointer;
+}
+
+#header-logo a {
+    position: relative;
+}
+
+#header-logo-img {
+    height: 32.5px;
+    width: auto;
+}
+
+#header-logo-text {
+    position: absolute;
+    top: 9px;
+    left: 80px;
+
+    font: var(--logo-font);
+    color: var(--logo-clr);
+}
+
+@media screen and (max-width: 500px) {
+    #header-logo-text {
+        opacity: 0;
+    }
+}
+
+/**
+ * ========
+ * Navbar Links Styling
+ * ========
+**/
+
+#header-content a {
+    text-decoration: none;
+}
+
+.content-acc {
+    display: flex;
+    width: 180px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.acc-link {
+    padding: 2px 10px;
+    border-radius: 5px;
+
+    color: var(--acc-link-clr);
+    font: var(--acc-link-font);
+    transition: all 0.1s linear;
+    cursor: pointer;
+}
+
+.acc-link:hover {
+    background-color: var(--acc-link-bg-clr);
+    color: var(--acc-link-clr);
+}
+
+
+

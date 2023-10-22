@@ -1,0 +1,336 @@
+/* login.css - contains styling for the login page specifically, barring base elements */
+
+/**
+ * ========
+ * Imported Fonts
+ * ========
+**/
+
+/* Jeju Gothic (original font in design) */
+@font-face {
+    font-family: "JejuGothic";
+    src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
+}
+
+/* Nanum Gothic (fallback font) */
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Regular.ttf");
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Bold.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-ExtraBold.ttf");
+    font-weight: bolder;
+}
+
+/**
+ * ========
+ * Variables
+ * ========
+**/
+
+:root {
+    /* Main Colours */
+    --box-clr: rgba(222, 221, 221, 0.30);
+    --heading-clr: #5B83EB;
+    --body-clr: rgba(0, 0, 0, 0.40);
+    --textbox-txt-clr: #000000;
+    --textbox-text-pl-clr: rgba(0, 0, 0, 0.6);
+    --textbox-bg-clr: #FFFFFF;
+    --btn-txt-clr: #F5F5F5;
+    --btn-bg-clr: rgba(91, 131, 235, 0.50);
+    --checkbox-clr: #D9D9D9;
+    --link-clr: rgb(99, 138, 236);  /* rgba(91, 131, 235, 0.50); */
+
+    /* Font Families/Presets */
+    --body-font-family: "JejuGothic", "NanumGothic";
+    --heading-font-family: "JejuGothic", "NanumGothic";
+
+    --heading-font: normal 400 28.8px/normal var(--heading-font-family);  /* 36px */
+    --body-font: normal 400 22.4px/normal var(--body-font-family);          /* 28px */
+    --link-font: normal 00 19.2px/normal var(--body-font-family);           /* 24px */
+    --body-sub-font: normal 400 16px/normal var(--body-font-family);        /* 20px */
+
+    /* Borders & Shadows */
+    --form-item-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+
+    /* Transitions */
+    --link-transition: all 0.2s ease;
+    --underline-transition: transform 0.3s ease-out;
+    --btn-transition-1: all 0.1s linear;
+    --btn-transition-2: all 0.7s ease;
+
+}
+
+/**
+ * ========
+ * General Styling
+ * ========
+**/
+
+.body-text {
+    font: var(--body-font);
+}
+
+/* input:focus {
+    outline: none;
+} */
+
+input[type="password"] {
+    -webkit-text-security: disc;
+    font-family: Verdana, sans-serif;
+    letter-spacing: 2px;
+    font-size: 28px;
+
+    padding-top: 0;
+}
+
+main a {
+    position: relative;
+}
+
+main a::after {
+    background-color: #000000;
+    position: absolute;
+    content: '';
+    height: 1.5px;
+    width: 100%;
+    bottom: -2px;
+    left: 0;
+
+    transform: scaleX(0);
+    transform-origin: bottom left;
+    transition: var(--underline-transition);
+}
+
+main a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+@media screen and (max-width: 700px) {
+    main {
+        transform: scale(0.8);
+    }
+}
+
+/**
+ * ========
+ * Specific Element Styling
+ * ========
+**/
+
+#heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+#heading h1 {
+    font: var(--heading-font);
+    color: var(--heading-clr);
+}
+
+#login-box {
+    max-width: 532.8px; /* 666px * 0.8 */
+    width: auto;
+    min-height: 620px;  /* 775px * 0.8 */
+    height: fit-content;
+    margin: auto;
+    margin-bottom: 30px;
+    padding: 36px 42.4px 41.6px 42.4px;   /* 45px 53px 52px 53px; */
+
+
+    background-color: var(--box-clr);
+    /* transform: scale(0.8); */
+}
+
+/* -- Login Profile Styling -- */
+#login-profile {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    width: 100%;
+    height: 184px;   /* 230px = 170px picture + 60px bottom margin */
+    
+    padding: auto;
+    margin-bottom: 40px;  /* Originally 60px, didn't scale well */
+}
+
+#login-profile img {
+    margin: auto;
+    width: auto;
+    height: 90%;
+}
+
+@media screen and (max-width: 700px) {
+    #heading {  
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+}
+
+/* -- Login Body Styling -- */
+#login-body {
+    width: 100%;
+    height: 234.8px;      /* 298px */
+    margin-bottom: 48px;  /* 70px */
+}
+
+#login-form input {
+    margin: 0 0 43.2px 0;   /* 0 0 54px 0 */
+    border-radius: 1px;    /* ** Added into design, consult with Ella** */
+}
+
+#login-form:last-child {
+    margin: 0;
+}
+
+.login-form-text {
+    width: 100%;  /* 550px */
+    height: 52px; /* 65px */
+    border: none;
+    padding-left: 10.4px;       /* 13px */
+    padding-top: 8px;          /* 10px */
+    vertical-align: middle;
+
+    /* font: var(--body-font); */
+    color: var(--textbox-txt-clr);
+    background-color: var(--textbox-bg-clr);
+    box-shadow: var(--form-item-shadow);
+}
+
+.login-form-text::placeholder {
+    vertical-align: middle;
+    color: var(--textbox-text-pl-clr);
+    font: var(--body-font);
+    letter-spacing: normal;
+}
+
+#form-pwd {
+    padding-top: 0px;
+}
+
+.login-form-btn {
+    width: 100%;  /* 550px */
+    height: 48px; /* 60px */
+    padding-top: 4px;   /* 5px */
+    overflow: hidden;
+    position: relative;
+
+    z-index: 1;
+    transition: var(--btn-transition-1);
+    border: none;
+    color: var(--btn-txt-clr);
+    background-color: var(--btn-bg-clr);
+    box-shadow: var(--form-item-shadow);
+}
+
+.login-form-btn::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    z-index: -1;
+    background-color: rgba(91, 131, 235, 0.6);
+    transition: var(--btn-transition-2);
+    transform: scaleX(0);
+    /* transform-origin: left; */       /* Comment in for left-to-right swipe animation */
+
+}
+
+.login-form-btn:hover::before,
+.login-form-btn:active::before {
+    transform: scaleX(1);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.225) inset; 
+}
+
+.login-form-btn:active::before {
+    box-shadow: none;
+}
+
+.login-form-btn:active {
+    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.3);
+}
+
+.login-form-btn:active {
+    transform: translateY(2px) scale(0.99);
+}
+
+/* -- Login Extras Styling -- */
+#login-extras {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+
+    height: 64px;   /* 80px */
+}
+
+#login-forgot {
+    text-decoration: none;
+    font-size: 20px;
+    color: var(--body-clr);
+    transition: var(--link-transition);
+}
+
+#login-forgot::after {
+    background-color: rgba(0, 0, 0, 0.50);
+}
+
+#login-forgot:hover {
+    color: rgba(0, 0, 0, 0.50);
+}
+
+#login-remember {
+    margin-top: 20px;   /* 27px */
+}
+
+#remember-lbl {
+    font: var(--body-sub-font);
+    color: var(--body-clr);
+}
+
+/* --Other Elements-- */
+#redirect-register {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+#redirect-register a {
+    font: var(--body-sub-font);
+    color: var(--btn-bg-clr);
+    text-decoration: none;
+    transition: var(--link-transition);
+}
+
+#redirect-register a:hover {
+    color: rgba(91, 131, 235, 0.8);
+}
+
+#redirect-register a::after {
+    background-color: rgba(91, 131, 235, 0.8);
+    height: 1px;
+}
+
+@media screen and (max-width: 700px) {
+    #redirect-register {  
+        margin-bottom: 0;
+    }
+}

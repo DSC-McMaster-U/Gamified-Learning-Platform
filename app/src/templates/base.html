@@ -6,7 +6,8 @@
         <title>{% block title %}{% endblock %}</title>
 
         <!-- Local Stylesheets -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">  <!-- CSS Reset stylesheet -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
         {% block styling %}{% endblock %}
 
         <!-- Vendor Stylesheets (Bootstrap 5) -->
@@ -15,26 +16,43 @@
 
     <body>
         <!-- Header, if used in the future -->
-        <header id="header" class="container">
+        <header id="header" class="page fixed-top">
             <nav class="navbar navbar-expand-lg navbar-light">
-                <div id="header-logo" >
-                    <a class="navbar-brand" href="">
-                        Logo
-                        <!-- <img id="header-logo-img" src="" alt=""> -->
-                    </a>  <!-- Header branding: ideally contains some text, or an img of the website logo -->
+                <div class="header-mobile">
+                    <div id="header-logo">
+                        <a class="navbar-brand" href="">
+                            <img id="header-logo-img" src="../static/vendor/images/login/gdsc-logo.png" alt="">
+                            <span id="header-logo-text">Gamified Learning Platform</span>
+                        </a>  <!-- Header branding: ideally contains some text, or an img of the website logo -->
+                    </div>
+                    
+                    <!-- Header expand button on mobile devices; will be hidden on larger screens -->
+                    <button id="header-toggle" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toggleMobileMenu" aria-controls="toggleMobileMenu" aria-expanded="false" aria-label="Toggle Nav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                 </div>
-                
-                <!-- Header expand button on mobile devices; will be hidden on larger screens -->
-                <button id="header-toggle" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toggleMobileMenu" aria-controls="toggleMobileMenu" aria-expanded="false" aria-label="Toggle Nav">
-
-                </button>
 
                 <!-- Actual header navigation items -->
                 <div id="header-content" class="collapse navbar-collapse">
-                    <ul class="navbar-nav">
-                        <li class="navbar-item"></li>
-                        <li class="navbar-item"></li>
-                    </ul>
+                    {% if logged_in %}  {# Insert header design for logged in user here #}
+                        <ul class="navbar-nav">
+                            <li class="navbar-item"></li>
+                            <li class="navbar-item"></li>
+                        </ul>
+
+                        <ul class="content-acc navbar-nav">
+                        </ul>
+                    {% else %}
+                        <ul class="content-links navbar-nav">
+                            <li class="navbar-item"></li>
+                            <li class="navbar-item"></li>
+                        </ul>
+
+                        <ul class="content-acc navbar-nav">
+                            <a href="/login"><li class="acc-link acc-login navbar-item"><a href="login.html">Sign in</a></li>
+                            <a href="/register"><li class="acc-link acc-register navbar-item">Register</li></a>
+                        </ul>
+                    {% endif %}
                 </div>
 
             </nav>
