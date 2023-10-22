@@ -52,7 +52,7 @@ def register():
         db.session.commit()
         flash("Registration Successful!")
 
-        return redirect(url_for("user_profile"))
+        return redirect(url_for("user_profile.html"))
 
     #Display register screen
     else:
