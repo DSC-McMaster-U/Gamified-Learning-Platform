@@ -1,11 +1,17 @@
-from flask import Flask, render_template, request, redirect, flash, url_for
-from werkzeug.security import generate_password_hash
+from flask import Flask, render_template
 from models import db, User
+
+
 app = Flask(__name__)
+
+# Configure and initalize database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+db.init_app(app)
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -58,4 +64,5 @@ def register():
     else:
         return render_template("register.html")
 
+db.create_all()
 
