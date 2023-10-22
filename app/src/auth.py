@@ -5,9 +5,15 @@ from . import db
 # create authentication blueprint for handling relevant routes (signup, login, logout, etc.)
 auth = Blueprint('auth', __name__)
 
+# Redirect to ".html"-less url address; might not be necessary
+@auth.route('/login.html')
+def redirectLogin():
+    return redirect('/login', code = 302)   # Probably should change 302 redirect code later
+
 @auth.route('/login')
 def login():
-    return render_template('login.html')
+    loggedIn = False       # Temp logged-in value for now, changes header appearance
+    return render_template('login.html', logged_in = loggedIn)
 
 @auth.route('/login', methods=['POST'])
 def login_post():
