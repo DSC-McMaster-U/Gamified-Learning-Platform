@@ -44,6 +44,7 @@ def register():
             return redirect(url_for("register"))
         if len(last_name) == 0:
             flash("You must provide your last name.")
+            return redirect(url_for("register"))
 
         #Add the user to database and login
         new_user = User(email=email, username=username, password=generate_password_hash(password), first_name=first_name, last_name=last_name)
