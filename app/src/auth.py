@@ -21,7 +21,21 @@ def login_post():
     # if the user does not exist or password is wrong, redirect back to login page
     if not user or not user.check_password(password):
         flash('Incorrect email or password.')
+        # increment failed signin attempts or display locked account
+        if user:
+            if user.failed_signin_attempts > 5:
+                flash('This account is locked. Please contact support to unlock your account and reset your password.')
+            else:
+                user.failed_signin_attempts += 1
+                db.session.commit()
         return redirect(url_for('auth.login'))
-
-    # redirect to profile page if login is successful
-    return redirect(url_for('main.profile'))
+    
+    # redirect to profile page if login is successful, reset failed sign-in attempts
+    if user.failed_signin_attempts <= 5:
+        user.failed_signin_attempts = 0
+        db.session.commit()
+        flash('Successfully logged in! Redirecting to dashboard...')
+        return redirect(url_for('main.profile'))
+    else:
+        flash('This account is locked. Please contact support to unlock your account and reset your password.')
+        return redirect(url_for('auth.login'))
