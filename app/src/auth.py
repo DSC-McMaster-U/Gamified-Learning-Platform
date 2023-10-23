@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from models import User
+from flask_login import login_user
 from . import db
 
 # create authentication blueprint for handling relevant routes (signup, login, logout, etc.)
@@ -23,5 +24,6 @@ def login_post():
         flash('Incorrect email or password.')
         return redirect(url_for('auth.login'))
 
+    login_user(user, remember=remember) # log the user in and create the user session
     # redirect to profile page if login is successful
     return redirect(url_for('main.profile'))
