@@ -40,7 +40,7 @@ class User(UserMixin, db.Model):
     grade = db.Column(SQLAlchemyEnum(GradeEnum), nullable=False)
     registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
     favorite_subject = db.Column(db.String(50))
-    failed_signin_attempts = db.Integer(db.Integer)
+    failed_signin_attempts = db.Integer(db.Integer, default=0)
     
     # Set user password
     def set_password(self, password):
