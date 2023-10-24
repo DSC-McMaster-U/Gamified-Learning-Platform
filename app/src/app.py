@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask_login import LoginManager
 from models import db, User
+from auth import auth as auth_blueprint
 
 app = Flask(__name__)
 
@@ -12,8 +13,7 @@ login_manager.login_view = 'auth.login'
 login_manager.init_app(app)
 db.init_app(app)
 
-# blueprint with authorization routes for the app
-from auth import auth as auth_blueprint
+# register blueprint with authorization routes for the app
 app.register_blueprint(auth_blueprint)
 
 @login_manager.user_loader
