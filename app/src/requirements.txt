@@ -1,6 +1,9 @@
-flask
+# DO NOT MODIFY Flask, Flask-Login, Werkzeug versions!!! Only these versions are compatible for Pytest
+Flask==2.3.0
+Flask-Login==0.6.2
 sqlalchemy
 flask_sqlalchemy
 flask_login
 flask_bcrypt
 password_strength
+Werkzeug==2.3.0
