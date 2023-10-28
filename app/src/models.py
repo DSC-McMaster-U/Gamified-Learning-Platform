@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import CheckConstraint
 from datetime import datetime, timezone, timedelta
 from flask_bcrypt import Bcrypt
+from flask_login import UserMixin
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
@@ -29,7 +30,7 @@ class GradeEnum(Enum):
     SENIOR = 'University Senior'
 
 # User model
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     username = db.Column(db.String(40), unique=True, nullable=False)
@@ -39,7 +40,7 @@ class User(db.Model):
     grade = db.Column(SQLAlchemyEnum(GradeEnum), nullable=False)
     registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
     favorite_subject = db.Column(db.String(50))
-    failed_signin_attempts = db.Integer(db.Integer)
+    failed_signin_attempts = db.Integer(db.Integer, default=0)
     
     # Set user password
     def set_password(self, password):
