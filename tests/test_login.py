@@ -7,40 +7,47 @@ from app.src.models import User
 class LoginTestCase(unittest.TestCase):
     def setUp(self):
         # set up a test flask application with a test client
-        self.app = Flask(__name__)
-        self.app.register_blueprint(auth)
-        self.app.config['TESTING'] = True
-        self.client = self.app.test_client()
+        # creates an instance of flask application, register 'auth' blueprint with the test flask application
+        # run the flask app in testing mode and create a test client for the app
+        self.app = Flask(__name__) 
+        self.app.register_blueprint(auth) 
+        self.app.config['TESTING'] = True 
+        self.client = self.app.test_client() 
 
+        # enter application context (necessary for database operations)
         with self.app.app_context():
+            # create database tables
             db.create_all()
 
     def tearDown(self):
-        # cleans up the database
+        # deletes all database tables created by the application during the test after testing is complete
         with self.app.app_context():
             db.drop_all()
 
     def TestLoginPage(self):
-        # test if login page is accessible
+        # test if login page is accessible. sends HTTP GET request to login route of app, check if HTTP status code is 200 (200 means ok)
         response=self.client.get('/login')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200) 
     
     def TestLoginValidUser(self):
         # login with valid user credentials
-        with self.app.app_context():
+        # enter application context using context maanger; create test user and set password; add test user to databse, and commit changes to database,
+        # inserting the user into the database
+        with self.app.app_context(): 
             test_user = User(email='test@example.com')
             test_user.set_password('testpassword')
             db.session.add(test_user)
-            db.session.commit()
+            db.session.commit() 
 
-        response = self.client.post('/login', data={'email': 'test@example.com', 'password': 'testpassword'})
-        # redirect on successful login
+        # send HTTP POST request to the /login route with test user info, simulates the process of user submitting a login form
+        response = self.client.post('/login', data={'email': 'test@example.com', 'password': 'testpassword'}) 
+        # redirect on successful login, 302 = "found" redirection response
         self.assertEqual(response.status_code, 302)
 
     def TestLoginInavlidUser(self):
-        # login with invalid credentials
+        # send HTTP POST request with wrong user info
         response = self.client.post('/login', data={'email': 'nonexistent@example.com', 'password': 'wrongpassword'})
-        # re-render login page
+        # re-render login page, 200 means 'ok' as well as unsuccessful login attempt
         self.assertEqual(response.status_code, 200) 
 
 if __name__ == '__main__':
