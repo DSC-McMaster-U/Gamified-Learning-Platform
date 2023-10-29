@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from models import User, db  # Originally "from . import db"
+from .models import User, db
 from flask_login import login_user
 
 # create authentication blueprint for handling relevant routes (signup, login, logout, etc.)
