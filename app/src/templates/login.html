@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Login - Gamified Learning Platform{% endblock %}
+
+{% block styling %}
+    <!-- Local Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div id="heading">
+            <h1>Sign in to Your Account</h1>
+        </div>
+
+        <div id="login-box" class="container">
+
+            <div id="login-profile">
+                <img src="../static/vendor/images/login/blank-portrait.png" alt="">
+            </div>
+
+            <div id="login-body" class="container">
+                <form id="login-form" action="/login" method="post">
+                    <!-- <label for="email"></label> -->
+                    <input class="login-form-text body-text" type="text" name="email" id="form-user" placeholder="Email Address">
+                    
+                    <!-- <label for="password"></label> -->
+                    <input class="login-form-text" type="password" name="password" id="form-pwd" placeholder="Password">
+            
+                    <button class="login-form-btn body-text" type="submit">sign in</button>
+                </form>
+            </div>
+
+            <div id="login-extras" >
+                <a id="login-forgot" class="body-text" href="/login.html">Forgot Password?</a>
+
+                <span id="login-remember">
+                    <input id="form-remember" type="checkbox" name="remember">
+                    <label id="remember-lbl" for="remember">Remember me</label>
+                </span>
+            </div>
+
+        </div>
+
+        <div id="redirect-register">
+            <a href="/register.html">Create a new account</a>
+        </div>
+    </main>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Insert local scripts here, if necessary -->
+{% endblock %}
