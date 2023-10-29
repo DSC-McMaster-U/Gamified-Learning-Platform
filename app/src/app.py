@@ -27,5 +27,6 @@ def load_user(user_id):
 def index():
     return render_template('index.html')
 
-db.create_all()
+with app.app_context():      # Need to add as of Flask-SQLAlchemy 3.0
+    db.create_all()
 

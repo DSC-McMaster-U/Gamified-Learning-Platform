@@ -41,25 +41,30 @@
     --box-clr: rgba(222, 221, 221, 0.30);
     --heading-clr: #5B83EB;
     --body-clr: rgba(0, 0, 0, 0.40);
+    --body-hover-clr: rgba(0, 0, 0, 0.50);
     --textbox-txt-clr: #000000;
     --textbox-text-pl-clr: rgba(0, 0, 0, 0.6);
     --textbox-bg-clr: #FFFFFF;
     --btn-txt-clr: #F5F5F5;
     --btn-bg-clr: rgba(91, 131, 235, 0.50);
+    --btn-bg-hover-clr: rgba(91, 131, 235, 0.6);
     --checkbox-clr: #D9D9D9;
     --link-clr: rgb(99, 138, 236);  /* rgba(91, 131, 235, 0.50); */
+    --link-hover-clr: rgba(91, 131, 235, 0.8); 
 
     /* Font Families/Presets */
     --body-font-family: "JejuGothic", "NanumGothic";
     --heading-font-family: "JejuGothic", "NanumGothic";
 
-    --heading-font: normal 400 28.8px/normal var(--heading-font-family);  /* 36px */
-    --body-font: normal 400 22.4px/normal var(--body-font-family);          /* 28px */
-    --link-font: normal 00 19.2px/normal var(--body-font-family);           /* 24px */
-    --body-sub-font: normal 400 16px/normal var(--body-font-family);        /* 20px */
+    --heading-font: normal 400 26px/normal var(--heading-font-family);  /* 36px */
+    --body-font: normal 400 18px/normal var(--body-font-family);          /* 28px */
+    --link-font: normal 00 15.4px/normal var(--body-font-family);           /* 24px */
+    --body-sub-font: normal 400 15px/normal var(--body-font-family);        /* 20px */
 
     /* Borders & Shadows */
     --form-item-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+    --btn-shadow-1: 0px 4px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.225) inset;
+    --btn-shadow-2: 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
 
     /* Transitions */
     --link-transition: all 0.2s ease;
@@ -87,9 +92,14 @@ input[type="password"] {
     -webkit-text-security: disc;
     font-family: Verdana, sans-serif;
     letter-spacing: 2px;
-    font-size: 28px;
+    font-size: 17.9px;
 
-    padding-top: 0;
+    padding-top: 2.5px;
+    /* padding-bottom: 5px; */
+}
+
+input[type="text"] {
+    padding-top: 10px;
 }
 
 main a {
@@ -97,7 +107,7 @@ main a {
 }
 
 main a::after {
-    background-color: #000000;
+    background-color: var(--textbox-bg-clr);
     position: absolute;
     content: '';
     height: 1.5px;
@@ -115,12 +125,6 @@ main a:hover::after {
     transform-origin: bottom left;
 }
 
-@media screen and (max-width: 700px) {
-    main {
-        transform: scale(0.8);
-    }
-}
-
 /**
  * ========
  * Specific Element Styling
@@ -132,7 +136,7 @@ main a:hover::after {
     align-items: center;
     justify-content: center;
 
-    margin-top: 40px;
+    margin-top: 60px;
     margin-bottom: 20px;
 }
 
@@ -142,13 +146,13 @@ main a:hover::after {
 }
 
 #login-box {
-    max-width: 532.8px; /* 666px * 0.8 */
+    max-width: 425px; /* 666px * 0.64 */
     width: auto;
-    min-height: 620px;  /* 775px * 0.8 */
+    min-height: 496px;  /* 775px * 0.64 */
     height: fit-content;
     margin: auto;
     margin-bottom: 30px;
-    padding: 36px 42.4px 41.6px 42.4px;   /* 45px 53px 52px 53px; */
+    padding: 28.8px 33.9px 33.3px 33.9px;   /* 45px 53px 52px 53px; */
 
 
     background-color: var(--box-clr);
@@ -161,10 +165,10 @@ main a:hover::after {
     align-items: center;
     vertical-align: middle;
     width: 100%;
-    height: 184px;   /* 230px = 170px picture + 60px bottom margin */
+    height: 147px;   /* 230px = 170px picture + 60px bottom margin */
     
     padding: auto;
-    margin-bottom: 40px;  /* Originally 60px, didn't scale well */
+    margin-bottom: 32px;  /* Originally 60px/40px, didn't scale well */
 }
 
 #login-profile img {
@@ -175,7 +179,6 @@ main a:hover::after {
 
 @media screen and (max-width: 700px) {
     #heading {  
-        margin-top: 0;
         margin-bottom: 20px;
     }
 }
@@ -183,12 +186,12 @@ main a:hover::after {
 /* -- Login Body Styling -- */
 #login-body {
     width: 100%;
-    height: 234.8px;      /* 298px */
-    margin-bottom: 48px;  /* 70px */
+    height: 187.8px;      /* 298px */
+    margin-bottom: 38.4px;  /* 70px */
 }
 
 #login-form input {
-    margin: 0 0 43.2px 0;   /* 0 0 54px 0 */
+    margin: 0 0 34.6px 0;   /* 0 0 54px 0 */
     border-radius: 1px;    /* ** Added into design, consult with Ella** */
 }
 
@@ -198,13 +201,12 @@ main a:hover::after {
 
 .login-form-text {
     width: 100%;  /* 550px */
-    height: 52px; /* 65px */
+    height: 41.6px; /* 65px */
     border: none;
-    padding-left: 10.4px;       /* 13px */
-    padding-top: 8px;          /* 10px */
+    padding-left: 8.3px;       /* 13px */
+    padding-top: 6.4px;          /* 10px */
     vertical-align: middle;
 
-    /* font: var(--body-font); */
     color: var(--textbox-txt-clr);
     background-color: var(--textbox-bg-clr);
     box-shadow: var(--form-item-shadow);
@@ -217,14 +219,14 @@ main a:hover::after {
     letter-spacing: normal;
 }
 
-#form-pwd {
-    padding-top: 0px;
+#form-pwd::placeholder {
+    padding-bottom: 10px;
 }
 
 .login-form-btn {
     width: 100%;  /* 550px */
-    height: 48px; /* 60px */
-    padding-top: 4px;   /* 5px */
+    height: 38.4px; /* 60px */
+    padding-top: 3.2px;   /* 5px */
     overflow: hidden;
     position: relative;
 
@@ -246,7 +248,7 @@ main a:hover::after {
     right: 0;
 
     z-index: -1;
-    background-color: rgba(91, 131, 235, 0.6);
+    background-color: var(--btn-bg-hover-clr);
     transition: var(--btn-transition-2);
     transform: scaleX(0);
     /* transform-origin: left; */       /* Comment in for left-to-right swipe animation */
@@ -256,7 +258,7 @@ main a:hover::after {
 .login-form-btn:hover::before,
 .login-form-btn:active::before {
     transform: scaleX(1);
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.225) inset; 
+    box-shadow: var(--btn-shadow-1); 
 }
 
 .login-form-btn:active::before {
@@ -264,7 +266,7 @@ main a:hover::after {
 }
 
 .login-form-btn:active {
-    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.3);
+    box-shadow: var(--btn-shadow-2);
 }
 
 .login-form-btn:active {
@@ -278,26 +280,26 @@ main a:hover::after {
     margin: auto;
     align-items: center;
 
-    height: 64px;   /* 80px */
+    height: 51.2px;   /* 80px */
 }
 
 #login-forgot {
     text-decoration: none;
-    font-size: 20px;
+    font-size: 17px;
     color: var(--body-clr);
     transition: var(--link-transition);
 }
 
 #login-forgot::after {
-    background-color: rgba(0, 0, 0, 0.50);
+    background-color: var(--body-hover-clr);
 }
 
 #login-forgot:hover {
-    color: rgba(0, 0, 0, 0.50);
+    color: var(--body-hover-clr);
 }
 
 #login-remember {
-    margin-top: 20px;   /* 27px */
+    margin-top: 16px;   /* 27px */
 }
 
 #remember-lbl {
@@ -310,7 +312,7 @@ main a:hover::after {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 24px;  /* 30px */
 }
 
 #redirect-register a {
@@ -321,11 +323,11 @@ main a:hover::after {
 }
 
 #redirect-register a:hover {
-    color: rgba(91, 131, 235, 0.8);
+    color: var(--link-hover-clr);
 }
 
 #redirect-register a::after {
-    background-color: rgba(91, 131, 235, 0.8);
+    background-color: var(--link-hover-clr);
     height: 1px;
 }
 
