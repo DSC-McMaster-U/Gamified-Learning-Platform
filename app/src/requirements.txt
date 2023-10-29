@@ -1,4 +1,7 @@
-flask
+# DO NOT MODIFY Flask, Flask-Login, Werkzeug versions!!! Only these versions are compatible for Pytest
+# https://stackoverflow.com/questions/77215107/importerror-cannot-import-name-url-decode-from-werkzeug-urls
+Flask==2.3.0
+Flask-Login==0.6.2
 sqlalchemy
 flask_sqlalchemy
 flask_login

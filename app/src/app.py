@@ -5,7 +5,6 @@ from .auth import auth as auth_blueprint
 
 
 app = Flask(__name__)
-# app.register_blueprint(auth)
 
 # Configure and initalize database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
