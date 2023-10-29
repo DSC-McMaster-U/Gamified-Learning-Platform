@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from .models import User, db
 from flask_login import login_user
-
+from passwordStrength import check_password_strength
 # create authentication blueprint for handling relevant routes (signup, login, logout, etc.)
 auth = Blueprint('auth', __name__)
 
@@ -51,7 +51,16 @@ def register():
         #Access the data submitted to form
         email = request.form.get("email")
         username = request.form.get("username")
+
+        #Check the Strength of the password
         password = request.form.get("password")
+        result = check_password_strength(password)
+        if not result:
+            flash("Password is not strong enough")
+        else:
+            flash("Password is not strong enough. Here are some suggestions: " + ", ".join(result))
+            return redirect(url_for("register"))
+
         confirm_password = request.form.get("confirm_password")
         first_name = request.form.get("first_name")
         last_name = request.form.get("last_name")
