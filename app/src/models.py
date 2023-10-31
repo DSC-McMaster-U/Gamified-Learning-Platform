@@ -34,7 +34,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     username = db.Column(db.String(40), unique=True, nullable=False)
-    hashed_password = db.Column(db.String, nullable=False)
+    hashed_password = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     age = db.Column(db.Integer, CheckConstraint('age >= 0 AND age <= 100', name='check_age_range'))
     grade = db.Column(SQLAlchemyEnum(GradeEnum), nullable=False)

@@ -78,7 +78,8 @@ def register():
             flash("You must provide your name.")
             return redirect(url_for("auth.register"))
 
-        new_user = User(email=email, username=username, password=password, name=name)
+        new_user = User(email=email, username=username, name=name)
+        new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
         flash("Registration Successful!")
