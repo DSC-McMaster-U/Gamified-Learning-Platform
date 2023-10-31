@@ -30,7 +30,7 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('user_profile.html')
 
 with app.app_context():
     db.create_all()
