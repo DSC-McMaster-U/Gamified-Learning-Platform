@@ -5,6 +5,7 @@ from .auth import auth as auth_blueprint
 from dotenv import load_dotenv
 import os
 
+# load environment variables
 load_dotenv()
 
 app = Flask(__name__)
