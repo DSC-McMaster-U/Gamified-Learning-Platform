@@ -1,19 +1,17 @@
 from flask import Flask, render_template
 from flask_login import LoginManager
-from models import db, User
-from auth import auth as auth_blueprint
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
+from .models import db, User
+from .auth import auth as auth_blueprint
+from dotenv import load_dotenv
+import os
 
-
+load_dotenv()
 
 app = Flask(__name__)
 
-# Create an instance of Flask-Migrate and associate it with your Flask app and database
-migrate = Migrate(app, db)
-
-# Configure and initalize database (need to figure out Google MySQL Cloud)
+# Configure and initalize database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.secret_key = os.getenv('SECRET_KEY')
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
@@ -30,8 +28,7 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return render_template('user_profile.html')
+    return render_template('login.html')
 
 with app.app_context():
     db.create_all()
-

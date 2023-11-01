@@ -49,17 +49,17 @@
     --btn-bg-clr: rgba(91, 131, 235, 0.50);
     --btn-bg-hover-clr: rgba(91, 131, 235, 0.6);
     --checkbox-clr: #D9D9D9;
-    --link-clr: rgb(99, 138, 236);  /* rgba(91, 131, 235, 0.50); */
-    --link-hover-clr: rgba(91, 131, 235, 0.8); 
+    --link-clr: rgb(99, 138, 236);
+    --link-hover-clr: rgba(91, 131, 235, 0.8);
 
     /* Font Families/Presets */
     --body-font-family: "JejuGothic", "NanumGothic";
     --heading-font-family: "JejuGothic", "NanumGothic";
 
-    --heading-font: normal 400 26px/normal var(--heading-font-family);  /* 36px */
-    --body-font: normal 400 18px/normal var(--body-font-family);          /* 28px */
-    --link-font: normal 00 15.4px/normal var(--body-font-family);           /* 24px */
-    --body-sub-font: normal 400 15px/normal var(--body-font-family);        /* 20px */
+    --heading-font: normal 400 26px/normal var(--heading-font-family);
+    --body-font: normal 400 18px/normal var(--body-font-family);
+    --link-font: normal 00 15.4px/normal var(--body-font-family);
+    --body-sub-font: normal 400 15px/normal var(--body-font-family);
 
     /* Borders & Shadows */
     --form-item-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
@@ -84,9 +84,11 @@
     font: var(--body-font);
 }
 
-/* input:focus {
-    outline: none;
-} */
+input[type="password"],
+input[type="text"] {
+    margin: 0 0 10px 0; /* Adjust the bottom margin to your preferred value */
+    border-radius: 1px;
+}
 
 input[type="password"] {
     -webkit-text-security: disc;
@@ -95,11 +97,6 @@ input[type="password"] {
     font-size: 17.9px;
 
     padding-top: 2.5px;
-    /* padding-bottom: 5px; */
-}
-
-input[type="text"] {
-    padding-top: 10px;
 }
 
 main a {
@@ -146,18 +143,15 @@ main a:hover::after {
 }
 
 #register-box {
-    max-width: 425px; /* 666px * 0.64 */
+    max-width: 425px;
     width: auto;
-    min-height: 496px;  /* 775px * 0.64 */
+    min-height: 496px;
     height: fit-content;
     margin: auto;
     margin-bottom: 30px;
-    padding: 28.8px 
-    33.9px 33.3px 33.9px;   /* 45px 53px 52px 53px; */
-
+    padding: 28.8px 33.9px 33.3px 33.9px;
 
     background-color: var(--box-clr);
-    /* transform: scale(0.8); */
 }
 
 /* -- register Profile Styling -- */
@@ -166,10 +160,10 @@ main a:hover::after {
     align-items: center;
     vertical-align: middle;
     width: 100%;
-    height: 147px;   /* 230px = 170px picture + 60px bottom margin */
+    height: 147px;
     
     padding: auto;
-    margin-bottom: 32px;  /* Originally 60px/40px, didn't scale well */
+    margin-bottom: 35px;
 }
 
 #register-profile img {
@@ -187,25 +181,16 @@ main a:hover::after {
 /* -- register Body Styling -- */
 #register-body {
     width: 100%;
-    height: 187.8px;      /* 298px */
-    margin-bottom: 38.4px;  /* 70px */
-}
-
-#register-form input {
-    margin: 0 0 34.6px 0;   /* 0 0 54px 0 */
-    border-radius: 1px;    /* ** Added into design, consult with Ella** */
-}
-
-#register-form:last-child {
-    margin: 0;
+    height: 187.8px;
+    margin-bottom: 38.4px;
 }
 
 .register-form-text {
-    width: 100%;  /* 550px */
-    height: 41.6px; /* 65px */
+    width: 100%;
+    height: 35px;
     border: none;
-    padding-left: 8.3px;       /* 13px */
-    padding-top: 6.4px;          /* 10px */
+    padding-left: 8.3px;
+    padding-top: 5px;
     vertical-align: middle;
 
     color: var(--textbox-txt-clr);
@@ -225,9 +210,37 @@ main a:hover::after {
 }
 
 .register-form-btn {
-    width: 100%;  /* 550px */
-    height: 38.4px; /* 60px */
-    padding-top: 3.2px;   /* 5px */
+    width: 100%;
+    height: 38.4px;
+    padding-top: 3.2
+}
+
+.register-form-date {
+    width: 100%;
+    height: 35px;
+    border: none;
+    padding-left: 8.3px;
+    padding-top: 5px;
+    vertical-align: middle;
+    font: var(--body-font); /* Use the same font as other text input fields */
+    color: var(--textbox-txt-clr);
+    background-color: var(--textbox-bg-clr);
+    box-shadow: var(--form-item-shadow);
+    margin-bottom: 10px; /* Add margin to create space between Date of Birth and Grade inputs */
+}
+
+.register-form-date::placeholder {
+    vertical-align: middle;
+    color: var(--textbox-text-pl-clr);
+    font: var(--body-font); /* Use the same font as other text input fields */
+    letter-spacing: normal;
+}
+
+.register-form-btn {
+    width: 100%;
+    height: 38.4px;
+    padding-top: 3.2px;
+    margin-top: 20px;
     overflow: hidden;
     position: relative;
 
@@ -252,14 +265,12 @@ main a:hover::after {
     background-color: var(--btn-bg-hover-clr);
     transition: var(--btn-transition-2);
     transform: scaleX(0);
-    /* transform-origin: left; */       /* Comment in for left-to-right swipe animation */
-
 }
 
 .register-form-btn:hover::before,
 .register-form-btn:active::before {
     transform: scaleX(1);
-    box-shadow: var(--btn-shadow-1); 
+    box-shadow: var(--btn-shadow-1);
 }
 
 .register-form-btn:active::before {
@@ -268,72 +279,57 @@ main a:hover::after {
 
 .register-form-btn:active {
     box-shadow: var(--btn-shadow-2);
-}
-
-.register-form-btn:active {
     transform: translateY(2px) scale(0.99);
 }
 
-/* -- register Extras Styling -- */
-#register-extras {
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    align-items: center;
-
-    height: 51.2px;   /* 80px */
-}
-
-/* #register-forgot {
-    text-decoration: none;
-    font-size: 17px;
-    color: var(--body-clr);
-    transition: var(--link-transition);
-}
-
-#register-forgot::after {
-    background-color: var(--body-hover-clr);
-}
-
-#register-forgot:hover {
-    color: var(--body-hover-clr);
-}
-
-#register-remember {
-    margin-top: 16px;   /* 27px */
-/* } */
-
-/* #remember-lbl {
-    font: var(--body-sub-font);
-    color: var(--body-clr);
-} */ */
-
-/* --Other Elements-- */
-#redirect-login {
+#redirect-login,
+#redirect-help {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 24px;  /* 30px */
+    margin-bottom: 15px;  /* 30px */
 }
 
-#redirect-login a {
+#redirect-login a,
+#redirect-help a {
     font: var(--body-sub-font);
     color: var(--btn-bg-clr);
     text-decoration: none;
     transition: var(--link-transition);
 }
 
-#redirect-login a:hover {
+#redirect-login a:hover,
+#redirect-help a:hover {
     color: var(--link-hover-clr);
 }
 
-#redirect-login a::after {
+#redirect-login a::after,
+#redirect-help a::after {
     background-color: var(--link-hover-clr);
     height: 1px;
 }
 
 @media screen and (max-width: 700px) {
-    #redirect-login {  
+    #redirect-login,
+    #redirect-help {  
         margin-bottom: 0;
     }
 }
+
+#form-confirm-pwd {
+    width: 100%;
+    height: 35px;
+    border: none;
+    padding-left: 8.3px;
+    padding-top: 10px; /* Increase the top padding to create space */
+    vertical-align: middle;
+
+    color: var(--textbox-txt-clr);
+    background-color: var(--textbox-bg-clr);
+    box-shadow: var(--form-item-shadow);
+}
+
+.register-form-text + .register-form-text {
+    margin-top: 5px; /* Adjust the margin to control the space between text boxes */
+}
+
