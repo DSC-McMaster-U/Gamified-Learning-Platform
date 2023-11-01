@@ -2,12 +2,17 @@ from flask import Flask, render_template
 from flask_login import LoginManager
 from .models import db, User
 from .auth import auth as auth_blueprint
+from dotenv import load_dotenv
+import os
 
+# load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 
 # Configure and initalize database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.secret_key = os.getenv('SECRET_KEY')
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
