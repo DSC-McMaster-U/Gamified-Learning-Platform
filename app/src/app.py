@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from models import db, User
+from .models import User
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
