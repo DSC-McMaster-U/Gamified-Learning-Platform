@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Local Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}"> <!-- CSS Reset stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block styling %}{% endblock %}
+
+    <!-- Vendor Stylesheets (Bootstrap 5) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header" class="page fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="header-mobile">
+                <!-- Header logo -->
+                <div id="header-logo">
+                    <a class="navbar-brand" href="">
+                        <img id="header-logo-img" src="../static/vendor/images/login/gdsc-logo.png" alt="">
+                        <span id="header-logo-text">Gamified Learning Platform</span>
+                    </a>
+                </div>
+
+                <!-- Header expand button on mobile devices; will be hidden on larger screens -->
+                <button id="header-toggle" class="navbar-toggler collapsed" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#header-content" aria-controls="header-content" aria-expanded="false"
+                    aria-label="Toggle Nav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <!-- Actual header navigation items -->
+            <div id="header-content" class="offcanvas offcanvas-end text-bg-light" tabindex="-1"
+                aria-labelledby="header-content-label"> <!-- aria-labelledby= "offcanvasNavbar2Label"> -->
+                <div id="content-logo" class="offcanvas-header">
+                    <span id="sidebar-logo">Gamified Learning Platform</span>
+
+                    <button id="sidebar-btn-close" type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+
+                <hr class="sidebar-break">
+
+                <div id="content-body" class="offcanvas-body">
+                    {% if logged_in %} {# Insert header design for logged in user here #}
+                        <ul class="content-main navbar-nav">
+                            <a href="">
+                                <li id="main-home" class="main-link navbar-item">Home</li>
+                            </a>
+                            <a href="">
+                                <li id="main-dashboard" class="main-link navbar-item">Dashboard</li>
+                            </a>
+                            <a href="">
+                                <li id="main-lessons" class="main-link navbar-item">Lessons</li>
+                            </a>
+                        </ul>
+
+                        <!-- NOTE: Complete logged-in auth navlist (probably profile pic with dropdown menu?) -->
+                        <ul class="content-auth navbar-nav">
+                        </ul>
+                    {% else %}
+                        <!-- PLACEHOLDER: Change these links to ones suitable for not being logged in -->
+                        <ul class="content-main navbar-nav">
+                            <a href="">
+                                <li id="main-home" class="main-link navbar-item">Home</li>
+                            </a>
+                            <a href="">
+                                <li id="main-about" class="main-link navbar-item">About Us</li>
+                            </a>
+                            <a href="">
+                                <li id="main-pricing" class="main-link navbar-item">Pricing</li>
+                            </a>
+                        </ul>
+
+                        <ul class="content-auth navbar-nav">
+                            <hr class="sidebar-break">
+                            <div class="content-auth-msg">You are not signed in.</div>
+                            <a href="/login">
+                                <li id="auth-login" class="auth-link navbar-item">Sign in</li>
+                            </a>
+                            <a href="/register">
+                                <li id="auth-register" class="auth-link navbar-item">Register</li>
+                            </a>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div id="bg-shading" class="header-closed"> <!-- Toggle between header-open and header-closed -->
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+
+    <hr class="footer-break">
+
+    <footer id="footer" class="container">
+        <div id="footer-socials" class="row">
+            <a id="socials-fbook" href="https://www.facebook.com/GDSCMcMasterU/">
+                <img src="../static/vendor/images/base/icon-facebook.png" alt="Link to Facebook.">
+            </a>
+            <a id="socials-igram" href="https://www.instagram.com/gdscmcmasteru/">
+                <img src="../static/vendor/images/base/icon-instagram.png" alt="" srcset="">
+            </a>
+            <a id="socials-x" href="https://twitter.com/DSCMcMasterU">
+                <img width="28px" height="28px" src="../static/vendor/images/base/icon-x.png" alt="" srcset="">
+            </a>
+        </div>
+
+        <ul id="footer-menu" class="row">
+            <li class="col"><a href="info.html">Info</a></li>
+            <li class="col"><a href="support.html">Support</a></li>
+            <li class="col"><a href="resources.html">Resources</a></li>
+            <div class="w-100"></div>
+            <li class="col"><a href="terms.html">Terms of Use</a></li>
+            <li class="col"><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+    </footer>
+
+    <!-- Insert local scripts here, if necessary -->
+    {% block scripts %}{% endblock %}
+
+    <!-- Vendor Scripts (Bootstrap 5 with Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

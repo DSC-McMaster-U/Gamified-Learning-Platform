@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}User Profile - Gamified Learning Platform{% endblock %}
+
+{% block styling %}
+    <!-- Local Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div id="heading">
+            <h1>User Profile</h1>
+        </div>
+
+        <div id="user-info" class="container">
+            <p><strong>Name:</strong> {{ name }}</p>
+            <p><strong>Username:</strong> {{ username }}</p>
+            <p><strong>Date of Birth:</strong> {{ date_of_birth }}</p>
+            <p><strong>Grade:</strong> {{ grade }}</p>
+            <p><strong>Email Address:</strong> {{ email }}</p>
+        </div>
+
+        <div id="user-logout">
+            <a href="/login.html">Logout</a>
+        </div>
+    </main>
+{% endblock %}
