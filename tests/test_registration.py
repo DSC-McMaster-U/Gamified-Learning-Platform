@@ -42,3 +42,36 @@ def test_register(client):
         'confirm_password': 'differentPassword-'
     })
     assert response3.status_code == 302
+    
+    response4 = client.delete('/register', data={
+        'name': 'James Smith',
+        'username': 'jsmith',
+        'date_of_birth': '2023-10-01',
+        'grade': '',
+        'email': 'jsmith99@gmail.com',
+        'password': 'jSmith123-',
+        'confirm_password': 'jSmith123-'
+    })
+    assert response4.status_code == 405
+    
+    response5 = client.put('/register', data={
+        'name': 'James Smith',
+        'username': 'jsmith',
+        'date_of_birth': '2023-10-01',
+        'grade': '',
+        'email': 'jsmith99@gmail.com',
+        'password': 'jSmith123-',
+        'confirm_password': 'jSmith123-'
+    })
+    assert response5.status_code == 405
+    
+    response6 = client.post('/register', data={
+        'name': 'James Smith',
+        'username': 'jsmith',
+        'date_of_birth': '2023-10-01',
+        'grade': '',
+        'email': 'jsmith99@gmail.com',
+        'password': 'jSmit',
+        'confirm_password': 'jSmit'
+    }, follow_redirects=True)
+    assert response6.status_code == 200
