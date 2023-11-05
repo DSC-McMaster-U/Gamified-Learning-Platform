@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Register - Gamified Learning Platform{% endblock %}
+
+{% block styling %}
+    <!-- Local Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div id="heading">
+            <h1>Registration</h1>
+        </div>
+
+        <div id="register-box" class="container">
+            <form id="register-form" action="/register" method="post">
+                <input class="register-form-text" type="text" name="name" id="form-name" placeholder="Name">
+                <input class="register-form-text" type="text" name="username" id="form-username" placeholder="Username">
+                <input class="register-form-text register-form-date" type="text" name="date_of_birth" id="form-dob" placeholder="Date of Birth">
+                <input class="register-form-text" type="text" name="grade" id="form-grade" placeholder="Grade">
+                <input class="register-form-text body-text" type="text" name="email" id="form-user" placeholder="Email Address">
+                <input class="register-form-text body-text" type="text" name="confirm_email" id="form-confirm-email" placeholder="Confirm Email">
+                <input class="register-form-text" type="password" name="password" id="form-pwd" placeholder="Password">
+                <input class="register-form-text" type="password" name="confirm_password" id="form-confirm-pwd" placeholder="Confirm Password">
+                <button class="register-form-btn body-text" type="submit">Sign up</button>
+
+            </form>
+        </div>
+
+        <div id="redirect-login">
+            <a href="/login.html">Back to login</a>
+        </div>
+
+        <div id="redirect-login">
+            <a href="/user_profile.html">Need help?</a>
+        </div>
+    </main>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Insert local scripts here, if necessary -->
+
+    <script>
+        document.getElementById("form-dob").addEventListener("focus", function () {
+            this.type = "date";
+            this.placeholder = "Date of Birth";
+        });
+    
+        document.getElementById("form-dob").addEventListener("blur", function () {
+            if (!this.value) {
+                this.type = "text";
+                this.placeholder = "Date of Birth";
+            }
+        });
+    </script>
+    
+{% endblock %}

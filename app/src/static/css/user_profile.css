@@ -1,0 +1,179 @@
+/* user_profile.css - contains styling for the user profile page */
+
+/* Imported Fonts */
+@font-face {
+    font-family: "JejuGothic";
+    src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Regular.ttf");
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Bold.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-ExtraBold.ttf");
+    font-weight: bolder;
+}
+
+/* Variables */
+:root {
+    /* Main Colours */
+    --box-clr: rgba(222, 221, 221, 0.30);
+    --heading-clr: #5B83EB;
+    --body-clr: rgba(0, 0, 0, 0.40);
+    --body-hover-clr: rgba(0, 0, 0, 0.50);
+    --textbox-txt-clr: #000000;
+    --textbox-text-pl-clr: rgba(0, 0, 0, 0.6);
+    --textbox-bg-clr: #FFFFFF;
+    --btn-txt-clr: #F5F5F5;
+    --btn-bg-clr: rgba(91, 131, 235, 0.50);
+    --btn-bg-hover-clr: rgba(91, 131, 235, 0.6);
+    --checkbox-clr: #D9D9D9;
+    --link-clr: rgb(99, 138, 236);
+    --link-hover-clr: rgba(91, 131, 235, 0.8);
+
+    /* Font Families/Presets */
+    --body-font-family: "JejuGothic", "NanumGothic";
+    --heading-font-family: "JejuGothic", "NanumGothic";
+    --heading-font: normal 400 26px/normal var(--heading-font-family);
+    --body-font: normal 400 18px/normal var(--body-font-family);
+    --link-font: normal 00 15.4px/normal var(--body-font-family);
+    --body-sub-font: normal 400 15px/normal var(--body-font-family);
+
+    /* Borders & Shadows */
+    --form-item-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+    --btn-shadow-1: 0px 4px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.225) inset;
+    --btn-shadow-2: 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
+
+    /* Transitions */
+    --link-transition: all 0.2s ease;
+    --underline-transition: transform 0.3s ease-out;
+    --btn-transition-1: all 0.1s linear;
+    --btn-transition-2: all 0.7s ease;
+}
+
+
+/**
+ * ========
+ * General Styling
+ * ========
+**/
+
+.body-text {
+    font: var(--body-font);
+}
+
+input[type="password"] {
+    -webkit-text-security: disc;
+    font-family: Verdana, sans-serif;
+    letter-spacing: 2px;
+    font-size: 17.9px;
+    padding-top: 2.5px;
+}
+
+input[type="text"] {
+    padding-top: 10px;
+}
+
+main a {
+    position: relative;
+}
+
+main a::after {
+    background-color: var(--textbox-bg-clr);
+    position: absolute;
+    content: '';
+    height: 1.5px;
+    width: 100%;
+    bottom: -2px;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: bottom left;
+    transition: var(--underline-transition);
+}
+
+main a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/**
+ * ========
+ * Specific Element Styling
+ * ========
+**/
+
+#heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 60px;
+    margin-bottom: 20px;
+}
+
+#heading h1 {
+    font: var(--heading-font);
+    color: var(--heading-clr);
+}
+
+#user-profile-box {
+    max-width: 425px;
+    width: auto;
+    min-height: 496px;
+    height: fit-content;
+    margin: auto;
+    margin-bottom: 30px;
+    padding: 28.8px 33.9px 33.3px 33.9px;
+    background-color: var(--box-clr);
+}
+
+#user-profile-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    margin-bottom: 32px;
+}
+
+#user-profile-info p {
+    font: var(--body-font);
+    color: var(--textbox-txt-clr);
+    margin: 10px 0;
+}
+
+#user-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;  /* 30px */
+}
+
+#user-logout a {
+    font: var(--body-sub-font);
+    color: var(--btn-bg-clr);
+    text-decoration: none;
+    transition: var(--link-transition);
+}
+
+#user-logout a:hover {
+    color: var(--link-hover-clr);
+}
+
+#user-logout a::after {
+    background-color: var(--link-hover-clr);
+    height: 1px;
+}
+
+@media screen and (max-width: 700px) {
+    #user-logout {  
+        margin-bottom: 0;
+    }
+}

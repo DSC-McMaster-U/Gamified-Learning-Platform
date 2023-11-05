@@ -5,7 +5,6 @@ from .auth import auth as auth_blueprint
 from dotenv import load_dotenv
 import os
 
-# load environment variables
 load_dotenv()
 
 app = Flask(__name__)
@@ -29,8 +28,7 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('login.html')
 
 with app.app_context():
     db.create_all()
-
