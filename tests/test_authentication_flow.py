@@ -45,7 +45,8 @@ def test_workflow(client_tempdb):
     assert b'Successfully logged in! Redirecting to dashboard...' in response.data
 
 
-# CREATE FUTURE TESTS TO CHECK FOR INCORRECT LOGIN GIVEN USER? (may need to set up new application contexts if we decide to create multiple test functions)
+# CREATE FUTURE TESTS TO CHECK FOR INCORRECT LOGIN GIVEN USER? (locked account and incorrect login)
+# May need to set up new application contexts if we decide to create multiple test functions, to check the database
 
 
 
