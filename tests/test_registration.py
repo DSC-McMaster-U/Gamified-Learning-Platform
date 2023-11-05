@@ -7,9 +7,13 @@ from app.src.models import User, db
 def client():
     app.config['TESTING'] = True
     with app.test_client() as client:
-        yield client
+        with app.app_context():
+            db.create_all()
+            yield client
+            db.drop_all()
 
 def test_register(client):
+    # valid inputs, follow redirect should be OK (200)
     response1 = client.post('/register', data={
         'name': 'James Smith',
         'username': 'jsmith',
@@ -21,6 +25,8 @@ def test_register(client):
     }, follow_redirects=True)
     assert response1.status_code == 200
     
+    # valid or invalid inputs, not follow redirect should be Found (302)
+    # the new URL should be /register
     response2 = client.post('/register', data={
         'name': 'James Smith',
         'username': 'jsmith',
@@ -45,6 +51,7 @@ def test_register(client):
     assert response3.status_code == 302
     assert response3.location == '/register'
     
+    # invalid methods, should be Method Not Allowed (405)
     response4 = client.delete('/register', data={
         'name': 'James Smith',
         'username': 'jsmith',
