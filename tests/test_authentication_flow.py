@@ -18,6 +18,7 @@ def client_tempdb():
         with app.test_client() as client:
             yield client, db # client must be created under the app context to ensure that the client can interact with the temporary database when making requests
 
+        # this will execute after the tests are completed to delete the temporary database
         db.session.remove()
         os.close(db_fd)
         os.unlink(db_fname)
@@ -46,7 +47,7 @@ def test_workflow(client_tempdb):
 
 
 # CREATE FUTURE TESTS TO CHECK FOR INCORRECT LOGIN GIVEN USER? (locked account and incorrect login)
-# May need to set up new application contexts if we decide to create multiple test functions, to check the database
+# May need to set up new application contexts if we decide to create multiple test functions, to check the database (this way we can check the database to ensure that it contains the expected values)
 
 
 
