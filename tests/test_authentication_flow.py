@@ -28,8 +28,25 @@ def test_workflow(client_tempdb):
     response = client.post('/register', data={'email': 'johndoe@gmail.com', 'username': 'johndoe', 'password': 'john123',
                                               'confirm_password': 'john123', 'name': 'John Doe', 'grade': ''}, follow_redirects=True)
     
-    # assertion to check that the registration post request is successful
+    # assertion to check that the registration post request is successful (unsuccesful registration may still return 200 status code, however it will not return correct flash message)
     assert response.status_code == 200
+    assert b'Registration Successful!' in response.data
+
+    # ensure that the user is successfully stored in the database
+    user = User.query.filter_by(username='johndoe').first()
+    assert user.email == 'johndoe@gmail.com'
+    assert user.name == 'John Doe'
+    assert user.check_password('john123')
+
+    response = client.post('/login', data={'email': 'johndoe@gmail.com', 'password': 'john123'}, follow_redirects=True)
+
+    # assertion to check that the login post request is successful given the user that was stored in the database
+    assert response.status.code == 200
+    assert b'Successfully logged in! Redirecting to dashboard...' in response.data
+
+
+# CREATE FUTURE TESTS TO CHECK FOR INCORRECT LOGIN GIVEN USER? (may need to set up new application contexts if we decide to create multiple test functions)
+
 
 
 
