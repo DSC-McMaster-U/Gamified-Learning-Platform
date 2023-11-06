@@ -45,10 +45,44 @@ class LoginTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
 
     def TestLoginInavlidUser(self):
-        # send HTTP POST request with wrong user info
+
+        with self.app.app_context(): 
+            test_user = User(email='test@example.com')
+            test_user.set_password('testpassword')
+            db.session.add(test_user)
+            db.session.commit() 
+
+        # test wrong email and password
         response = self.client.post('/login', data={'email': 'nonexistent@example.com', 'password': 'wrongpassword'})
         # re-render login page, 200 means 'ok' as well as unsuccessful login attempt
         self.assertEqual(response.status_code, 200) 
+        self.assertIn(b'Invalid email or password', response.data)
+
+        # test wrong email
+        response = self.client.post('/login', data={'email': 'nonexistent@example.com', 'password': 'testpassword'})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Invalid email or password', response.data)
+
+        # test wrong password
+        response = self.client.post('/login', data={'email': 'test@example.com', 'password': 'wrongpassword'})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Invalid email or password', response.data)
+
+        # test correct email but empty password field
+        response = self.client.post('/login', data={'email': 'test@example.com', 'password': ''})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Password is required', response.data)
+
+        # test empty email field, correct password
+        response = self.client.post('/login', data={'email': '', 'password': 'testpassword'})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Email is required', response.data)
+
+        # both fields are empty
+        response = self.client.post('/login', data={'email': '', 'password': ''})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Email is required', response.data)
+        self.assertIn(b'Password is required', response.data)
 
 if __name__ == '__main__':
     unittest.main()
