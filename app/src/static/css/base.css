@@ -1,0 +1,439 @@
+/* base.css - contains styling for base template of website (headers, footers, etc.) */
+/**
+ * ========
+ * Imported Fonts
+ * ========
+**/
+
+/* Product Sans (Google's Logo Font) */
+@font-face {
+    font-family: "ProductSans";
+    src: url("../vendor/fonts/ProductSans/Product\ Sans\ Regular.ttf");
+}
+
+@font-face {
+    font-family: "ProductSans";
+    src: url("../vendor/fonts/ProductSans/Product\ Sans\ Italic.ttf");
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "ProductSansBold";
+    src: url("../vendor/fonts/ProductSans/Product\ Sans\ Bold.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "ProductSans";
+    src: url("../vendor/fonts/ProductSans/Product\ Sans\ Bold\ Italic.ttf");
+    font-style: italic;
+    font-weight: bold;
+}
+
+/* Jeju Gothic (original font in design) */
+@font-face {
+    font-family: "JejuGothic";
+    src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
+}
+
+/**
+ * ========
+ * Variables
+ * ========
+**/
+
+:root {
+    /* Main Colours */
+    --logo-clr: #5D6166;
+    --auth-link-clr: #1A73E8;
+    --auth-link-bg-clr: #E8F0FE;
+    --main-link-clr: #5f6368;
+    --main-link-hover-clr: #3b3c3e;
+    --footer-link-clr: #959595;
+    --footer-link-hover-clr: #525252;
+
+    /* Font Families/Presets */
+    --nav-link-font-family: "ProductSans";
+    --logo-font-family: "ProductSans";  
+    --footer-font-family: "JejuGothic";
+
+    --main-link-font: normal 500 17px/36px var(--logo-font-family);
+    --auth-link-font: normal 500 17px/36px var(--logo-font-family);
+    --logo-font: normal 300 23px/normal var(--logo-font-family);
+    --footer-font: normal 400 15px/normal var(--footer-font-family);
+
+    /* Animations & Transitions */
+    --transition-ease: all 0.5s ease;
+    --transition-navbar: all 0.25s ease;
+}
+
+/**
+ * ========
+ * General Styling
+ * ========
+**/
+
+#header {
+    display: flex;
+    border-bottom: 1px solid rgb(216, 216, 216);
+    box-shadow: 0px 0px 7px 3px rgba(41, 41, 41, 0.4);
+    background-color: #FFFFFF;
+    width: 100%;
+    height: 60px;
+    margin-top: 0;
+    padding: 0;
+    vertical-align: middle;
+    position: sticky;
+    z-index: 500;
+
+    transition: none;
+}
+
+#header .navbar {
+    display: flex;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 20px;
+    justify-content: space-between;
+}
+
+#footer {
+    background-color: transparent;
+    width: 100%;
+    height: fit-content;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    z-index: 500;
+}
+
+#footer-socials {
+    width: fit-content;
+    margin: auto;
+}
+
+#footer-socials a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+    padding: 10px;
+    margin-right: 35px;
+}
+
+#footer-socials #socials-x {
+    margin-right: 0;
+}
+
+.footer-break {
+    width: 90%;
+    margin: auto;
+    margin-bottom: 40px;
+    margin-top: 50px;
+}
+
+#footer-menu {
+    padding: 15px;
+    max-width: 400px;
+    width: auto;
+    margin: auto;
+}
+
+#footer-menu li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    text-align: center;
+
+    padding: 5px;
+}
+
+#footer-menu .w-100 {
+    padding: 0;
+    margin: 0;
+    height: 0;
+}
+
+#footer-menu a {
+    font: var(--footer-font);
+    color: var(--footer-link-clr);
+    text-decoration: none;
+    transition: var(--transition-ease);
+}
+
+#footer-menu a:hover {
+    color: var(--footer-link-hover-clr);
+    text-decoration: underline;
+}
+
+/**
+ * ========
+ * Navbar Logo Styling
+ * ========
+**/
+.header-mobile {
+    display: flex;
+    width: fit-content;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+    vertical-align: middle;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding-right: 300px;
+    /* transition: var(--transition-ease); */
+}
+
+#header-toggle span {
+    transition: var(--transition-ease);
+}
+
+#header-logo {
+    cursor: pointer;
+}
+
+#header-logo a {
+    position: relative;
+}
+
+#header-logo-img {
+    height: 32.5px;
+    width: auto;
+}
+
+#header-logo-text {
+    position: absolute;
+    top: 9px;
+    left: 80px;
+
+    font: var(--logo-font);
+    color: var(--logo-clr);
+}
+
+@media screen and (max-width: 992px) {
+    .header-mobile {
+        width: 100%;
+        padding-right: 0;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #header-logo-text {
+        visibility: hidden;
+    }
+}
+
+/**
+ * ========
+ * Navbar Links Styling
+ * ========
+**/
+
+#header-content {
+    /* width: 100%; */
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+#header-content a {
+    text-decoration: none;
+}
+
+#content-body {
+    justify-content: space-between;
+}
+
+/* Main nav link navbar elements */
+.content-main {
+    display: flex;
+    width: fit-content;
+}
+
+.main-link {
+    position: relative;
+    padding: 2px 15px;
+    margin-right: 5px;
+    border-radius: 5px;
+
+    color: var(--main-link-clr);
+    font: var(--main-link-font);
+    transition: all 0.1s linear;
+    cursor: pointer;
+}
+
+.main-link:after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 3px;
+    border-radius: 0px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    bottom: -8px;
+    left: 0;
+
+    /* background-color: transparent; */
+    background-color: var(--main-link-hover-clr);
+    transition: var(--transition-navbar);
+    transform: scaleX(0);
+}
+
+.main-link:hover {
+    color: var(--main-link-hover-clr);
+}
+
+.main-link:hover::after {
+    transform: scaleX(1);
+    background-color: var(--main-link-hover-clr);
+}
+
+/* Auth navbar elements */
+.content-auth {
+    display: flex;
+    width: 180px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.auth-link {
+    padding: 2px 10px;
+    border-radius: 5px;
+
+    color: var(--auth-link-clr);
+    font: var(--auth-link-font);
+    transition: all 0.1s linear;
+    cursor: pointer;
+}
+
+.auth-link:hover {
+    background-color: var(--auth-link-bg-clr);
+    color: var(--auth-link-clr);
+}
+
+.content-auth-msg {
+    display: none;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/**
+ * ========
+ * Navbar Mobile Offcanvas Styling
+ * ========
+**/
+
+#sidebar-logo {
+    padding-left: 10px;
+    padding-top: 5px;
+    font: var(--logo-font);
+    color: var(--logo-clr);
+}
+
+#sidebar-btn-close {
+    padding-top: 5px;
+    padding-right: 20px;
+}
+
+.sidebar-break {
+    display: none;
+    width: 0;
+    height: 0;
+    align-self: center;
+    margin: 0;
+}
+
+@media screen and (max-width: 991px) {
+    #header-content {
+        height: 100%;
+        margin-top: 0;
+    }
+    
+    #header-content .content-main a {
+        padding-bottom: 10px;
+    }
+
+    #content-body {
+        position: relative;
+        z-index: 999;
+    }
+
+    #content-body .content-main {
+        display: flex;
+        vertical-align: middle;
+        margin-bottom: 5px;
+        width: 100%;
+    }
+
+    #content-body .content-main a {
+        width: 100%;
+        margin-bottom: 10px;
+        padding-bottom: 0;
+    }
+
+    #content-body .content-auth {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        align-items:start;
+        width: 100%;
+        /* padding-left: 5px; */
+    }
+
+    #content-body .content-auth a {
+        width: 90%;
+        margin: auto;
+        margin-bottom: 10px;
+        padding-bottom: 0;
+    }
+
+    .content-auth-msg {
+        display: block;
+        height: fit-content;
+        width: fit-content;
+        padding-left: 30px;
+        margin-bottom: 15px;
+    }
+
+    .sidebar-break {
+        display: block;
+        width: 360px;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .content-auth .sidebar-break {
+        margin-bottom: 15px;
+    }
+
+    .main-link {
+        border-radius: 5px;
+    }
+
+    .main-link::after {
+        width: 0;
+        height: 0;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        bottom: 0;
+        left: 0;
+    
+        /* background-color: transparent; */
+        background-color: 0;
+        transition: none;
+        transform: none;
+    }
+    
+    .main-link:hover {
+        background-color: #EEEEEE;
+        color: var(--main-link-hover-clr);        
+    }
+    
+    .main-link:hover::after {
+        transform: none;
+        background-color: none;
+    }    
+}
