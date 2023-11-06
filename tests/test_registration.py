@@ -1,16 +1,21 @@
 import pytest
-from app.src.app import app
+from app.src.app import create_app, db
 from app.src.auth import register
-from app.src.models import User, db
+from app.src.models import User
 
 @pytest.fixture
-def client():
-    app.config['TESTING'] = True
-    with app.test_client() as client:
-        with app.app_context():
-            db.create_all()
-            yield client
-            db.drop_all()
+def app():
+    app = create_app(test_config={'TESTING': True, 'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:'})
+    with app.app_context():
+        db.create_all()
+    yield app
+    with app.app_context():
+        db.drop_all()
+        
+@pytest.fixture
+def client(app):
+    return app.test_client()
+
 
 def test_register(client):
     # valid inputs, follow redirect should be OK (200)
