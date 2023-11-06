@@ -31,8 +31,8 @@ def client_tempdb():
 def test_workflow(client_tempdb):
     client, db_handle = client_tempdb # Get the client and temporary database created in the fixture
 
-    response = client.post('/register', data={'email': 'johndoe@gmail.com', 'username': 'johndoe', 'password': 'john123',
-                                              'confirm_password': 'john123', 'name': 'John Doe', 'grade': ''}, follow_redirects=True)
+    response = client.post('/register', data={'email': 'johndoe@gmail.com', 'username': 'johndoe', 'password': 'John@123',
+                                              'confirm_password': 'John@123', 'name': 'John Doe', 'grade': ''}, follow_redirects=True)
     
     # assertion to check that the registration post request is successful (unsuccesful registration may still return 200 status code, however it will not return correct flash message)
     assert response.status_code == 200
@@ -44,9 +44,9 @@ def test_workflow(client_tempdb):
     user = User.query.filter_by(username='johndoe').first()
     assert user.email == 'johndoe@gmail.com'
     assert user.name == 'John Doe'
-    assert user.check_password('john123')
+    assert user.check_password('John@123')
 
-    response = client.post('/login', data={'email': 'johndoe@gmail.com', 'password': 'john123'}, follow_redirects=True)
+    response = client.post('/login', data={'email': 'johndoe@gmail.com', 'password': 'John@123'}, follow_redirects=True)
 
     # assertion to check that the login post request is successful given the user that was stored in the database
     assert response.status_code == 200
