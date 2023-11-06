@@ -28,6 +28,7 @@ class GradeEnum(Enum):
     SOPHMORE = 'University Sophmore'
     JUNIOR = 'University Junior'
     SENIOR = 'University Senior'
+    NA = 'Not Available'
 
 # User model
 class User(UserMixin, db.Model):
@@ -37,7 +38,7 @@ class User(UserMixin, db.Model):
     hashed_password = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     age = db.Column(db.Integer, CheckConstraint('age >= 0 AND age <= 100', name='check_age_range'))
-    grade = db.Column(SQLAlchemyEnum(GradeEnum), nullable=False)
+    grade = db.Column(SQLAlchemyEnum(GradeEnum), default=GradeEnum.NA)
     registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
     favorite_subject = db.Column(db.String(50))
     failed_signin_attempts = db.Column(db.Integer, default=0)

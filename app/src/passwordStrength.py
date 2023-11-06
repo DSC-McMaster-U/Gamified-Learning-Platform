@@ -23,6 +23,9 @@ def check_password_strength(password):
     result = policy.test(password)
     if not result:
         return None #password is strong enough
+    
+    # convert to appropiate type
+    result = [str(item) for item in result]
     return result #return a list of suggestions
 
 '''

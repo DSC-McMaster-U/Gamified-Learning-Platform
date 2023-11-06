@@ -52,23 +52,13 @@ def register():
 
     if request.method == "POST":
 
-        email = request.form.get("email")
-        username = request.form.get("username")
-
-        #Check the Strength of the password
-        password = request.form.get("password")
-        result = check_password_strength(password)
-        if not result:
-            flash("Password is strong enough")
-        else:
-            flash("Password is not strong enough. Here are some suggestions: " + ", ".join(result))
-            return redirect(url_for("register"))
-
-        #Check if the passwords match
-        confirm_password = request.form.get("confirm_password")
-        
-        #Access the data submitted to form
         name = request.form.get("name")
+        username = request.form.get("username")
+        date_of_birth = request.form.get("date_of_birth")
+        grade = request.form.get("grade")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
 
         user_email = User.query.filter_by(email=email).first()
         if user_email:
@@ -91,13 +81,19 @@ def register():
             flash("You must provide your name.")
             return redirect(url_for("auth.register"))
 
+        # checking password strength
+        result = check_password_strength(password)
+        if result:
+            flash("Password is not strong enough. Here are some suggestions: " + ", ".join(result))
+            return redirect(url_for("auth.register"))
+
         new_user = User(email=email, username=username, name=name)
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
         flash("Registration Successful!")
 
-        return redirect(url_for("main.profile"))  # Redirect to the profile page
+        return redirect(url_for("auth.login"))
 
     else:
         return render_template("register.html")
