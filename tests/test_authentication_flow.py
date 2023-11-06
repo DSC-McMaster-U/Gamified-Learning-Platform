@@ -1,20 +1,25 @@
 import pytest
 import tempfile
 import os
-from app.src.app import app, db
+from flask import get_flashed_messages
+from app.src.app import create_app, db
 from app.src.auth import login_post, register
-from app.src.models import User
+from app.src.models import User, GradeEnum
 
 @pytest.fixture
 def client_tempdb():
     # create a temporary database for tests to avoid creating a database that will remain in the directory
     db_fd, db_fname = tempfile.mkstemp()
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_fname 
-    app.config['TESTING'] = True
-    app.config['WTF_CSRF_ENABLED'] = False # Disable CSRF Protection so we do not have to retrieve CSRF token when creating user
+    app = create_app({
+        'SQLALCHEMY_DATABASE_URI': 'sqlite:///' + db_fname,
+        'TESTING': True,
+        'SECRET_KEY': 'your_secret_key',
+        'WTF_CSRF_ENABLED': False,
+    })
 
     with app.app_context():
         db.create_all()
+    
         with app.test_client() as client:
             yield client, db # client must be created under the app context to ensure that the client can interact with the temporary database when making requests
 
@@ -31,7 +36,9 @@ def test_workflow(client_tempdb):
     
     # assertion to check that the registration post request is successful (unsuccesful registration may still return 200 status code, however it will not return correct flash message)
     assert response.status_code == 200
-    assert b'Registration Successful!' in response.data
+    with client.session_transaction() as session:
+        flashed_messages = get_flashed_messages()
+        assert 'Registration Successful!' in flashed_messages
 
     # ensure that the user is successfully stored in the database
     user = User.query.filter_by(username='johndoe').first()
@@ -42,8 +49,10 @@ def test_workflow(client_tempdb):
     response = client.post('/login', data={'email': 'johndoe@gmail.com', 'password': 'john123'}, follow_redirects=True)
 
     # assertion to check that the login post request is successful given the user that was stored in the database
-    assert response.status.code == 200
-    assert b'Successfully logged in! Redirecting to dashboard...' in response.data
+    assert response.status_code == 200
+    with client.session_transaction() as session:
+        flashed_messages = get_flashed_messages()
+        assert 'Successfully logged in! Redirecting to dashboard...' in flashed_messages
 
 
 # CREATE FUTURE TESTS TO CHECK FOR INCORRECT LOGIN GIVEN USER? (locked account and incorrect login)

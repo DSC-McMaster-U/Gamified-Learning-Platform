@@ -8,9 +8,9 @@ import os
 
 load_dotenv()
 
-db = SQLAlchemy()
+# db = SQLAlchemy()
 
-def create_app():
+def create_app(test_config=None):
 
     app = Flask(__name__)
 
@@ -22,6 +22,9 @@ def create_app():
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
+
+    if test_config:
+        app.config.update(test_config)
     
     db.init_app(app)
 

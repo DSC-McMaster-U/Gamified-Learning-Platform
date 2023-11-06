@@ -56,6 +56,7 @@ def register():
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
         name = request.form.get("name")
+        grade = request.form.get("grade")
 
         user_email = User.query.filter_by(email=email).first()
         if user_email:
@@ -84,7 +85,7 @@ def register():
         db.session.commit()
         flash("Registration Successful!")
 
-        return redirect(url_for("main.profile"))  # Redirect to the profile page
+        return redirect(url_for("auth.login")) 
 
     else:
         return render_template("register.html")
