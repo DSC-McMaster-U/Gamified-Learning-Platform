@@ -2,6 +2,7 @@ import pytest
 from app.src.app import create_app, db
 from app.src.auth import register
 from app.src.models import User
+from flask import get_flashed_messages
 
 @pytest.fixture
 def app():
@@ -17,7 +18,7 @@ def client(app):
     return app.test_client()
 
 
-def test_register(client):
+def test_register_valid(client):
     # valid inputs, follow redirect should be OK (200)
     response1 = client.post('/register', data={
         'name': 'James Smith',
@@ -30,12 +31,43 @@ def test_register(client):
     }, follow_redirects=True)
     assert response1.status_code == 200
     
-    # valid or invalid inputs, not follow redirect should be Found (302)
-    # the new URL should be /register
     response2 = client.post('/register', data={
+        'name': 'John Doe',
+        'username': 'johndoe00',
+        'date_of_birth': '',
+        'grade': '',
+        'email': 'johndoe@gmail.com',
+        'password': 'jDoe2000!',
+        'confirm_password': 'jDoe2000!'
+    }, follow_redirects=True)
+    assert response2.status_code == 200
+    
+    # both should flash "Registration Successful!"
+    with client.session_transaction() as session:
+        flashed_messages = session['_flashes']
+        assert 'Registration Successful!' in flashed_messages[0]
+        assert 'Registration Successful!' in flashed_messages[1]
+    
+def test_register_invalid(client):
+    # invalid inputs, not follow redirect should be Found (302)
+    # the new URL should be /register
+    response1 = client.post('/register', data={
         'name': 'James Smith',
         'username': 'jsmith',
         'date_of_birth': '2023-10-01',
+        'grade': '',
+        'email': 'jsmith99@gmail.com',
+        'password': 'jSmith123-',
+        'confirm_password': 'jSmith123-'
+    })
+    assert response1.status_code == 302
+    assert response1.location == '/login'
+    
+    # duplicate email
+    response2 = client.post('/register', data={
+        'name': 'James Smith',
+        'username': 'jsmith123',
+        'date_of_birth': '',
         'grade': '',
         'email': 'jsmith99@gmail.com',
         'password': 'jSmith123-',
@@ -44,31 +76,73 @@ def test_register(client):
     assert response2.status_code == 302
     assert response2.location == '/register'
     
+    # duplicate username
     response3 = client.post('/register', data={
         'name': 'James Smith',
         'username': 'jsmith',
-        'date_of_birth': '2023-10-01',
+        'date_of_birth': '',
         'grade': '',
-        'email': 'jsmith99@gmail.com',
+        'email': 'jsmith2000@gmail.com',
         'password': 'jSmith123-',
-        'confirm_password': 'differentPassword-'
+        'confirm_password': 'jSmith123-'
     })
     assert response3.status_code == 302
     assert response3.location == '/register'
     
-    # invalid methods, should be Method Not Allowed (405)
-    response4 = client.delete('/register', data={
+    # no password
+    response4 = client.post('/register', data={
         'name': 'James Smith',
-        'username': 'jsmith',
-        'date_of_birth': '2023-10-01',
+        'username': 'username',
+        'date_of_birth': '',
         'grade': '',
-        'email': 'jsmith99@gmail.com',
-        'password': 'jSmith123-',
+        'email': 'email@gmail.com',
+        'password': '',
         'confirm_password': 'jSmith123-'
     })
-    assert response4.status_code == 405
+    assert response4.status_code == 302
+    assert response4.location == '/register'
     
-    response5 = client.put('/register', data={
+    # different passwords
+    response5 = client.post('/register', data={
+        'name': 'James Smith',
+        'username': 'username',
+        'date_of_birth': '',
+        'grade': '',
+        'email': 'email@gmail.com',
+        'password': 'johnSmith123-',
+        'confirm_password': 'jSmith123-'
+    })
+    assert response5.status_code == 302
+    assert response5.location == '/register'
+    
+    # no name
+    response6 = client.post('/register', data={
+        'name': '',
+        'username': 'username',
+        'date_of_birth': '',
+        'grade': '',
+        'email': 'email@gmail.com',
+        'password': 'jSmith123-',
+        'confirm_password': 'jSmith123-'
+    })
+    assert response6.status_code == 302
+    assert response6.location == '/register'
+    
+    # weak password
+    response7 = client.post('/register', data={
+        'name': 'name',
+        'username': 'username',
+        'date_of_birth': '',
+        'grade': '',
+        'email': 'email@gmail.com',
+        'password': 'jSmith-',
+        'confirm_password': 'jSmith-'
+    })
+    assert response7.status_code == 302
+    assert response7.location == '/register'
+    
+    # invalid methods, should be Method Not Allowed (405)
+    response8 = client.delete('/register', data={
         'name': 'James Smith',
         'username': 'jsmith',
         'date_of_birth': '2023-10-01',
@@ -77,7 +151,31 @@ def test_register(client):
         'password': 'jSmith123-',
         'confirm_password': 'jSmith123-'
     })
-    assert response5.status_code == 405
+    assert response8.status_code == 405
+    
+    response9 = client.put('/register', data={
+        'name': 'James Smith',
+        'username': 'jsmith',
+        'date_of_birth': '2023-10-01',
+        'grade': '',
+        'email': 'jsmith99@gmail.com',
+        'password': 'jSmith123-',
+        'confirm_password': 'jSmith123-'
+    })
+    assert response9.status_code == 405
+    
+    # validating flash messages
+    with client.session_transaction() as session:
+        flashed_messages = session['_flashes']
+        print(flashed_messages)
+        assert 'Registration Successful!' in flashed_messages[0]
+        assert 'This email already exists.' in flashed_messages[1]
+        assert 'This username already exists.' in flashed_messages[2]
+        assert 'You must provide a password.' in flashed_messages[3]
+        assert 'The passwords do not match!' in flashed_messages[4]
+        assert 'You must provide your name.' in flashed_messages[5]
+        assert 'Password is not strong enough. Here are some suggestions: Length(8), Numbers(1)' in flashed_messages[6]
+
 
 # Check if the registration page is accessible and header is present
 def test_header(client):

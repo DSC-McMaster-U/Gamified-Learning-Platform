@@ -57,17 +57,7 @@ def register():
         date_of_birth = request.form.get("date_of_birth")
         grade = request.form.get("grade")
         email = request.form.get("email")
-
-        #Check the Strength of the password
         password = request.form.get("password")
-        result = check_password_strength(password)
-        if not result:
-            flash("Password is strong enough")
-        else:
-            flash("Password is not strong enough. Here are some suggestions: " + ", ".join(result))
-            return redirect(url_for("register"))
-
-        #Check if the passwords match
         confirm_password = request.form.get("confirm_password")
 
         user_email = User.query.filter_by(email=email).first()
@@ -89,6 +79,12 @@ def register():
             return redirect(url_for("auth.register"))
         if len(name) == 0:
             flash("You must provide your name.")
+            return redirect(url_for("auth.register"))
+
+        # checking password strength
+        result = check_password_strength(password)
+        if result:
+            flash("Password is not strong enough. Here are some suggestions: " + ", ".join(result))
             return redirect(url_for("auth.register"))
 
         new_user = User(email=email, username=username, name=name)
