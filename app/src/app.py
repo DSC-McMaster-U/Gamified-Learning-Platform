@@ -26,6 +26,9 @@ def create_app(test_config=None):
     if test_config:
         app.config.update(test_config)
     
+    if test_config:
+        app.config.update(test_config)
+    
     db.init_app(app)
 
     @app.route('/')
