@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from .models import db, User
 from .auth import auth as auth_blueprint
+from .main import main as main_blueprint
 from dotenv import load_dotenv
 import os
 
@@ -16,11 +17,12 @@ def create_app(test_config=None):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
     app.secret_key = os.getenv('SECRET_KEY')
     app.register_blueprint(auth_blueprint)
+    app.register_blueprint(main_blueprint)
     
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
-    
+
     if test_config:
         app.config.update(test_config)
     
