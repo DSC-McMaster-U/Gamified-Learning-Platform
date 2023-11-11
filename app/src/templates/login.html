@@ -20,13 +20,53 @@
 
             <div id="login-body" class="container">
                 <form id="login-form" action="/login" method="post">
-                    <!-- <label for="email"></label> -->
-                    <input class="login-form-text body-text" type="text" name="email" id="form-user" placeholder="Email Address">
-                    
-                    <!-- <label for="password"></label> -->
-                    <input class="login-form-text" type="password" name="password" id="form-pwd" placeholder="Password">
-            
-                    <button class="login-form-btn body-text" type="submit">sign in</button>
+                   
+                    {% with errors = get_flashed_messages(with_categories = true) %}
+                        {% if errors %}
+                            {% for category, error in errors %}
+                                {% if category == "error_email" %}
+                                    <input class="login-form-text body-text show-error" type="text" name="email" id="login-form-user" placeholder="Email Address">        
+                                    <div class="login-error show-error" id="err-email">
+                                        <div class="error-img">
+                                            <img src="../static/vendor/images/login/error-icon.png" alt="" srcset="">
+                                        </div>
+                                        <span class="error-msg">
+                                            {{ error }}
+                                        </span>
+                                    </div>
+                                {% else %}
+                                    <input class="login-form-text body-text" type="text" name="email" id="login-form-user" placeholder="Email Address">        
+                                    <div class="login-error" id="err-email"></div>
+                                {% endif %}
+
+                                {% if category == "error_pass" %}
+                                    <input class="login-form-text show-error" type="password" name="password" id="login-form-pwd" placeholder="Password">
+                                    <div class="login-error show-error" id="err-pass">
+                                        
+                                        <div class="error-img">
+                                            <img src="../static/vendor/images/login/error-icon.png" alt="" srcset="">
+                                        </div>
+                                        <span class="error-msg">
+                                            {{ error }}
+                                        </span>              
+                                    </div>
+                                {% else %}
+                                    <input class="login-form-text" type="password" name="password" id="login-form-pwd" placeholder="Password">
+                                    <div class="login-error" id="err-pass"></div>
+                                {% endif %}
+                            {% endfor %}    
+                            
+                        {% else %}
+                            <input class="login-form-text body-text" type="text" name="email" id="login-form-user" placeholder="Email Address">        
+                            <div class="login-error" id="err-email"></div>
+
+                            <input class="login-form-text" type="password" name="password" id="login-form-pwd" placeholder="Password">
+                            <div class="login-error" id="err-pass"></div>
+                        {% endif %}
+
+                    {% endwith %} 
+
+                    <button class="login-form-btn body-text" id="login-submit" type="submit" disabled>Sign in</button>
                 </form>
             </div>
 
@@ -42,11 +82,12 @@
         </div>
 
         <div id="redirect-register">
-            <a href="/register.html">Create a new account</a>
+            <a href="/register">Create a new account</a>
         </div>
     </main>
 {% endblock %}
 
 {% block scripts %}
     <!-- Insert local scripts here, if necessary -->
+    <script src="../static/js/login.js"></script>
 {% endblock %}

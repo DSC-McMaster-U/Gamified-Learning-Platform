@@ -25,3 +25,14 @@
         </div>
     </main>
 {% endblock %}
+
+{% block scripts %}
+    <!-- Insert local scripts here, if necessary -->
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            if (sessionStorage.includes("signUpInfo")) {
+                sessionStorage.removeItem("signUpInfo");
+            }
+        })
+    </script>
+{% endblock %}

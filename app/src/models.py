@@ -25,7 +25,7 @@ class GradeEnum(Enum):
     ELEVENTH = '11th Grade'
     TWELFTH = '12th Grade'
     FRESHMAN = 'University Freshman'
-    SOPHMORE = 'University Sophmore'
+    SOPHOMORE = 'University Sophomore'
     JUNIOR = 'University Junior'
     SENIOR = 'University Senior'
     NA = 'Not Available'

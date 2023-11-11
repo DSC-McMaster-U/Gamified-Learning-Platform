@@ -14,6 +14,7 @@
 
         <div id="register-box" class="container">
             <form id="register-form" action="/register" method="post">
+<<<<<<< Updated upstream
                 <input class="register-form-text" type="text" name="name" id="form-name" placeholder="Name">
                 <input class="register-form-text" type="text" name="username" id="form-username" placeholder="Username">
                 <input class="register-form-text register-form-date" type="text" name="date_of_birth" id="form-dob" placeholder="Date of Birth">
@@ -23,7 +24,156 @@
                 <input class="register-form-text" type="password" name="password" id="form-pwd" placeholder="Password">
                 <input class="register-form-text" type="password" name="confirm_password" id="form-confirm-pwd" placeholder="Confirm Password">
                 <button class="register-form-btn body-text" type="submit">Sign up</button>
+=======
+                <!-- Using Jinja2 for class toggle in initial page load, since there's no CSS previous sibling selector -->
+                {% with errors = get_flashed_messages(with_categories = true) %}
+                    {% if errors %}
+                        {% for category, error in errors %}
+                            {% if category == "error_name" %}
+                                <input class="register-form-text body-text show-error" type="text" name="name" id="form-name" placeholder="Name">
+                                <div class="register-error show-error" id="err-name">
+                                    <div class="error-img">
+                                        <img src="../static/vendor/images/login/error-icon.png" alt="" srcset="">
+                                    </div>
+                                    <span class="error-msg">
+                                        {{ error }}
+                                    </span>
+                                </div>
+                            {% else %}
+                                <input class="register-form-text body-text" type="text" name="name" id="form-name" placeholder="Name">
+                            {% endif %}
+>>>>>>> Stashed changes
 
+                            {% if category == "error_username" %}
+                                <input class="register-form-text body-text show-error" type="text" name="username" id="form-username" placeholder="Username">
+                                <div class="register-error show-error" id="err-username">
+                                    <div class="error-img">
+                                        <img src="../static/vendor/images/login/error-icon.png" alt="" srcset="">
+                                    </div>
+                                    <span class="error-msg">
+                                        {{ error }}
+                                    </span>
+                                </div>
+                            {% else %}
+                                <input class="register-form-text body-text" type="text" name="username" id="form-username" placeholder="Username">
+                            {% endif %}
+
+                            <input class="register-form-text register-form-date" type="text" name="date_of_birth" id="form-dob" placeholder="Date of Birth">
+
+                            <select class="register-form-select body-text" name="grade" id="form-grade">
+                                <option value="" id="select-placeholder" disabled selected hidden>Grade</option>
+                                <option value="FIRST">1st Grade</option>
+                                <option value="SECOND">2nd Grade</option>
+                                <option value="THIRD">3rd Grade</option>
+                                <option value="FOURTH">4th Grade</option>
+                                <option value="FIFTH">5th Grade</option>
+                                <option value="SIXTH">6th Grade</option>
+                                <option value="SEVENTH">7th Grade</option>
+                                <option value="EIGHTH">8th Grade</option>
+                                <option value="NINTH">9th Grade</option>
+                                <option value="TENTH">10th Grade</option>
+                                <option value="ELEVENTH">11th Grade</option>
+                                <option value="TWELFTH">12th Grade</option>
+                                <option value="FRESHMAN">University Freshman</option>
+                                <option value="SOPHOMORE">University Sophomore</option>
+                                <option value="JUNIOR">University Junior</option>
+                                <option value="SENIOR">University Senior</option>
+                                <option value="NA">Other</option>
+                            </select>
+
+                            {% if category == "error_email" %}
+                                <input class="register-form-text body-text show-error" type="text" name="email" id="form-user" placeholder="Email Address">
+                                <div class="register-error show-error" id="err-email">
+                                    <div class="error-img">
+                                        <img src="../static/vendor/images/login/error-icon.png" alt="" srcset="">
+                                    </div>
+                                    <span class="error-msg">
+                                        {{ error }}
+                                    </span>
+                                </div>
+                            {% else %}
+                                <input class="register-form-text body-text" type="text" name="email" id="form-user" placeholder="Email Address">
+                            {% endif %}
+
+                            {% if category == "error_email_confirm" %}
+                                <input class="register-form-text body-text show-error" type="text" name="confirm_email" id="form-confirm-email" placeholder="Confirm Email">
+                                <div class="register-error show-error" id="err-confirm-email">
+                                    <div class="error-img">
+                                        <img src="../static/vendor/images/login/error-icon.png" alt="" srcset="">
+                                    </div>
+                                    <span class="error-msg">
+                                        {{ error }}
+                                    </span>
+                                </div>
+                            {% else %}
+                                <input class="register-form-text body-text" type="text" name="confirm_email" id="form-confirm-email" placeholder="Confirm Email">
+                            {% endif %}
+
+                            {% if category == "error_pass" %}
+                                <input class="register-form-text show-error" type="password" name="password" id="form-pwd" placeholder="Password">
+                                <div class="register-error show-error" id="err-pass">
+                                    <div class="error-img">
+                                        <img src="../static/vendor/images/login/error-icon.png" alt="" srcset="">
+                                    </div>
+                                    <span class="error-msg">
+                                        {{ error }}
+                                    </span>
+                                </div>
+                            {% else %}
+                            <input class="register-form-text" type="password" name="password" id="form-pwd" placeholder="Password">
+                            {% endif %}
+
+                            {% if category == "error_pass_confirm" %}
+                                <input class="register-form-text show-error" type="password" name="confirm_password" id="form-confirm-pwd" placeholder="Confirm Password">
+                                <div class="register-error show-error" id="err-confirm-pass">
+                                    <div class="error-img">
+                                        <img src="../static/vendor/images/login/error-icon.png" alt="" srcset="">
+                                    </div>
+                                    <span class="error-msg">
+                                        {{ error }}
+                                    </span>
+                                </div>
+                            {% else %}
+                            <input class="register-form-text" type="password" name="confirm_password" id="form-confirm-pwd" placeholder="Confirm Password">
+                            {% endif %}
+
+                        {% endfor %}
+                    {% else %}
+                        <input class="register-form-text body-text" type="text" name="name" id="form-name" placeholder="Name">
+                        <input class="register-form-text body-text" type="text" name="username" id="form-username" placeholder="Username">                       
+                        <input class="register-form-text register-form-date" type="text" name="date_of_birth" id="form-dob" placeholder="Date of Birth">
+                        <!-- <input class="register-form-text body-text" type="text" name="grade" id="form-grade" placeholder="Grade"> -->
+
+                        <select class="register-form-select body-text" name="grade" id="form-grade" required>
+                            <option value="" id="select-placeholder" disabled selected hidden>Grade</option>
+                            <option value="FIRST">1st Grade</option>
+                            <option value="SECOND">2nd Grade</option>
+                            <option value="THIRD">3rd Grade</option>
+                            <option value="FOURTH">4th Grade</option>
+                            <option value="FIFTH">5th Grade</option>
+                            <option value="SIXTH">6th Grade</option>
+                            <option value="SEVENTH">7th Grade</option>
+                            <option value="EIGHTH">8th Grade</option>
+                            <option value="NINTH">9th Grade</option>
+                            <option value="TENTH">10th Grade</option>
+                            <option value="ELEVENTH">11th Grade</option>
+                            <option value="TWELFTH">12th Grade</option>
+                            <option value="FRESHMAN">University Freshman</option>
+                            <option value="SOPHOMORE">University Sophomore</option>
+                            <option value="JUNIOR">University Junior</option>
+                            <option value="SENIOR">University Senior</option>
+                            <option value="NA">Other</option>
+                        </select>
+        
+                        <input class="register-form-text body-text" type="text" name="email" id="form-user" placeholder="Email Address">
+                        <input class="register-form-text body-text" type="text" name="confirm_email" id="form-confirm-email" placeholder="Confirm Email">
+                        <input class="register-form-text" type="password" name="password" id="form-pwd" placeholder="Password">
+                        <input class="register-form-text" type="password" name="confirm_password" id="form-confirm-pwd" placeholder="Confirm Password">
+                    {% endif %}
+
+                {% endwith %} 
+
+                <button class="register-form-btn body-text" id="register-submit" type="submit">Sign up</button>
             </form>
         </div>
 
@@ -39,19 +189,5 @@
 
 {% block scripts %}
     <!-- Insert local scripts here, if necessary -->
-
-    <script>
-        document.getElementById("form-dob").addEventListener("focus", function () {
-            this.type = "date";
-            this.placeholder = "Date of Birth";
-        });
-    
-        document.getElementById("form-dob").addEventListener("blur", function () {
-            if (!this.value) {
-                this.type = "text";
-                this.placeholder = "Date of Birth";
-            }
-        });
-    </script>
-    
+    <script src="../static/js/register.js"></script>
 {% endblock %}
