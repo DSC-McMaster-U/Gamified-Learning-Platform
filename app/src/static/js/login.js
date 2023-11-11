@@ -55,14 +55,10 @@ function main() {
         if (!["null", null].includes(sessionStorage.getItem("signUpInfo"))) {
             sessionStorage.removeItem("signUpInfo");
         }
-
-        console.log(sessionStorage.getItem("signUpInfo"))
-
     });
 
     formLogin.addEventListener("submit", (event) => {
-        sessionStorage.setItem("email", inputFields[0].value);
-        
+        sessionStorage.setItem("email", inputFields[0].value); 
     });
 }
 

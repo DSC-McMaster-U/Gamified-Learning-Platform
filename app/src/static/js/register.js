@@ -120,13 +120,8 @@ function retainFieldInfo() {
         let savedFields = Array.from(inputFields).slice(0, 2).concat(selectField, Array.from(inputFields)[3]);
         let storedData = JSON.parse(sessionStorage.getItem("signUpInfo"));
 
-        console.log(storedData);
-
         if (!["null", null].includes(storedData)) {
-            console.log("Test 1")
-
             objKeys.forEach((category, index) => {
-                console.log(storedData[category])
                 if (!["null", null].includes(storedData[category])) {
                     savedFields[index].value = storedData[category];
                 }
@@ -143,8 +138,6 @@ function retainFieldInfo() {
         savedFields.forEach((htmlNode, index) => {
             obj[objKeys[index]] = htmlNode.value; 
         });
-
-        // console.log(obj)
 
         sessionStorage.setItem("signUpInfo", JSON.stringify(obj));
     });
