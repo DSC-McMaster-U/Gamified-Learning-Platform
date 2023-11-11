@@ -231,7 +231,13 @@ main a:hover::after {
 
 /* Register Dropdown */
 .register-form-select {
-    padding-left: 4px;
+    padding-left: 8px;
+    
+    appearance: none;
+    background-image: url("../vendor/images/login/select-arrow.png");
+    background-repeat: no-repeat;
+    background-position: right 12px top 11px;
+    background-size: 16px;
 }
 
 .register-form-select option {
@@ -264,6 +270,13 @@ main a:hover::after {
     color: var(--textbox-pl-clr);
     font: var(--body-font); /* Use the same font as other text input fields */
     letter-spacing: normal;
+}
+
+.register-form-date::-webkit-calendar-picker-indicator {
+    margin-right: 9px;
+
+    /* Imitates "rgba(222, 221, 221, 0.30)" color through filters */
+    filter: invert(40%) sepia(0%) saturate(1954%) hue-rotate(192deg) brightness(97%) contrast(92%);
 }
 
 .register-form-btn {

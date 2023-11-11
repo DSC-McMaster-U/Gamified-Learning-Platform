@@ -3,7 +3,7 @@ const inputDoB = document.getElementById("form-dob");
 const inputFields = document.querySelectorAll("form input");
 const selectField = document.getElementById("form-grade");
 const inputSubmit = document.getElementById("register-submit");
-const registerForm = document.getElementById("register-form");
+const formRegister = document.getElementById("register-form");
 
 // Miscellaneous variables
 const dateToday = new Date();     // Latest date = today  
@@ -136,7 +136,7 @@ function retainFieldInfo() {
         sessionStorage.removeItem("signUpInfo");
     });
 
-    registerForm.addEventListener("submit", (event) => {
+    formRegister.addEventListener("submit", (event) => {
         let savedFields = Array.from(inputFields).slice(0, 2).concat(selectField, Array.from(inputFields)[3]);
         let obj = {};
 

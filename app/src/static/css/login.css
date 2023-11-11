@@ -314,6 +314,7 @@ main a:hover::after {
     font-size: 17px;
     color: var(--body-clr);
     transition: var(--link-transition);
+    margin-bottom: 16px;  
 }
 
 #login-forgot::after {
@@ -324,11 +325,7 @@ main a:hover::after {
     color: var(--body-hover-clr);
 }
 
-#login-remember {
-    margin-top: 16px;  
-}
-
-#remember-lbl {
+#lbl-remember {
     font: var(--body-sub-font);
     color: var(--body-clr);
 }
