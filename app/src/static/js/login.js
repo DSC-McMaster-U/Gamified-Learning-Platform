@@ -3,10 +3,43 @@ const inputFields = document.querySelectorAll("form input");
 const inputSubmit = document.getElementById("login-submit");
 const formLogin = document.getElementById("login-form");
 const lblRemember = document.getElementById("lbl-remember");
-
+const errorMsg = document.getElementById("error-msg").innerText.trim();
 let fieldsContent;
 
+// Miscellaneous variables
+const errorMapping = {
+    "This account is locked." : "err-pass",
+    "Incorrect password." : "err-pass",
+    "A user with this email does not exist!" : "err-email"
+}
+
+const errorHTML = `
+<div class="error-img">
+    <img src="../static/vendor/images/login/error-icon.png" alt="" srcset="">
+</div>
+<span class="error-msg">
+</span>
+` 
+
+function renderError() {
+    if (!["", null].includes(errorMsg) &&
+        Object.keys(errorMapping).some((error) => errorMsg.includes(error))) {
+        
+        let errorMapKey = Object.keys(errorMapping).find((error) => errorMsg.includes(error));
+        let errorField = document.getElementById(errorMapping[errorMapKey]);
+        let inputField = errorField.previousElementSibling;
+
+        errorField.innerHTML = errorHTML;
+        errorField.querySelector(".error-msg").innerText = errorMsg;
+
+        errorField.classList.add("show-error");
+        inputField.classList.add("show-error");
+    }
+}
+
 function main() {
+    renderError();
+
     // Text field and form submit button interactions (error messages/button disabling); 
     // primarily occurs whenever a field receives a value/input
     inputFields.forEach((inputField) => {

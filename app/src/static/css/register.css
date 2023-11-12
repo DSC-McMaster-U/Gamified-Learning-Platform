@@ -395,16 +395,17 @@ select.register-form-select,
 }
 
 /* -- Register Errors Styling -- */
+#error-msg,
+.register-error * {
+    display: none;
+}
+
 .register-error {
     display: flex;
     width: 100%;
     height: fit-content;
     margin: 0;    
     vertical-align: middle;
-}
-
-.register-error * {
-    display: none;
 }
 
 input.show-error,

@@ -361,16 +361,17 @@ main a:hover::after {
 }
 
 /* -- Login Errors Styling -- */
+#error-msg,
+.login-error * {
+    display: none;
+}
+
 .login-error {
     display: flex;
     width: 100%;
     height: fit-content;
     margin: 0 0 34.6px 0;   /* 0 0 54px 0 */
     vertical-align: middle;
-}
-
-.login-error * {
-    display: none;
 }
 
 input.show-error {

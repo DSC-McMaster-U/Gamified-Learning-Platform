@@ -1,15 +1,35 @@
 // DOM elements
 const inputDoB = document.getElementById("form-dob");
-const inputFields = document.querySelectorAll("form input");
+const inputFields = document.querySelectorAll("form input, #form-grade");
 const selectField = document.getElementById("form-grade");
 const inputSubmit = document.getElementById("register-submit");
 const formRegister = document.getElementById("register-form");
+const errorMsg = document.getElementById("error-msg").innerText.trim();
 
 // Miscellaneous variables
 const dateToday = new Date();     // Latest date = today  
 let yearEarliest = dateToday.getFullYear() - 101;
 let monthEarliest = dateToday.getMonth();
 let dayEarliest, dateEarliest;
+
+const errorMapping = {
+    "You must provide your name." : "err-name",
+    "This username already exists." : "err-username",
+    "You must provide a username." : "err-username",
+    "This email already exists." : "err-email",
+    "The emails do not match!" : "err-confirm-email",
+    "You must provide a password." : "err-pass",
+    "Password is not strong enough." : "err-pass",
+    "The passwords do not match!" : "err-confirm-pass"
+}
+
+const errorHTML = `
+<div class="error-img">
+    <img src="../static/vendor/images/login/error-icon.png" alt="" srcset="">
+</div>
+<span class="error-msg">
+</span>
+` 
 
 const objKeys = ["name", "username", "grade", "email"];
 
@@ -52,8 +72,24 @@ function dateFieldEvents() {
     });
 }
 
+function renderError() {
+    if (!["", null].includes(errorMsg) &&
+        Object.keys(errorMapping).some((error) => errorMsg.includes(error))) {
+        
+        let errorMapKey = Object.keys(errorMapping).find((error) => errorMsg.includes(error));
+        let errorField = document.getElementById(errorMapping[errorMapKey]);
+        let inputField = errorField.previousElementSibling;
+
+        errorField.innerHTML = errorHTML;
+        errorField.querySelector(".error-msg").innerText = errorMsg;
+
+        errorField.classList.add("show-error");
+        inputField.classList.add("show-error");
+    }
+}
+
 function updateField() {
-        // Text field and form submit button interactions (error messages/button disabling); 
+    // Text field and form submit button interactions (error messages/button disabling); 
     // primarily occurs whenever a field receives a value/input
     inputFields.forEach((inputField) => {
         if (inputField.classList.contains("register-form-date")) {
@@ -76,24 +112,26 @@ function updateField() {
         }
     });
 
-    ;["input", "change"].forEach((event) => {
-        selectField.addEventListener(event, () => {
-            updateFieldAux(selectField);
-        });
-    });
+    // ;["input", "change"].forEach((event) => {
+    //     selectField.addEventListener(event, () => {
+    //         updateFieldAux(selectField);
+    //     });
+    // });
 }
 
 function updateFieldAux(inputField) {
-    let errMsg = inputField.nextElementSibling;
+    let errorField = inputField.nextElementSibling;
         
     // Remove error messages and highlighting from the input box, if any
     inputField.classList.remove("show-error");
-    errMsg.classList.remove("show-error");
+    errorField.classList.remove("show-error");
 
     // Checks to see if this and all other text fields are empty (or bloated 
     // with whitespace); if not, then enables the form submit button
-    let fieldsContent = Array.from(inputFields, (inputField) => inputField.value.trim() != "");
-    fieldsContent = fieldsContent.concat([!["", null].includes(selectField.value)]);
+    let fieldsContent = Array.from(inputFields, (inputField) => !["", null].includes(inputField.value.trim()));
+    // fieldsContent = fieldsContent.concat([!["", null].includes(selectField.value)]);
+
+    console.log(fieldsContent)
 
     if (fieldsContent.every((fieldState) => fieldState)) {
         inputSubmit.classList.add("clickable");
@@ -144,6 +182,7 @@ function retainFieldInfo() {
 }
 
 function main() {
+    renderError();
     dateFieldEvents();
     updateField();
     retainFieldInfo();

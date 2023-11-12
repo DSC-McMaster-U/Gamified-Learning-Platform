@@ -29,14 +29,14 @@ def login_post():
     if not user or not user.check_password(password):
         if user:
             if user.failed_signin_attempts > 5:
-                flash('This account is locked. Please contact support to unlock your account and reset your password.', 'error_pass')
+                flash('This account is locked. Please contact support to unlock your account and reset your password.', 'login_error')
             else:
-                flash('Incorrect password. Try again or click Forgot password to reset it.', 'error_pass')
+                flash('Incorrect password. Try again or click Forgot password to reset it.', 'login_error')
                 user.failed_signin_attempts += 1
                 db.session.commit()
 
         else:
-            flash('A user with this email does not exist!', 'error_email')
+            flash('A user with this email does not exist!', 'login_error')
 
         return redirect(url_for('auth.login'))
 
@@ -45,16 +45,16 @@ def login_post():
         login_user(user, remember=remember)
         user.failed_signin_attempts = 0
         db.session.commit()
-        flash('Successfully logged in! Redirecting to dashboard...')
+        flash('Successfully logged in! Redirecting to dashboard...', 'login_success')
         return redirect(url_for('main.profile'))
     else:
-        flash('This account is locked. Please contact support to unlock your account and reset your password.')
+        flash('This account is locked. Please contact support to unlock your account and reset your password.', 'login_error')
         return redirect(url_for('auth.login'))
 
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
- 
+
     if request.method == "POST":
 
         name = request.form.get("name")
@@ -71,32 +71,32 @@ def register():
         user_name = User.query.filter_by(username=username).first()
 
         if len(name) == 0:
-            flash("You must provide your name.", "error_name")
+            flash("You must provide your name.", "register_error")
             return redirect(url_for("auth.register"))
         if user_name:
-            flash("This username already exists.", "error_username")
+            flash("This username already exists.", "register_error")
             return redirect(url_for("auth.register"))
         if len(username) == 0:
-            flash("You must provide a username.", "error_username")
+            flash("You must provide a username.", "register_error")
             return redirect(url_for("auth.register"))
         if user_email:
-            flash("This email already exists.", "error_email")
+            flash("This email already exists.", "register_error")
             return redirect(url_for("auth.register"))   
         if confirm_email != email:
-            flash("The emails do not match!", "error_email_confirm")
+            flash("The emails do not match!", "register_error")
             return redirect(url_for("auth.register"))             
         if len(password) == 0:
-            flash("You must provide a password.", "error_pass")
+            flash("You must provide a password.", "register_error")
             return redirect(url_for("auth.register"))
         if confirm_password != password:
-            flash("The passwords do not match!", "error_pass_confirm")
+            flash("The passwords do not match!", "register_error")
             return redirect(url_for("auth.register"))
         
 
         # checking password strength
         result = check_password_strength(password)
         if result:
-            flash("Password is not strong enough. Here are some suggestions: " + ", ".join(result), "error_pass")
+            flash("Password is not strong enough. Here are some suggestions: " + ", ".join(result), "register_error")
             return redirect(url_for("auth.register"))
 
         new_user = User(
