@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from .models import db, User
 from .auth import auth as auth_blueprint
 from .main import main as main_blueprint
+from .routes import routes
 from dotenv import load_dotenv
 import os
 
@@ -18,6 +19,7 @@ def create_app(test_config=None):
     app.secret_key = os.getenv('SECRET_KEY')
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(main_blueprint)
+    app.register_blueprint(routes)
     
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
