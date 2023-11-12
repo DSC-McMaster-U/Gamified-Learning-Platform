@@ -84,7 +84,6 @@ class Activity(db.Model):
     start_time = db.Column(db.DateTime, nullable=True, default=func.now()) 
     end_time = db.Column(db.DateTime, nullable=True, default=func.now())
     score = db.Column(db.Float, nullable=False)
-    content = db.Column(db.Text, nullable=False) # store task/quiz data
     
     if activity_type == ActivityType.QUIZ:
         questions = db.relationship('QuizQuestion', backref='activity', lazy=True, cascade='all, delete-orphan', 
@@ -116,7 +115,7 @@ class TaskQuestion(db.Model):
 class QuizAnswer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'), nullable=False) # id to identify with parent quiz
-    quiz_question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False) # id to identify quiz question
+    quiz_question_id = db.Column(db.Integer, db.ForeignKey('quiz_question.id'), nullable=False) # id to identify quiz question
     correct = db.Column(db.Boolean, nullable=False)
     answer_content = db.Column(db.Text, nullable=False)
 
@@ -124,6 +123,6 @@ class QuizAnswer(db.Model):
 class TaskAnswer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False) # id to identify with parent task
-    task_question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False) # id to identify task question
+    task_question_id = db.Column(db.Integer, db.ForeignKey('task_question.id'), nullable=False) # id to identify task question
     correct = db.Column(db.Boolean, nullable=False)
     answer_content = db.Column(db.Text, nullable=False)
