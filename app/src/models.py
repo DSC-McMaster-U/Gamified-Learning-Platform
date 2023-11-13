@@ -59,7 +59,7 @@ class Points(db.Model):
 
 # Quiz vs. Task
 class ActivityType(Enum):
-    TASK='Task'
+    LESSON='Lesson'
     QUIZ='Quiz'
 
 class Subject(Enum):
@@ -73,56 +73,57 @@ class Subject(Enum):
     COMSCI='Computer Science'
     # ... add/take away as needed
 
-# Quizzes/Tasks
+# The overall module, contains common attributes between lessons and quizzes
 class Activity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     # establish relationship between 'quiz' and 'user' model
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
-    activity_type = db.Column(SQLAlchemyEnum(ActivityType), nullable=False, default=ActivityType.TASK)
+    activity_type = db.Column(SQLAlchemyEnum(ActivityType), nullable=False, default=ActivityType.LESSON)
     subject_type = db.Column(SQLAlchemyEnum(Subject), nullable=False, default=Subject.BIOLOGY)
     start_time = db.Column(db.DateTime, nullable=True, default=func.now()) 
     end_time = db.Column(db.DateTime, nullable=True, default=func.now())
-    score = db.Column(db.Float, nullable=False)
     
+    # associating with activities based on activity_type
     if activity_type == ActivityType.QUIZ:
-        questions = db.relationship('QuizQuestion', backref='activity', lazy=True, cascade='all, delete-orphan', 
-                                primaryjoin="and_(Activity.id == QuizQuestion.activity_id, Activity.activity_type == 'QUIZ')")
-    elif activity_type == ActivityType.TASK:
-        questions = db.relationship('TaskQuestion', backref='task', lazy=True, cascade='all, delete-orphan', 
-                                primaryjoin="and_(Activity.id == TaskQuestion.activity_id, Activity.activity_type == 'TASK')")
+        # primaryjoin: specify the condition for the join. For quiz, the activity id and type has to be quiz 
+        # backref: specify the name of the attribute that will be added to the 'Quiz' or 'Lesson' model. Each quiz instance will have an attribute 'activity' that refers to the related 'Activity' instance
+        # lazy=True: controls when SQLAlchemy loads data from the databse. 'Quiz' and 'Lesson' objects will be loaded only when 'activity' attribute is accessed
+        # cascade='all, delete-orphan': delete any orphaned child objects (no longer associated with a parent)
+        questions = db.relationship('Quiz', backref='activity', lazy=True, cascade='all, delete-orphan', 
+                                primaryjoin="and_(Activity.id == Quiz.activity_id, Activity.activity_type == 'QUIZ')")
+    elif activity_type == ActivityType.LESSON:
+        questions = db.relationship('Lesson', backref='task', lazy=True, cascade='all, delete-orphan', 
+                                primaryjoin="and_(Activity.id == Lesson.activity_id, Activity.activity_type == 'LESSON')")
         
+# Lesson
+class Lesson(db.Model):
+    id = db.Column(db.Integer, primary_key=True) # id for identifying lesson
+    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'), nullable=False) # id for identifying parent lesson, establish relationship with Activity table
+    level = db.Column(db.Integer, nullable=False) # how difficult is the question (easy, medium, hard)
+    active = db.Column(db.Boolean, nullable=False) # determine whether the lesson is submitted or not
+    summary = db.Column(db.Text, nullable=False) # lesson summary
+    learning_objective = db.Column(db.Text, nullable=False)
+    lesson_content = db.Column(db.Text, nullable=False)
+
+# Quiz Table
+class Quiz(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id', nullable=False))
+    active = db.Column(db.Boolean, nullable=False) # determine whether the question is submitted or not
+    level = db.Column(db.Integer, nullable=False) # how difficult is the question (easy, medium, hard)
+    score = db.Column(db.Integer, nullable=False) # score for that question
 
 # Quiz Questions
 class QuizQuestion(db.Model):
     id = db.Column(db.Integer, primary_key=True) # id for identify quiz question
-    quiz_id = db.Column(db.Integer, db.ForeignKey('activity.id'), nullable=False)
-    level = db.Column(db.Integer, nullable=False) # how difficult is the question (easy, medium, hard)
-    active = db.Column(db.Boolean, nullable=False) # determine whether the question is submitted or not
-    score = db.Column(db.Integer, nullable=False) # score for that question
-    question_content = db.Column(db.Text, nullable=False)
-
-# Task Questions
-class TaskQuestion(db.Model):
-    id = db.Column(db.Integer, primary_key=True) # id for identifying task question
-    task_id = db.Column(db.Integer, db.ForeignKey('activity.id'), nullable=False) # id for identifying parent task
-    level = db.Column(db.Integer, nullable=False) # how difficult is the question (easy, medium, hard)
-    active = db.Column(db.Boolean, nullable=False) # determine whether the question is submitted or not
-    score = db.Column(db.Integer, nullable=False) # score for that question
+    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'), nullable=False) # identify which quiz the question belongs to
     question_content = db.Column(db.Text, nullable=False)
 
 # Quiz Answers
 class QuizAnswer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'), nullable=False) # id to identify with parent quiz
-    quiz_question_id = db.Column(db.Integer, db.ForeignKey('quiz_question.id'), nullable=False) # id to identify quiz question
-    correct = db.Column(db.Boolean, nullable=False)
-    answer_content = db.Column(db.Text, nullable=False)
-
-# Task Answers
-class TaskAnswer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False) # id to identify with parent task
-    task_question_id = db.Column(db.Integer, db.ForeignKey('task_question.id'), nullable=False) # id to identify task question
+    quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'), nullable=False) # identify which quiz the answer belongs to
+    quiz_question_id = db.Column(db.Integer, db.ForeignKey('quiz_question.id'), nullable=False) # identify which quiz question the answer belongs to
     correct = db.Column(db.Boolean, nullable=False)
     answer_content = db.Column(db.Text, nullable=False)
