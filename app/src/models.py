@@ -56,6 +56,24 @@ class Points(db.Model):
     # establish relationship between 'points' and 'user' model, indicates the points are associated w/ a specific user 
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
     points = db.Column(db.Integer, default=0)
+    user = db.relationship('User', backref='points')
+
+class Badges(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False) # name of the badge
+    description = db.Column(db.Text, nullable=False) # description of the badge
+    points_threshold = db.Column(db.Integer, nullable=False) # points required to earn a badge
+    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False) # create relationship between user and badge earned
+    user = db.relationship('User', backref='badges')  # establish relationship with the User table
+
+class Achievements(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    points_threshold = db.Column(db.Integer, nullable=False) # points required to earn an achievement
+    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False) # create relationship between user and achievement earned
+    user = db.relationship('User', backref='achievements') # establish relationship with the User table
+
 
 # Quiz vs. Task
 class ActivityType(Enum):
