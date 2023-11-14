@@ -3,6 +3,9 @@ from .models import User, db
 from flask_login import login_user
 from .passwordStrength import check_password_strength
 
+# Temp for testing
+from .testdb import testDB
+
 # Create authentication blueprint for handling relevant routes (signup, login, logout, etc.)
 auth = Blueprint('auth', __name__)
 
@@ -17,6 +20,9 @@ def login():
 
 @auth.route('/login', methods=['POST'])
 def login_post():
+
+    testDB()
+
     # Retrieve inputted login details
     email = request.form.get('email')
     password = request.form.get('password')
