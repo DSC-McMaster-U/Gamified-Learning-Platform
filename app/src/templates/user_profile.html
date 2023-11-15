@@ -43,13 +43,33 @@
         <p><strong>Email Address:</strong> {{ email }}</p>
     </div>
 
-    <div id="user-stats" class="container">
-        <p><strong>Streak:</strong> <span id="streakDisplay"></span></p>
-        <p><strong>Points:</strong> <span id="pointsDisplay"></span></p>
-    </div>
+        <div id="user-info" class="container">
+            <p><strong>Name:</strong> {{ name }}</p>
+            <p><strong>Username:</strong> {{ username }}</p>
+            <p><strong>Age:</strong> {{ age }}</p>   <!-- Tentative change, as age is stored in the database instead of DoB -->
+            <!-- <p><strong>Date of Birth:</strong> {{ date_of_birth }}</p> -->
+            <p><strong>Grade:</strong> {{ grade }}</p>
+            <p><strong>Email Address:</strong> {{ email }}</p>
+        </div>
+
+        <div id="user-stats" class="container">
+            <p><strong>Streak:</strong> <span id="streakDisplay"></span></p>
+            <p><strong>Points:</strong> <span id="pointsDisplay"></span></p>
+        </div>
 
     <div id="user-logout">
         <a href="/login.html">Logout</a>
     </div>
 </main>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Insert local scripts here, if necessary -->
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            if (sessionStorage.includes("signUpInfo")) {
+                sessionStorage.removeItem("signUpInfo");
+            }
+        })
+    </script>
 {% endblock %}
