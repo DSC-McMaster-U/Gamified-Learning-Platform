@@ -25,10 +25,10 @@
     $(document).ready(function () {
         userStats();
 
-        // Update every 30 seconds
-        setInterval(userStats, 30000);
+        // Update every minute
+        setInterval(userStats, 60000);
     });
-    
+
         window.addEventListener("DOMContentLoaded", () => {
             if (sessionStorage.includes("signUpInfo")) {
                 sessionStorage.removeItem("signUpInfo");
