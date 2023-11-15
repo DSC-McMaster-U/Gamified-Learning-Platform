@@ -25,9 +25,16 @@
     $(document).ready(function () {
         userStats();
 
-        // Update every 10 seconds
-        setInterval(userStats, 10000);
+        // Update every 30 seconds
+        setInterval(userStats, 30000);
     });
+    
+        window.addEventListener("DOMContentLoaded", () => {
+            if (sessionStorage.includes("signUpInfo")) {
+                sessionStorage.removeItem("signUpInfo");
+            }
+        })
+    </script>
 </script>
 {% endblock %} {% block content %}
 <main>
@@ -61,15 +68,4 @@
         <a href="/login.html">Logout</a>
     </div>
 </main>
-{% endblock %}
-
-{% block scripts %}
-    <!-- Insert local scripts here, if necessary -->
-    <script>
-        window.addEventListener("DOMContentLoaded", () => {
-            if (sessionStorage.includes("signUpInfo")) {
-                sessionStorage.removeItem("signUpInfo");
-            }
-        })
-    </script>
 {% endblock %}

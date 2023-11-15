@@ -1,7 +1,7 @@
 from enum import Enum
 from sqlalchemy import Enum as SQLAlchemyEnum, ForeignKey
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import CheckConstraint, func
+from sqlalchemy import CheckConstraint, func, ForeignKey
 from datetime import datetime, timezone, timedelta
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin
@@ -37,12 +37,11 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(40), unique=True, nullable=False)
     hashed_password = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
-    age = db.Column(db.Integer, CheckConstraint('age >= 0 AND age <= 100', name='check_age_range'))
-    grade = db.Column(SQLAlchemyEnum(GradeEnum), default=GradeEnum.NA)
+    age = db.Column(db.Integer)
+    grade = db.Column(SQLAlchemyEnum(GradeEnum), default=GradeEnum.NA, nullable=True)
     registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
-    favorite_subject = db.Column(db.String(50))
+    favorite_subject = db.Column(db.String(50), nullable=True)
     failed_signin_attempts = db.Column(db.Integer, default=0)
-    points = db.Column(db.Integer, default=0)
     streak = db.Column(db.Integer, default=0)
     
     # Set user password
@@ -130,7 +129,7 @@ class Lesson(db.Model):
 # Quiz Table
 class Quiz(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id', nullable=False))
+    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'), nullable=False)
     active = db.Column(db.Boolean, nullable=False) # determine whether the question is submitted or not
     level = db.Column(db.Integer, nullable=False) # how difficult is the question (easy, medium, hard)
     score = db.Column(db.Integer, nullable=False) # score for that question
