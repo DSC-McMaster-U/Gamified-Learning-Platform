@@ -19,9 +19,14 @@ def get_user_stats():
     
     user = current_user
     
+    if user.points:
+        user_points = user.points.points
+    else:
+        user_points = 0
+    
     return jsonify({
         'streak': user.streak,
-        'points': user.points
+        'points': user_points
     })
 
 # Route related to a collection of badges
