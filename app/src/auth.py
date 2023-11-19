@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from .models import User, db
+from .models import User, db, GradeEnum
 from flask_login import login_user
 from .passwordStrength import check_password_strength
+from .calculateAge import calculate_age
 
 # Create authentication blueprint for handling relevant routes (signup, login, logout, etc.)
 auth = Blueprint('auth', __name__)
@@ -17,6 +18,7 @@ def login():
 
 @auth.route('/login', methods=['POST'])
 def login_post():
+
     # Retrieve inputted login details
     email = request.form.get('email')
     password = request.form.get('password')
@@ -26,13 +28,17 @@ def login_post():
 
     # If the user does not exist or the password is wrong, redirect back to the login page
     if not user or not user.check_password(password):
-        flash('Incorrect email or password.')
         if user:
             if user.failed_signin_attempts > 5:
-                flash('This account is locked. Please contact support to unlock your account and reset your password.')
+                flash('This account is locked. Please contact support to unlock your account and reset your password.', 'login_error')
             else:
+                flash('Incorrect password. Try again or click Forgot password to reset it.', 'login_error')
                 user.failed_signin_attempts += 1
                 db.session.commit()
+
+        else:
+            flash('A user with this email does not exist!', 'login_error')
+
         return redirect(url_for('auth.login'))
 
     # Redirect to the profile page if login is successful, reset failed sign-in attempts
@@ -40,10 +46,10 @@ def login_post():
         login_user(user, remember=remember)
         user.failed_signin_attempts = 0
         db.session.commit()
-        flash('Successfully logged in! Redirecting to dashboard...')
+        flash('Successfully logged in! Redirecting to dashboard...', 'login_success')
         return redirect(url_for('main.profile'))
     else:
-        flash('This account is locked. Please contact support to unlock your account and reset your password.')
+        flash('This account is locked. Please contact support to unlock your account and reset your password.', 'login_error')
         return redirect(url_for('auth.login'))
 
 @auth.route("/register", methods=["GET", "POST"])
@@ -55,44 +61,57 @@ def register():
         name = request.form.get("name")
         username = request.form.get("username")
         date_of_birth = request.form.get("date_of_birth")
-        grade = request.form.get("grade")
+        grade = getattr(GradeEnum, request.form.get("grade"))   # Parses string into GradeEnum field and assigns proper grade
         email = request.form.get("email")
+        confirm_email = request.form.get("confirm_email")
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
 
+        age = calculate_age(date_of_birth)
         user_email = User.query.filter_by(email=email).first()
-        if user_email:
-            flash("This email already exists.")
-            return redirect(url_for("auth.register"))
         user_name = User.query.filter_by(username=username).first()
+
+        if len(name) == 0:
+            flash("You must provide your name.", "register_error")
+            return redirect(url_for("auth.register"))
         if user_name:
-            flash("This username already exists.")
+            flash("This username already exists.", "register_error")
             return redirect(url_for("auth.register"))
         if len(username) == 0:
-            flash("You must provide a username.")
+            flash("You must provide a username.", "register_error")
             return redirect(url_for("auth.register"))
+        if user_email:
+            flash("This email already exists.", "register_error")
+            return redirect(url_for("auth.register"))   
+        if confirm_email != email:
+            flash("The emails do not match!", "register_error")
+            return redirect(url_for("auth.register"))             
         if len(password) == 0:
-            flash("You must provide a password.")
+            flash("You must provide a password.", "register_error")
             return redirect(url_for("auth.register"))
         if confirm_password != password:
-            flash("The passwords do not match!")
+            flash("The passwords do not match!", "register_error")
             return redirect(url_for("auth.register"))
-        if len(name) == 0:
-            flash("You must provide your name.")
-            return redirect(url_for("auth.register"))
+        
 
         # checking password strength
         result = check_password_strength(password)
         if result:
-            flash("Password is not strong enough. Here are some suggestions: " + ", ".join(result))
+            flash("Password is not strong enough. Here are some suggestions: " + ", ".join(result), "register_error")
             return redirect(url_for("auth.register"))
 
-        new_user = User(email=email, username=username, name=name)
+        new_user = User(
+            email=email, 
+            username=username, 
+            name=name,
+            grade=grade,
+            age=age
+        )
+
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
         flash("Registration Successful!")
-
         return redirect(url_for("auth.login"))
 
     else:
