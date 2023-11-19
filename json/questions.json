@@ -1,0 +1,31 @@
+{
+    "module": {
+      "number": 1,
+      "name": "Mathematics",
+      "num_questions": 2,
+      "revision": "2017-08-13",
+      "questions": [
+        {
+          "number": 1,
+          "question": "Eighteen thousandths, written as a decimal, is:",
+          "answers": [
+            "0.0018",
+            "0.018",
+            "0.18"
+          ],
+          "correct_answer": 0.018
+        },
+        {
+          "number": 2,
+          "question": "The next number in the sequence <b>1, 2, 3, 4, </b> is:",
+          "answers": [
+            "5",
+            "10",
+            "4",
+            "3"
+          ],
+          "correct_answer": 5
+        }
+      ]
+    }
+  }
