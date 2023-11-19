@@ -1,4 +1,7 @@
 import json
+from flask import render_template
+
+score = 0
 
 try:
     # Pulling json data from "questions.json"
@@ -9,7 +12,7 @@ except IOError:
     exit()
 
 # Created for loop to iterate for all the questions defined in "questions.json"
-for i in range(data["module"]["questions"][-1]["number"]):
+for i in range(data["module"]["num_questions"]):
     # Initialized response variable with dummy data (Should hold user's selection)
     response = "0.018"
     # Pulling expected value from "questions.json" file
@@ -34,7 +37,18 @@ for i in range(data["module"]["questions"][-1]["number"]):
 
     if (response == correct_resp):
         # Implement logic for the case where user enters the correct response
-        pass
+        score += 1
     else:
         # Implement logic for the case where user enters the wrong response
         pass
+
+# with open("/app/src/templates/results.html", "w+") as f:
+#     f.write(
+#     """<html>
+#     <head></head>
+#     <body><p>""" + score +
+#     """</p></body>
+#     </html>""")
+
+# render_template("results.html")
+
