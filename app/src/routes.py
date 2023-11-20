@@ -12,23 +12,6 @@ Note: To send AJAX requests with forms, create a FormData() variable in JS and a
 # Create general blueprint for routes
 routes = Blueprint("routes", __name__)
 
-# Route to get user stats
-@routes.route('/user_stats', methods=['GET'])
-@login_required
-def get_user_stats():
-    
-    user = current_user
-    
-    if user.points:
-        user_points = user.points.points
-    else:
-        user_points = 0
-    
-    return jsonify({
-        'streak': user.streak,
-        'points': user_points
-    })
-
 # Route related to a collection of badges
 @routes.route("/badges", methods=["GET"])
 @login_required
@@ -189,9 +172,19 @@ def change_user_points():
             return "Successfully registered current user's points!", 201
         case "GET":
             # Functionality for receiving a user's points info
-            points = current_user.points           # Points.query.filter_by(user_id=current_user.id).first()
+            points = current_user.points
+            user = current_user
+            
+            if user.points:
+                user_points = user.points.points
+            else:
+                user_points = 0
+    
+            return jsonify({
+                'streak': user.streak,
+                'points': user_points
+            }), 200
 
-            return points, 200
         
         case _:
             return "400: Bad request", 400

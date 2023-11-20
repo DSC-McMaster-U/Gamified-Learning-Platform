@@ -130,23 +130,19 @@
     document.addEventListener("DOMContentLoaded", () => {
         totalCount = document.getElementsByClassName("question").length;
         document.getElementById("selectedCount").textContent = `Questions Remaining: ${totalCount}`;
-        console.log(totalCount);
     });
 
     function updateCount() {
-        var inputs = document.getElementById("quiz-form").elements;
-        var count = 0;
-        let selectedCount = 0;
-        for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].type == "radio" && inputs[i].checked) {
-                selectedCount++;
-            }
-        }
+        let inputs = document.getElementById("quiz-form").elements;
+        let count = 0;
+        let answered = document.querySelectorAll('input[type="radio"]:checked').length;
         let progressBar = document.getElementById("progress-bar");
+
         document.getElementById("selectedCount").textContent = `Questions Remaining: ${
-            totalCount - selectedCount
+            totalCount - answered
         }`;
-        progressBar.value = (selectedCount / totalCount) * 100;
+
+        progressBar.value = (answered / totalCount) * 100;
 
         if (progressBar.value == 100) {
             let submitButton = document.getElementById("submit-quiz");
