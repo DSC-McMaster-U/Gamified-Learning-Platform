@@ -171,6 +171,7 @@ main a:hover::after {
 
 progress::-webkit-progress-value {
     background: var(--heading-clr);
+    transition: var(--btn-transition-2);
 }
 
 progress::-webkit-progress-bar {
@@ -235,6 +236,21 @@ input[type="radio"] {
     color: var(--btn-txt-clr);
     background-color: var(--btn-bg-disabled-clr);
     box-shadow: none;
+}
+
+.clickable {
+    cursor: pointer;
+    border: none;
+    color: var(--btn-txt-clr);
+    background-color: var(--btn-bg-clr);
+    box-shadow: var(--btn-shadow-2);
+}
+
+#quiz-form button.clickable {
+    border: none;
+    color: var(--btn-txt-clr);
+    background-color: var(--btn-bg-clr);
+    box-shadow: var(--btn-shadow-2);
 }
 
 #quiz-form button.clickable::before {

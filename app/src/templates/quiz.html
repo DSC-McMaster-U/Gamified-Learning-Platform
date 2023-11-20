@@ -4,7 +4,7 @@
 {% endblock %} {% block content %}
 <main>
     <div id="heading">
-        <h1>Name: {{ quiz.title }}</h1>
+        <h1>Quiz: {{ quiz.title }}</h1>
     </div>
 
     <div id="quiz-container">
@@ -119,47 +119,13 @@
                     </div>
                 </div>
 
-                <button
-                    id="submit-quiz"
-                    type="submit"
-                    {%
-                    if
-                    user_has_submitted
-                    %}
-                    disabled
-                    {%
-                    endif
-                    %}
-                    class="clickable"
-                >
-                    Submit
-                </button>
+                <button disabled id="submit-quiz" type="submit">Submit</button>
             </form>
         </div>
     </div>
 </main>
 {% endblock %} {% block scripts %}
 <script>
-    // Logic for enabling submit button
-    document.addEventListener("DOMContentLoaded", function () {
-        const submitButton = document.getElementById("submit-quiz");
-        const quizForm = document.getElementById("quiz-form");
-
-        // Initially disabled
-        submitButton.disabled = true;
-
-        // Add a change event listener to the form elements (assuming radio buttons for options)
-        quizForm.addEventListener("change", function () {
-            // Check if every button is pressed
-            const allQuestionsAnswered = Array.from(
-                document.querySelectorAll('.question input[type="radio"]')
-            ).every((input) => input.checked);
-
-            // Enable button if all questions are answered
-            submitButton.disabled = false;
-        });
-    });
-
     let totalCount = document.getElementsByClassName("question").length;
 
     function updateCount() {
@@ -171,8 +137,15 @@
                 selectedCount++;
             }
         }
+        let progressBar = document.getElementById("progress-bar");
         document.getElementById("selectedCount").textContent = `Question: ${selectedCount}`;
-        document.getElementById("progress-bar").value = (selectedCount / totalCount) * 100;
+        progressBar.value = (selectedCount / totalCount) * 100;
+
+        if (progressBar.value == 100) {
+            let submitButton = document.getElementById("submit-quiz");
+            submitButton.disabled = false;
+            submitButton.classList.add("clickable");
+        }
     }
 </script>
 {% endblock %}
