@@ -1,87 +1,120 @@
-{% extends "base.html" %}
-{% block title %}Register - Gamified Learning Platform{% endblock %}
+{% extends "base.html" %} {% block title %}Register - Gamified Learning Platform{% endblock %} {%
+block styling %}
+<!-- Local Stylesheets -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}" />
+{% endblock %} {% block content %}
+<main>
+    <div id="heading">
+        <h1>Registration</h1>
+    </div>
 
-{% block styling %}
-    <!-- Local Stylesheets -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
-{% endblock %}
+    <div id="register-box" class="container">
+        <form id="register-form" action="/register" method="post">
+            <!-- If any errors occur, then they will be sent to this invisible div and interpreted by JS to insert relevant error msg HTML code/classes -->
+            <div id="error-msg">
+                {% with errors = get_flashed_messages(category_filter=["register_error"]) %} {% if
+                errors %} {% for error in errors %} {{ error }} {% endfor %} {% endif %} {% endwith
+                %}
+            </div>
 
-{% block content %}
-    <main>
-        <div id="heading">
-            <h1>Registration</h1>
-        </div>
+            <input
+                class="register-form-text body-text"
+                type="text"
+                name="name"
+                id="form-name"
+                placeholder="Name"
+            />
+            <div class="register-error" id="err-name"></div>
 
-        <div id="register-box" class="container">
-            <form id="register-form" action="/register" method="post">
-                <!-- If any errors occur, then they will be sent to this invisible div and interpreted by JS to insert relevant error msg HTML code/classes -->
-                <div id="error-msg">
-                    {% with errors = get_flashed_messages(category_filter=["register_error"]) %}
-                        {% if errors %}
-                            {% for error in errors %}
-                                {{ error }}
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-                </div>
+            <input
+                class="register-form-text body-text"
+                type="text"
+                name="username"
+                id="form-username"
+                placeholder="Username"
+            />
+            <div class="register-error" id="err-username"></div>
 
-                <input class="register-form-text body-text" type="text" name="name" id="form-name" placeholder="Name">
-                <div class="register-error" id="err-name"></div>
-                
-                <input class="register-form-text body-text" type="text" name="username" id="form-username" placeholder="Username">                       
-                <div class="register-error" id="err-username"></div>
-                
-                <input class="register-form-text register-form-date" type="text" name="date_of_birth" id="form-dob" placeholder="Date of Birth">
-                <!-- <input class="register-form-text body-text" type="text" name="grade" id="form-grade" placeholder="Grade"> -->
+            <input
+                class="register-form-text register-form-date"
+                type="text"
+                name="date_of_birth"
+                id="form-dob"
+                placeholder="Date of Birth"
+            />
+            <!-- <input class="register-form-text body-text" type="text" name="grade" id="form-grade" placeholder="Grade"> -->
 
-                <select class="register-form-select body-text" name="grade" id="form-grade" required>
-                    <option value="" id="select-placeholder" disabled selected hidden>Grade</option>
-                    <option value="FIRST">1st Grade</option>
-                    <option value="SECOND">2nd Grade</option>
-                    <option value="THIRD">3rd Grade</option>
-                    <option value="FOURTH">4th Grade</option>
-                    <option value="FIFTH">5th Grade</option>
-                    <option value="SIXTH">6th Grade</option>
-                    <option value="SEVENTH">7th Grade</option>
-                    <option value="EIGHTH">8th Grade</option>
-                    <option value="NINTH">9th Grade</option>
-                    <option value="TENTH">10th Grade</option>
-                    <option value="ELEVENTH">11th Grade</option>
-                    <option value="TWELFTH">12th Grade</option>
-                    <option value="FRESHMAN">University Freshman</option>
-                    <option value="SOPHOMORE">University Sophomore</option>
-                    <option value="JUNIOR">University Junior</option>
-                    <option value="SENIOR">University Senior</option>
-                    <option value="NA">Other</option>
-                </select>
+            <select class="register-form-select body-text" name="grade" id="form-grade" required>
+                <option value="" id="select-placeholder" disabled selected hidden>Grade</option>
+                <option value="FIRST">1st Grade</option>
+                <option value="SECOND">2nd Grade</option>
+                <option value="THIRD">3rd Grade</option>
+                <option value="FOURTH">4th Grade</option>
+                <option value="FIFTH">5th Grade</option>
+                <option value="SIXTH">6th Grade</option>
+                <option value="SEVENTH">7th Grade</option>
+                <option value="EIGHTH">8th Grade</option>
+                <option value="NINTH">9th Grade</option>
+                <option value="TENTH">10th Grade</option>
+                <option value="ELEVENTH">11th Grade</option>
+                <option value="TWELFTH">12th Grade</option>
+                <option value="FRESHMAN">University Freshman</option>
+                <option value="SOPHOMORE">University Sophomore</option>
+                <option value="JUNIOR">University Junior</option>
+                <option value="SENIOR">University Senior</option>
+                <option value="NA">Other</option>
+            </select>
 
-                <input class="register-form-text body-text" type="text" name="email" id="form-user" placeholder="Email Address">
-                <div class="register-error" id="err-email"></div>
+            <input
+                class="register-form-text body-text"
+                type="text"
+                name="email"
+                id="form-user"
+                placeholder="Email Address"
+            />
+            <div class="register-error" id="err-email"></div>
 
-                <input class="register-form-text body-text" type="text" name="confirm_email" id="form-confirm-email" placeholder="Confirm Email">
-                <div class="register-error" id="err-confirm-email"></div>
-                
-                <input class="register-form-text" type="password" name="password" id="form-pwd" placeholder="Password">
-                <div class="register-error" id="err-pass"></div>
+            <input
+                class="register-form-text body-text"
+                type="text"
+                name="confirm_email"
+                id="form-confirm-email"
+                placeholder="Confirm Email"
+            />
+            <div class="register-error" id="err-confirm-email"></div>
 
-                <input class="register-form-text" type="password" name="confirm_password" id="form-confirm-pwd" placeholder="Confirm Password">
-                <div class="register-error" id="err-confirm-pass"></div>
+            <input
+                class="register-form-text"
+                type="password"
+                name="password"
+                id="form-pwd"
+                placeholder="Password"
+            />
+            <div class="register-error" id="err-pass"></div>
 
-                <button class="register-form-btn body-text" id="register-submit" type="submit">Sign up</button>
-            </form>
-        </div>
+            <input
+                class="register-form-text"
+                type="password"
+                name="confirm_password"
+                id="form-confirm-pwd"
+                placeholder="Confirm Password"
+            />
+            <div class="register-error" id="err-confirm-pass"></div>
 
-        <div id="redirect-login">
-            <a href="/login.html">Back to login</a>
-        </div>
+            <button class="register-form-btn body-text" id="register-submit" type="submit">
+                Sign up
+            </button>
+        </form>
+    </div>
 
-        <div id="redirect-login">
-            <a href="/user_profile.html">Need help?</a>
-        </div>
-    </main>
-{% endblock %}
+    <div id="redirect-login">
+        <a href="/login.html">Back to login</a>
+    </div>
 
-{% block scripts %}
-    <!-- Insert local scripts here, if necessary -->
-    <script src="../static/js/register.js"></script>
+    <div id="redirect-login">
+        <a href="/user_profile.html">Need help?</a>
+    </div>
+</main>
+{% endblock %} {% block scripts %}
+<script src="../static/js/register.js"></script>
 {% endblock %}

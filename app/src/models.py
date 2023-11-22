@@ -159,7 +159,6 @@ with users?
 class Activity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    # establish relationship between 'quiz' and 'user' model
     # user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
     subject_type = db.Column(SQLAlchemyEnum(Subject), nullable=False, default=Subject.BIOLOGY)
     start_time = db.Column(db.DateTime, nullable=True, default=func.now()) 
@@ -172,13 +171,9 @@ class Activity(db.Model):
     }
         
 # Lesson
-class Lesson(Activity):  # used to be db.Model arg
-    # Changed id so that lessons use the same ID as Activities (since Lesson is one child of class Activities)
+class Lesson(Activity):
     id = db.Column(db.Integer, db.ForeignKey('activity.id'), primary_key=True)
-    
-    # id = db.Column(db.Integer, primary_key=True) # id for identifying lesson
-    # activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'), nullable=False) # id for identifying parent lesson, establish relationship with Activity table
-    level = db.Column(db.Integer, nullable=False)  # how difficult is the question (easy, medium, hard)
+    level = db.Column(db.Integer, nullable=False)  # how difficult is the lesson (easy=1, medium=2, hard=3)
     active = db.Column(db.Boolean, nullable=False) # determine whether the lesson is submitted or not
     summary = db.Column(db.Text, nullable=False)   # lesson summary
     learning_objective = db.Column(db.Text, nullable=False)
@@ -190,15 +185,11 @@ class Lesson(Activity):  # used to be db.Model arg
     }
 
 # Quiz Table
-class Quiz(Activity):    # used to be db.Model arg
-    # Changed id so that quizzes use the same ID as Activities (since Quiz is one child of class Activities)
+class Quiz(Activity):
     id = db.Column(db.Integer, db.ForeignKey('activity.id'), primary_key=True)
-
-    # id = db.Column(db.Integer, primary_key=True)
-    # activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'), nullable=False)
-    active = db.Column(db.Boolean, nullable=False) # determine whether the question is submitted or not
-    level = db.Column(db.Integer, nullable=False)  # how difficult is the question (easy, medium, hard)
-    score = db.Column(db.Integer, nullable=False)  # score for that question
+    active = db.Column(db.Boolean, nullable=False) # determine whether the quiz is submitted or not
+    level = db.Column(db.Integer, nullable=False)  # how difficult is the quiz (easy=1, medium=2, hard=3)
+    score = db.Column(db.Integer, nullable=False)  # quiz score
     users = db.relationship('User', secondary=user_quiz, backref='quizzes')
 
     __mapper_args__ = {

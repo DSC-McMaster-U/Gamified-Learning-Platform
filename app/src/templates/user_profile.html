@@ -10,7 +10,7 @@
     // User stats
     function userStats() {
         $.ajax({
-            url: "/user_stats",
+            url: "/user_points",
             method: "GET",
             success: function (data) {
                 $("#streakDisplay").text(data.streak);
