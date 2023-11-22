@@ -30,6 +30,47 @@ class GradeEnum(Enum):
     SENIOR = 'University Senior'
     NA = 'Not Available'
 
+"""
+New Additiions: 
+The association tables 'user_course', 'user_module', and 'user_topic' are essential for establishing many-to-many 
+relationships between users and the new models added to our educational platform: courses, modules, and topics.
+
+user_course' connects users with courses, enabling the platform 
+to handle scenarios where a user is enrolled in multiple courses, 
+and a single course can have many users enrolled. This is crucial 
+for tracking user enrollments and interactions at the course level.
+
+'user_module' links users with modules, reflecting that 
+users can engage with multiple modules within different courses, 
+and each module can have numerous users. This association is key for
+managing user progress and participation across various modules.
+
+'user_topic' associates users with topics, allowing the platform to 
+track which users are interacting with specific topics within modules. 
+Since a user can engage with many topics, and each topic can be accessed 
+by numerous users, this table facilitates the organization and retrieval 
+of user-specific interactions at the topic level.
+
+"""
+
+user_course = db.Table(
+    'user_course',
+    db.Column('user_id', db.Integer, ForeignKey('user.id'), primary_key=True),
+    db.Column('course_id', db.Integer, ForeignKey('course.id'), primary_key=True)
+)
+
+user_module = db.Table(
+    'user_module',
+    db.Column('user_id', db.Integer, ForeignKey('user.id'), primary_key=True),
+    db.Column('module_id', db.Integer, ForeignKey('module.id'), primary_key=True)
+)
+
+user_topic = db.Table(
+    'user_topic',
+    db.Column('user_id', db.Integer, ForeignKey('user.id'), primary_key=True),
+    db.Column('topic_id', db.Integer, ForeignKey('topic.id'), primary_key=True)
+)
+
 # User model
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -44,6 +85,10 @@ class User(UserMixin, db.Model):
     failed_signin_attempts = db.Column(db.Integer, default=0)
     points = db.relationship('Points', uselist=False, backref='user') # establish one-to-one relationship between 'points' and 'user' model
     streak = db.Column(db.Integer, default=0)
+    courses = db.relationship('Course', secondary=user_course, backref='enrolled_users')
+    modules = db.relationship('Module', secondary=user_module, backref='enrolled_users')
+    topics = db.relationship('Topic', secondary=user_topic, backref='enrolled_users')
+    # ^^^ Added new relationships between user and courses/modules/topics
     
     # Set user password
     def set_password(self, password):
@@ -134,6 +179,50 @@ user_lesson = db.Table(
     db.Column('lesson_id', db.Integer, ForeignKey('lesson.id'), nullable=False)
 )
 
+"""
+The addition of the Course, Module, and Topic models is crucial for expanding the structure of our educational platform. 
+These models represent different levels of educational content organization, offering a hierarchical structure.
+
+- Course Model: Represents the highest level of organization, representng a complete
+course of study on a specific subject. Each course can contain multiple modules.
+    Consider Calculus to be an example.
+
+- Module Model: Serves as a subdivision within a course, focusing on specific areas or themes of the 
+subject. This model enables the course content to be broken down into manageable and organized parts. 
+    Consider the example of Derivatives as being a module within the calculus class.
+
+- Topic Model: Topics are individual units of study within a module. Each topic is 
+typically associated with specific activities like quizzes and lessons.
+        Consider the example of Differentiation rules as being a topic within the Derivatives module.
+
+"""
+
+class Course(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    subject_type = db.Column(SQLAlchemyEnum(Subject), nullable=False)
+    modules = db.relationship('Module', backref='course', lazy='dynamic')
+    users = db.relationship('User', secondary=user_course, backref=db.backref('courses', lazy='dynamic'))
+    # ^^ Relationships defined so that each course can have many modules, and be accessed by many users
+
+class Module(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
+    topics = db.relationship('Topic', backref='module', lazy='dynamic')
+    users = db.relationship('User', secondary=user_module, backref=db.backref('modules', lazy='dynamic'))
+    # ^^ Relationships defined so that each module can have many topics, and be accessed by many users
+
+class Topic(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    module_id = db.Column(db.Integer, ForeignKey('module.id'), nullable=False)
+    quiz_id = db.Column(db.Integer, ForeignKey('quiz.id'), nullable=True)
+    lesson_id = db.Column(db.Integer, ForeignKey('lesson.id'), nullable=True)
+    users = db.relationship('User', secondary=user_topic, backref=db.backref('topics', lazy='dynamic'))
+    # ^^^ Relationships defined so that each topic has a unique lesson and unique quiz, and can be accessed by many users.
+
+
 """ Notes/info about changes to old model:
 This overall Activity module has two subclasses for quizzes and lessons, which inherits the general elements
 from the Activity class (joined table inheritance). Based on what subclass it is, the activity_type from the superclass 
@@ -156,6 +245,7 @@ general Activity class; instead, just stick to instantiating Quizzes and Lessons
 relationship with Users. ...Maybe this schema can be revised in the future for Activities to have a relationship 
 with users?
 """
+
 class Activity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -179,6 +269,8 @@ class Lesson(Activity):
     learning_objective = db.Column(db.Text, nullable=False)
     lesson_content = db.Column(db.Text, nullable=False)
     users = db.relationship('User', secondary=user_lesson, backref='lessons')
+    topic_id = db.Column(db.Integer, ForeignKey('topic.id'), nullable=True)
+    # ^ Establish relationship where each unique lesson is a part of a single topic.
 
     __mapper_args__ = {
         "polymorphic_identity": ActivityType.LESSON
@@ -191,6 +283,8 @@ class Quiz(Activity):
     level = db.Column(db.Integer, nullable=False)  # how difficult is the quiz (easy=1, medium=2, hard=3)
     score = db.Column(db.Integer, nullable=False)  # quiz score
     users = db.relationship('User', secondary=user_quiz, backref='quizzes')
+    topic_id = db.Column(db.Integer, ForeignKey('topic.id'), nullable=True)
+    # ^ Establish relationship where each unique quiz is a part of a single topic.
 
     __mapper_args__ = {
         "polymorphic_identity": ActivityType.QUIZ
@@ -209,3 +303,4 @@ class QuizAnswer(db.Model):
     quiz_question_id = db.Column(db.Integer, db.ForeignKey('quiz_question.id'), nullable=False) # identify which quiz question the answer belongs to
     correct = db.Column(db.Boolean, nullable=False)
     answer_content = db.Column(db.Text, nullable=False)
+
