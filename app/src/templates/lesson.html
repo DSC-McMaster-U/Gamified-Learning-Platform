@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block title %}Login - Gamified Learning Platform{% endblock %}
+
+{% block styling %}
+    <!-- Local Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lesson.css') }}">
+{% endblock %}
+
+<!-- Note: Replace placeholder button text with Jinja blocks in the future -->
+{% block content %}
+    <main>
+        <div id="lesson-tabs" class="tabs-container">
+            <ul class="tabs-unit-menu">
+                <div class="tabs-module">
+                    <button class="tabs-module-btn">
+                        <div class="tab-title">Pre-Algebra</div>
+                        <div class="tab-subtitle">15 MODULES - 179 TOPICS</div>
+                    </button>
+                </div>
+                <li class="tabs-unit tabs-dropdown">
+                    <button class="tabs-unit-btn">
+                        <div class="tab-subtitle">MODULE 1</div>
+                        <div class="tab-title">Factors and Multiples</div>
+                    </button>
+
+                    <ul class="tabs-topic-menu">
+                        <li class="tabs-topic tabs-dropdown">
+                            <button class="tabs-topic-btn">
+                                <div class="tab-subtitle">TOPIC 1</div>
+                                <div class="tab-title">Factors and Multiples</div>
+                            </button>
+
+                            <ul class="tabs-activity-menu">
+                                <li class="tabs-activity">
+                                    <a href="">
+                                        <button class="tabs-activity-btn">
+                                            <div class="tab-title">Lesson</div>
+                                        </button>
+                                    </a>
+                                </li>
+
+                                <li class="tabs-activity">
+                                    <a href="">
+                                        <button class="tabs-activity-btn">
+                                            <div class="tab-title">Quiz</div>
+                                        </button>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="tabs-topic tabs-dropdown">
+                            <button class="tabs-topic-btn">
+                                <div class="tab-subtitle">TOPIC 2</div>
+                                <div class="tab-title">Prime and Composite Numbers</div>
+                            </button>
+
+                            <ul class="tabs-activity-menu">
+                                <li class="tabs-activity">
+                                    <a href="">
+                                        <button class="tabs-activity-btn">
+                                            <div class="tab-title">Lesson</div>
+                                        </button>
+                                    </a>
+                                </li>
+
+                                <li class="tabs-activity tab-quiz">
+                                    <a href="">
+                                        <button class="tabs-activity-btn">
+                                            <div class="tab-title">Quiz</div>
+                                        </button>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="tabs-topic tabs-dropdown">
+                            <button class="tabs-topic-btn">
+                                <div class="tab-subtitle">TOPIC 3</div>
+                                <div class="tab-title">Prime Factorization</div>
+                            </button>
+
+                            <ul class="tabs-activity-menu">
+                                <li class="tabs-activity">
+                                    <a href="#">
+                                        <button class="tabs-activity-btn">
+                                            <div class="tab-title">Lesson</div>
+                                        </button>
+                                    </a>
+                                </li>
+
+                                <li class="tabs-activity">
+                                    <a href="">
+                                        <button class="tabs-activity-btn">
+                                            <div class="tab-title">Quiz</div>
+                                        </button>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li class="tabs-unit tabs-dropdown">
+                    <button class="tabs-unit-btn">
+                        <div class="tab-subtitle">MODULE 2</div>
+                        <div class="tab-title">Patterns</div>
+                    </button>
+                </li>
+
+                <li class="tabs-unit tabs-dropdown">
+                    <button class="tabs-unit-btn">
+                        <div class="tab-subtitle">MODULE 3</div>
+                        <div class="tab-title">Ratios and Rates</div>
+                    </button>
+                </li>
+
+                <li class="tabs-unit tabs-dropdown">
+                    <button class="tabs-unit-btn">
+                        <div class="tab-subtitle">MODULE 4</div>
+                        <div class="tab-title">Percentages</div>
+                    </button>
+                </li>
+
+            </ul>
+        </div>
+
+        <div id="lesson-panels" class="lesson-container">
+            This is some content
+        </div>
+    </main>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Insert local scripts here, if necessary -->
+    <script>
+        const tabDropdown = document.querySelectorAll(".tabs-dropdown > button");
+        const tabPanel = document.querySelectorAll(".tabs-activity button");
+
+        tabDropdown.forEach((tab) => {
+            tab.addEventListener("click", (event) => {
+                let subMenu = tab.nextElementSibling;
+                let subMenuItems = subMenu.querySelectorAll(":scope>li");
+                let parentMenu = tab.closest("ul");
+                let numSubMenuHeight = 0;
+
+                tab.classList.toggle("menu-open");
+
+                if (tab.classList.contains("menu-open")) {
+                    subMenuItems.forEach((item) => {
+                        numSubMenuHeight += item.offsetHeight;
+                    })
+
+                    subMenu.style.maxHeight = `${numSubMenuHeight}px`;
+
+                    if (parentMenu != null) {
+                        let parentMenuHeight = parentMenu.style.maxHeight;
+                        parentMenuHeight = parentMenuHeight.slice(0, -2);
+
+                        parentMenu.style.maxHeight = `${parseInt(parentMenuHeight) + numSubMenuHeight}px`
+                    }
+                } else {
+                    subMenu.style.maxHeight = "0px";
+                }
+            });
+        });
+    </script>
+{% endblock %}

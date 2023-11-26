@@ -17,6 +17,13 @@ def profile():
         logged_in=True
     )
     
+@main.route('/lesson')
+@login_required
+def lesson_page():
+    return render_template(
+        'lesson.html'
+    )
+
 @main.route('/quiz/<int:quiz_id>', methods=['GET'])
 @login_required
 def quiz_page(quiz_id):
