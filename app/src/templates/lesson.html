@@ -10,6 +10,10 @@
 {% block content %}
     <main>
         <div id="lesson-tabs" class="tabs-container">
+            <div class="hide-tab">
+                <span></span>
+                <img src="" alt="">
+            </div>
             <ul class="tabs-unit-menu">
                 <div class="tabs-module">
                     <button class="tabs-module-btn">
@@ -17,6 +21,7 @@
                         <div class="tab-subtitle">15 MODULES - 179 TOPICS</div>
                     </button>
                 </div>
+
                 <li class="tabs-unit tabs-dropdown">
                     <button class="tabs-unit-btn">
                         <div class="tab-subtitle">MODULE 1</div>
@@ -31,15 +36,15 @@
                             </button>
 
                             <ul class="tabs-activity-menu">
-                                <li class="tabs-activity">
-                                    <a href="">
+                                <li class="tabs-activity tab-lesson">
+                                    <a href="#panel-1">
                                         <button class="tabs-activity-btn">
                                             <div class="tab-title">Lesson</div>
                                         </button>
                                     </a>
                                 </li>
 
-                                <li class="tabs-activity">
+                                <li class="tabs-activity tab-quiz">
                                     <a href="">
                                         <button class="tabs-activity-btn">
                                             <div class="tab-title">Quiz</div>
@@ -56,8 +61,8 @@
                             </button>
 
                             <ul class="tabs-activity-menu">
-                                <li class="tabs-activity">
-                                    <a href="">
+                                <li class="tabs-activity tab-lesson">
+                                    <a href="#panel-2">
                                         <button class="tabs-activity-btn">
                                             <div class="tab-title">Lesson</div>
                                         </button>
@@ -81,15 +86,15 @@
                             </button>
 
                             <ul class="tabs-activity-menu">
-                                <li class="tabs-activity">
-                                    <a href="#">
+                                <li class="tabs-activity tab-lesson">
+                                    <a href="#panel-3">
                                         <button class="tabs-activity-btn">
                                             <div class="tab-title">Lesson</div>
                                         </button>
                                     </a>
                                 </li>
 
-                                <li class="tabs-activity">
+                                <li class="tabs-activity tab-quiz">
                                     <a href="">
                                         <button class="tabs-activity-btn">
                                             <div class="tab-title">Quiz</div>
@@ -126,8 +131,24 @@
             </ul>
         </div>
 
+        <!-- Possible idea: make this document a jinja template, then load whatever quiz/lesson here from another template? -->
         <div id="lesson-panels" class="lesson-container">
-            This is some content
+            <div class="panel show-panel" id="panel-1" panel-type="video">
+                <div class="lesson-heading">
+                    <h3>Factors and Multiples - Lesson</h3>
+                </div>
+                <div class="lesson-obj">
+                    <h4>Learning Objectives</h4>
+                </div>
+            </div>
+
+            <div class="panel" id="panel-2" panel-type="text">
+                This is the second panel.
+            </div>
+
+            <div class="panel" id="panel-3">
+                This is the third panel.
+            </div>
         </div>
     </main>
 {% endblock %}
@@ -136,34 +157,72 @@
     <!-- Insert local scripts here, if necessary -->
     <script>
         const tabDropdown = document.querySelectorAll(".tabs-dropdown > button");
-        const tabPanel = document.querySelectorAll(".tabs-activity button");
+        const tabLessons = document.querySelectorAll(".tabs-activity.tab-lesson a");
+        const tabQuizzes = document.querySelectorAll(".tab-activity.tab-quiz a");
+        const panelContainer = document.querySelector("#lesson-panels");
 
-        tabDropdown.forEach((tab) => {
-            tab.addEventListener("click", (event) => {
-                let subMenu = tab.nextElementSibling;
-                let subMenuItems = subMenu.querySelectorAll(":scope>li");
-                let parentMenu = tab.closest("ul");
-                let numSubMenuHeight = 0;
+        function toggleDropdown(event) {
+            let subMenu = this.nextElementSibling;
+            let subMenuItems = subMenu.querySelectorAll(":scope>li");
+            let parentMenu = this.closest("ul");
+            let numSubMenuHeight = 0;
 
-                tab.classList.toggle("menu-open");
+            this.classList.toggle("menu-open");
 
-                if (tab.classList.contains("menu-open")) {
-                    subMenuItems.forEach((item) => {
-                        numSubMenuHeight += item.offsetHeight;
-                    })
+            if (this.classList.contains("menu-open")) {
+                subMenuItems.forEach((item) => {
+                    numSubMenuHeight += item.offsetHeight;
+                })
 
-                    subMenu.style.maxHeight = `${numSubMenuHeight}px`;
+                subMenu.style.maxHeight = `${numSubMenuHeight}px`;
 
-                    if (parentMenu != null) {
-                        let parentMenuHeight = parentMenu.style.maxHeight;
-                        parentMenuHeight = parentMenuHeight.slice(0, -2);
+                if (parentMenu != null) {
+                    let parentMenuHeight = parentMenu.style.maxHeight;
+                    parentMenuHeight = parentMenuHeight.slice(0, -2);
 
-                        parentMenu.style.maxHeight = `${parseInt(parentMenuHeight) + numSubMenuHeight}px`
-                    }
-                } else {
-                    subMenu.style.maxHeight = "0px";
+                    parentMenu.style.maxHeight = `${parseInt(parentMenuHeight) + numSubMenuHeight}px`
                 }
+            } else {
+                subMenu.style.maxHeight = "0px";
+            }
+        }
+
+        function togglePanel(event) {
+            let panelBtn = this.querySelector("button");
+
+            let panelRef = this.hash;
+            let panel = panelContainer.querySelector(":scope > " + panelRef);
+            let otherPanels = panelContainer.querySelectorAll(`:scope > :not([id="${panelRef.substr(1)}"])`);
+
+            console.log(panel);
+            console.log(otherPanels);
+
+            if (panel != null) {
+                otherPanels.forEach((otherPanel) => {
+                    otherPanel.classList.remove("show-panel");
+                });
+
+                tabLessons.forEach((otherTab) => {
+                    otherTab.querySelector("button").classList.remove("menu-open");
+                })
+
+                panel.classList.add("show-panel");
+                panelBtn.classList.add("menu-open");
+            }
+        }
+
+        function main() {
+            document.querySelector
+
+            tabDropdown.forEach((tab) => {
+                tab.addEventListener("click", toggleDropdown);
             });
-        });
+
+            tabLessons.forEach((tab) => {
+                tab.addEventListener("click", togglePanel);
+            });
+        }
+
+        main();
     </script>
 {% endblock %}

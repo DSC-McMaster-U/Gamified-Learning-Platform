@@ -39,6 +39,7 @@
     --tab-module-clr: #5b83eb;
     --tab-unit-clr: #ff0615;
     --tab-topic-clr: #14792a;
+    --tab-activity-clr: #fbbc04;
 
     --tab-title-clr: #000000;
     --tab-subtitle-clr: rgba(0, 0, 0, 0.50);
@@ -106,6 +107,10 @@
  * General
  * ========
 **/
+
+:target {
+    scroll-margin-top: 100px;
+}
 
 main {
     display: flex;
@@ -276,6 +281,10 @@ ul.tabs-unit-menu {
     transition: var(--tab-bg-transition), var(--tab-clr-transition);
 }
 
+.tabs-activity button {
+    min-height: 55px;
+}
+
 .tabs-unit button + ul {
     height: auto;
     max-height: 0;
@@ -283,12 +292,16 @@ ul.tabs-unit-menu {
     overflow: hidden;
 }
 
-.tabs-unit > button {
-    border-left: 0px var(--tab-unit-clr) solid;
+.tabs-dropdown > button {
+    border-left: 2px var(--tab-unit-clr) solid;
 }
 
 .tabs-topic > button {
-    border-left: 0px var(--tab-topic-clr) solid;
+    border-left: 2px var(--tab-topic-clr) solid;
+}
+
+.tabs-activity button {
+    border-left: 2px var(--tab-activity-clr) solid;
 }
 
 .tabs-unit button:hover {
@@ -321,4 +334,38 @@ ul.tabs-unit-menu {
  * ========
 **/
 
+.panel {
+    display: none;
+    -webkit-animation: fadeEffect 1.5s;
+    animation: fadeEffect 1.5s;
+}
+
+.show-panel {
+    display: block;
+}
+
+/* Fade in tabs */
+@-webkit-keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+  
+@keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
 
