@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from .models import User, db, GradeEnum
+from .models import User, db, GradeEnum, UserProgress
 from flask_login import login_user
 from .passwordStrength import check_password_strength
 from .calculateAge import calculate_age
@@ -111,6 +111,20 @@ def register():
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
+
+        # Assign default lesson id as well??
+        new_user_progress = UserProgress(
+            user_id=new_user.id,
+            xp=0,
+            level=1,
+            next_level_xp=1000,
+            current_streak=0,
+            longest_streak=0
+        )
+
+        db.session.add(new_user_progress)
+        db.session.commit()
+        
         flash("Registration Successful!")
         return redirect(url_for("auth.login"))
 

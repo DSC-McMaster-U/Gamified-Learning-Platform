@@ -16,7 +16,7 @@ def profile():
         grade=current_user.grade.value,
         logged_in=True
     )
-    
+
 @main.route('/quiz/<int:quiz_id>', methods=['GET'])
 @login_required
 def quiz_page(quiz_id):
@@ -29,3 +29,14 @@ def quiz_page(quiz_id):
         questions = [(i + 1, question) for i, question in enumerate(quiz.questions)]
 
     return render_template('quiz.html', quiz=quiz, questions=questions)
+
+@main.route('/dashboard')
+@login_required
+def dashboard_page():
+    user_progress = current_user.progress
+    return render_template('dashboard.html', user_progress=user_progress)
+
+@main.route('/test/dashboard')
+def test_dashboard():
+    return render_template('dashboard.html')
+

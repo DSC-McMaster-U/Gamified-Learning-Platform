@@ -1,0 +1,85 @@
+/**
+ * ========
+ * Imported Fonts
+ * ========
+**/
+
+/* Jeju Gothic (original font in design) */
+@font-face {
+    font-family: "JejuGothic";
+    src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
+}
+
+/* Nanum Gothic (fallback font) */
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Regular.ttf");
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Bold.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-ExtraBold.ttf");
+    font-weight: bolder;
+}
+
+/**
+ * ========
+ * Variables
+ * ========
+**/
+
+:root {
+    /* Main Colours */
+    --box-clr: rgba(222, 221, 221, 0.3);
+    --heading-clr: #5b83eb;
+    --body-clr: rgba(0, 0, 0, 0.4);
+    --body-hover-clr: rgba(0, 0, 0, 0.5);
+
+    --textbox-txt-clr: #000000;
+    --textbox-pl-clr: rgba(0, 0, 0, 0.6);
+    --textbox-bg-clr: #ffffff;
+
+    --btn-txt-clr: #f5f5f5;
+    --btn-bg-clr: rgba(91, 132, 235, 0.7);
+    --btn-bg-hover-clr: rgba(91, 131, 235, 0.8);
+    --btn-bg-disabled-clr: rgba(112, 151, 249, 0.45);
+
+    --checkbox-clr: #d9d9d9;
+    --link-clr: rgb(99, 138, 236);
+    --link-hover-clr: rgba(91, 131, 235, 0.8);
+
+    --error-txt-clr: rgba(222, 48, 48, 255);
+
+    /* Font Families/Presets */
+    --body-font-family: "JejuGothic", "NanumGothic";
+    --heading-font-family: "JejuGothic", "NanumGothic";
+    --error-font-family: "NanumGothic";
+
+    --heading-font: normal 400 26px / normal var(--heading-font-family);
+    --body-font: normal 400 18px / normal var(--body-font-family);
+    --link-font: normal 00 15.4px / normal var(--body-font-family);
+    --body-sub-font: normal 400 15px / normal var(--body-font-family);
+    --error-font: normal 400 12px / normal var(--error-font-family);
+
+    /* Borders & Shadows */
+    --form-item-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
+        0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+    --btn-shadow-1: 0px 4px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.225) inset;
+    --btn-shadow-2: 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
+
+    --btn-disabled-border: 0.01px rgb(159, 159, 159) solid;
+    --input-border: 0.5px black solid;
+    --error-border: 0.4px red solid;
+
+    /* Transitions */
+    --link-transition: all 0.2s ease;
+    --underline-transition: transform 0.3s ease-out;
+    --btn-transition-1: all 0.1s linear;
+    --btn-transition-2: all 0.7s ease;
+}
