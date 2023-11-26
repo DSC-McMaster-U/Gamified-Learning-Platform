@@ -20,13 +20,23 @@
 
             <div id="login-body" class="container">
                 <form id="login-form" action="/login" method="post">
-                    <!-- <label for="email"></label> -->
-                    <input class="login-form-text body-text" type="text" name="email" id="form-user" placeholder="Email Address">
-                    
-                    <!-- <label for="password"></label> -->
-                    <input class="login-form-text" type="password" name="password" id="form-pwd" placeholder="Password">
-            
-                    <button class="login-form-btn body-text" type="submit">sign in</button>
+                    <div id="error-msg">
+                        {% with errors = get_flashed_messages(category_filter=["login_error"]) %}
+                            {% if errors %}
+                                {% for error in errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+
+                    <input class="login-form-text body-text" type="text" name="email" id="login-form-user" placeholder="Email Address">        
+                    <div class="login-error" id="err-email"></div>
+
+                    <input class="login-form-text" type="password" name="password" id="login-form-pwd" placeholder="Password">
+                    <div class="login-error" id="err-pass"></div>
+
+                    <button class="login-form-btn body-text" id="login-submit" type="submit" disabled>Sign in</button>
                 </form>
             </div>
 
@@ -35,14 +45,13 @@
 
                 <span id="login-remember">
                     <input id="form-remember" type="checkbox" name="remember">
-                    <label id="remember-lbl" for="remember">Remember me</label>
+                    <label id="lbl-remember" for="remember">Remember me</label>
                 </span>
             </div>
 
         </div>
 
         <div id="redirect-register">
-            <!--changed register.html to register-->
             <a href="/register">Create a new account</a>
         </div>
     </main>
@@ -50,4 +59,5 @@
 
 {% block scripts %}
     <!-- Insert local scripts here, if necessary -->
+    <script src="../static/js/login.js"></script>
 {% endblock %}

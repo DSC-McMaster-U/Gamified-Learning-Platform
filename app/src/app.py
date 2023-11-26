@@ -28,7 +28,7 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return render_template('login.html')
+    return render_template('educational_module.html')
 
 with app.app_context():
     db.create_all()
