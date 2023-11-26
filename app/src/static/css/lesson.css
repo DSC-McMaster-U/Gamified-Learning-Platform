@@ -35,6 +35,9 @@
 **/
 
 :root {
+    /* Plyr.js Custom Properties (docs: "github.com/sampotts/plyr") */
+    --plyr-color-main: #5b83eb;
+
     /* Main Colours */
     --tab-module-clr: #5b83eb;
     --tab-unit-clr: #ff0615;
@@ -65,16 +68,17 @@
 
     /* Font Families/Presets */
     --tab-font-family: "JejuGothic", "NanumGothic";
+    --body-font-family: "JejuGothic", "NanumGothic";
 
     --tab-title-font: normal 400 17px / normal var(--tab-font-family);
     --tab-subtitle-font: normal 400 14px / normal var(--tab-font-family);
-    
+    --body-font: normal 400 14px / normal var(--body-font-family);
+
     /* Old fonts, delete later if not needed */
-    --body-font-family: "JejuGothic", "NanumGothic";
     --heading-font-family: "JejuGothic", "NanumGothic";
 
     --heading-font: normal 400 26px / normal var(--heading-font-family);
-    --body-font: normal 400 18px / normal var(--body-font-family);
+
     --link-font: normal 00 15.4px / normal var(--body-font-family);
     --body-sub-font: normal 400 15px / normal var(--body-font-family);
 
@@ -117,27 +121,26 @@ main {
     flex-direction: row;
     flex-wrap: wrap;
 
-    margin-top: 100px;
+    margin-top: 70px;
     margin-left: auto;
     margin-right: auto;
     width: 90%;
 }
 
-.tabs-container {
-    width: 317px;
+.tabs-wrapper {
+    width: 300px;
     height: fit-content;
     margin-right: 25px;
 }
 
-.lesson-container {
+.lesson-wrapper {
     width: auto;
     height: 1000px;   /* Change to "fit-content" later */
     min-width: 500px;
     flex-grow: 1;
-    background-color: rgba(222, 221, 221, 0.30);
 }
 
-.tabs-container ul {
+.tabs-wrapper ul {
     padding-left: 1.1rem;
 }
 
@@ -150,13 +153,13 @@ main {
 }
 
 @media screen and (max-width: 935px) {
-    .tabs-container {
+    .tabs-wrapper {
         min-width: auto;
         max-width: auto;
         width: 100%;
     }
 
-    .lesson-container {
+    .lesson-wrapper {
         min-width: auto;
         width: 100%;
     }
@@ -180,11 +183,15 @@ main {
     text-shadow: var(--tab-text-shadow);
 }
 
-.tabs-container button {
+.tabs-wrapper button {
     border: none;
     background: none;
     width: 100%;
     text-align: left;
+}
+
+.tabs-unit-menu {
+    border-right: 0.5px #dedddd solid;
 }
 
 li.tabs-unit {
@@ -200,7 +207,7 @@ li.tabs-unit {
     width: 100%; 
     min-height: 70px;
     height: fit-content;
-    padding-left: 40px;
+    padding-left: 20px;
 
     border-left: 10px var(--tab-module-clr) solid;
     background-color: #f5f5f5;
@@ -330,7 +337,7 @@ ul.tabs-unit-menu {
 
 /**
  * ========
- * Nav Panels
+ * Nav Panels - General
  * ========
 **/
 
@@ -344,12 +351,83 @@ ul.tabs-unit-menu {
     display: block;
 }
 
-/* Fade in tabs */
+.panel-wrapper {
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
+    background-color: rgba(222, 221, 221, 0.30);
+    width: 100%;
+}
+
+.panel-wrapper > * {
+    background-color: #ffffff;
+    border: 2px solid #D4D4D4;
+}
+
+.lesson-heading {
+    width: 100%
+}
+
+.lesson-heading h3 {
+
+}
+
+.lesson-obj {
+    max-width: 740px;
+    width: 80%;
+    border-radius: 100px;
+    border-color: var(--tab-module-clr);
+    border-width: 3px;
+    margin-left: auto;
+    margin-right: auto;
+
+    padding-top: 20px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.lesson-obj ul {
+    columns: 2;
+    text-align: left;
+    list-style-type: disc;
+    margin-left: 20px;
+    margin-right: 20px;
+
+    font: var(--body-font);
+}
+
+.lesson-obj li {
+    margin-bottom: 5px;
+}
+
+.lesson-video {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 700px;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.lesson-video .video-wrapper {
+    width: 80%;
+    height: auto;
+    max-width: 700px;
+
+    /* border-radius: 10px; */
+    border: 2px black solid;
+    /* overflow: hidden; */
+}
+
+/* Fade in panel animation */
 @-webkit-keyframes fadeEffect {
     from {
         opacity: 0;
     }
-    50% {
+    30% {
         opacity: 0;
     }
     to {
