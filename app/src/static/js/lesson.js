@@ -17,7 +17,7 @@ function togglePanel() {
 
     let panelRef = this.hash;
     let panel = panelContainer.querySelector(":scope > " + panelRef);
-    let otherPanels = panelContainer.querySelectorAll(`:scope > :not([id="${panelRef.substr(1)}"])`);
+    let otherPanels = panelContainer.querySelectorAll(`:scope > :not([id="${panelRef.slice(1)}"])`);
 
     // Debug for filtering proper panels
     // console.log(panel);
@@ -104,7 +104,7 @@ function pageSetup() {
     for (let videoElement of videoElements) {
         let video = videoElement.querySelector("video");
         let source = videoElement.querySelector("source");
-        let videoPathID = video.id.substr(6);
+        let videoPathID = video.id.slice(6);
         let videoPath = `../static/vendor/lesson-videos/${videoPathID}/`;
         let videoPlayer;
 
