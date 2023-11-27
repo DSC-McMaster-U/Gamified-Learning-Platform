@@ -47,63 +47,27 @@
     --tab-title-clr: #000000;
     --tab-subtitle-clr: rgba(0, 0, 0, 0.50);
 
-    /* Old main colours, delete later if not needed */
-    --box-clr: rgba(222, 221, 221, 0.3);
-    --heading-clr: #5b83eb;
-    --body-clr: rgba(0, 0, 0, 0.4);
-    --body-hover-clr: rgba(0, 0, 0, 0.5);
-
-    --textbox-txt-clr: #000000;
-    --textbox-pl-clr: rgba(0, 0, 0, 0.6);
-    --textbox-bg-clr: #ffffff;
-
-    --btn-txt-clr: #f5f5f5;
-    --btn-bg-clr: rgba(91, 132, 235, 0.7);
-    --btn-bg-hover-clr: rgba(91, 131, 235, 0.8);
-    --btn-bg-disabled-clr: rgba(112, 151, 249, 0.45);
-
-    --checkbox-clr: #d9d9d9;
-    --link-clr: rgb(99, 138, 236);
-    --link-hover-clr: rgba(91, 131, 235, 0.8);
+    --panel-h3-clr: black;
+    --panel-h4-clr: #575757;
+    --panel-body-clr: black;
 
     /* Font Families/Presets */
-    --tab-font-family: "JejuGothic", "NanumGothic";
-    --body-font-family: "JejuGothic", "NanumGothic";
+    --general-font-family: "JejuGothic", "NanumGothic";
 
-    --tab-title-font: normal 400 17px / normal var(--tab-font-family);
-    --tab-subtitle-font: normal 400 14px / normal var(--tab-font-family);
-    --body-font: normal 400 14px / normal var(--body-font-family);
-
-    /* Old fonts, delete later if not needed */
-    --heading-font-family: "JejuGothic", "NanumGothic";
-
-    --heading-font: normal 400 26px / normal var(--heading-font-family);
-
-    --link-font: normal 00 15.4px / normal var(--body-font-family);
-    --body-sub-font: normal 400 15px / normal var(--body-font-family);
+    --tab-title-font: normal 400 17px / normal var(--general-font-family);
+    --tab-subtitle-font: normal 400 14px / normal var(--general-font-family);
+    --body-font: normal 400 14px / normal var(--general-font-family);
+    --heading-3-font: normal 400 22px / normal var(--general-font-family);
+    --heading-4-font: normal 400 20px / normal var(--general-font-family); 
 
     /* Shadows */
     --tab-text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
 
-    /* Old borders & shadows, delete later if not needed */
-    --form-item-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
-        0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-    --btn-shadow-1: 0px 4px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.225) inset;
-    --btn-shadow-2: 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
-
-    --btn-disabled-border: 0.01px rgb(159, 159, 159) solid;
-    --input-border: 0.5px black solid;
-    --error-border: 0.4px red solid;
-
     /* Transitions */
+    --tab-menu-transition: width 0.5s ease;
     --tab-bg-transition: background-color 0.5s ease;
     --tab-clr-transition: border-left-width 0.2s ease-out;
 
-    /* Old transitions, delete later if not needed */
-    --link-transition: all 0.2s ease;
-    --underline-transition: transform 0.3s ease-out;
-    --btn-transition-1: all 0.1s linear;
-    --btn-transition-2: all 0.7s ease;
 }
 
 /**
@@ -119,7 +83,7 @@
 main {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    /* overflow: auto; */
 
     margin-top: 70px;
     margin-left: auto;
@@ -131,13 +95,25 @@ main {
     width: 300px;
     height: fit-content;
     margin-right: 25px;
+    transition: var(--tab-menu-transition);
 }
 
 .lesson-wrapper {
     width: auto;
-    height: 1000px;   /* Change to "fit-content" later */
+    height: fit-content;   /* Change to "fit-content" later */
     min-width: 500px;
     flex-grow: 1;
+    
+}
+
+.lesson-wrapper h3 {
+    color: var(--panel-h3-clr);
+    font: var(--heading-3-font);
+}
+
+.lesson-wrapper h4 {
+    color: var(--panel-h4-clr);
+    font: var(--heading-4-font);
 }
 
 .tabs-wrapper ul {
@@ -153,13 +129,33 @@ main {
 }
 
 @media screen and (max-width: 935px) {
+    main {
+        flex-wrap: wrap;
+    }
+
     .tabs-wrapper {
+        position: relative;
         min-width: auto;
         max-width: auto;
         width: 100%;
+        padding-bottom: 20px;
+        /* border-bottom: 2px solid #D4D4D4; */
+    }
+
+    .tabs-wrapper::after {
+        position: absolute;
+        content: "";
+        width: 103%;
+        height: 2px;
+        left: 0;
+        bottom: 0px;
+
+        background-color: #d4d4d4;
+        
     }
 
     .lesson-wrapper {
+        padding-top: 30px;
         min-width: auto;
         width: 100%;
     }
@@ -188,6 +184,7 @@ main {
     background: none;
     width: 100%;
     text-align: left;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
 }
 
 .tabs-unit-menu {
@@ -196,10 +193,6 @@ main {
 
 li.tabs-unit {
     margin-left: 0;
-}
-
-.tabs-module {
-    /* margin-bottom: 10px; */
 }
 
 .tabs-module button {
@@ -238,18 +231,8 @@ ul.tabs-unit-menu {
     position: relative;
 }
 
-.tabs-module button::after {
-    background-color: #dedddd;
-    position: absolute;
-    content: "";
-    height: 2px;
-    width: 100%;
-    right: 0;
-    bottom: 0;
-}
-
-
 /* WIP, borders are not working */
+.tabs-module button::before,
 .tabs-unit-menu li button::before,
 .tabs-topic-menu li button::before,
 .tabs-activity-menu li button::before {
@@ -262,6 +245,7 @@ ul.tabs-unit-menu {
     top: 0;
 }
 
+.tabs-module button::after,
 .tabs-unit-menu li button::after,
 .tabs-topic-menu li button::after,
 .tabs-activity-menu li button::after {
@@ -343,8 +327,8 @@ ul.tabs-unit-menu {
 
 .panel {
     display: none;
-    -webkit-animation: fadeEffect 1.5s;
-    animation: fadeEffect 1.5s;
+    -webkit-animation: panelFadeIn 1.5s;
+    animation: panelFadeIn 1.5s;
 }
 
 .show-panel {
@@ -358,6 +342,8 @@ ul.tabs-unit-menu {
     align-items: center; */
     background-color: rgba(222, 221, 221, 0.30);
     width: 100%;
+    padding-top: 25px;
+    padding-bottom: 20px;
 }
 
 .panel-wrapper > * {
@@ -366,39 +352,62 @@ ul.tabs-unit-menu {
 }
 
 .lesson-heading {
-    width: 100%
+    width: 100%;
+    border: 2px solid #afafaf;
+    border-top: 6px solid rgb(91, 131, 235);
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .lesson-heading h3 {
-
+    margin-top: 17px;
+    margin-bottom: 12px;
 }
 
 .lesson-obj {
-    max-width: 740px;
-    width: 80%;
+    max-width: 800px;
+    width: 90%;
+    height: auto;
     border-radius: 100px;
     border-color: var(--tab-module-clr);
     border-width: 3px;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 25px;
 
     padding-top: 20px;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
     text-align: center;
 }
 
-.lesson-obj ul {
-    columns: 2;
+.lesson-obj ul,
+.textbook-pages ul {
     text-align: left;
     list-style-type: disc;
+    margin-top: 15px;
     margin-left: 20px;
     margin-right: 20px;
+    width: auto;
 
+    columns: 2;
+    column-gap: 25px;
     font: var(--body-font);
 }
 
-.lesson-obj li {
+
+.lesson-obj li,
+.textbook-pages li {
     margin-bottom: 5px;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    color: var(--panel-body-clr);
+}
+
+.lesson-video,
+.lesson-text,
+.lesson-textbook {
+    margin-bottom: 20px;
 }
 
 .lesson-video {
@@ -408,26 +417,114 @@ ul.tabs-unit-menu {
     justify-content: center;
     max-width: 700px;
     width: 75%;
+
+    padding-top: 15px;
+    padding-bottom: 25px;
     margin-left: auto;
     margin-right: auto;
 }
 
+.lesson-video h4 {
+    margin-bottom: 15px;
+}
+
 .lesson-video .video-wrapper {
-    width: 80%;
+    width: 85%;
     height: auto;
     max-width: 700px;
 
     /* border-radius: 10px; */
-    border: 2px black solid;
+    border: 2px solid #a7a7a7;
     /* overflow: hidden; */
 }
 
+.lesson-text,
+.lesson-textbook,
+.lesson-practice {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    max-width: 700px;
+    width: 75%;
+    padding-top: 20px;
+    padding-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.lesson-textbook h4 {
+    margin-bottom: 15px;
+}
+
+.textbook-link {
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    align-items: center;
+    word-break: break-all;
+}
+
+.textbook-link span {
+    font: var(--heading-4-font);
+    color: #13348b;
+    font-size: 15px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+a.textbook-download {
+    cursor: pointer;
+    text-decoration: underline;
+    font: var(--body-font);
+    font-size: 15px;
+    color: #a6a3cd;
+}
+
+.textbook-pages ul {
+    margin-top: 15px;
+}
+
+.lesson-text-body,
+.lesson-practice-body {
+    font: var(--body-font);
+    color: var(--panel-body-clr);
+
+    margin-top: 7.5px;
+    margin-left: 30px;
+    margin-right: 30px;
+    line-height: 1.2rem;
+}
+
+.lesson-text-body {
+    text-align: left;
+}
+
+.lesson-text-body p {
+    text-indent: 30pt;
+}
+
+@media screen and (min-width: 1300px) {
+    .lesson-wrapper h3 {
+        font-size: 24px;
+    }
+
+    .lesson-wrapper h4 {
+        font-size: 22px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .textbook-link span {
+        display: none;
+    }
+}
+
 /* Fade in panel animation */
-@-webkit-keyframes fadeEffect {
+@-webkit-keyframes panelFadeIn {
     from {
         opacity: 0;
     }
-    30% {
+    40% {
         opacity: 0;
     }
     to {
@@ -435,11 +532,11 @@ ul.tabs-unit-menu {
     }
 }
   
-@keyframes fadeEffect {
+@keyframes panelFadeIn {
     from {
         opacity: 0;
     }
-    50% {
+    40% {
         opacity: 0;
     }
     to {

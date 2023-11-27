@@ -349,6 +349,9 @@
     #header-content {
         height: 100%;
         margin-top: 0;
+        /* Added an opacity animation to prevent weird visual 
+           glitch when shrinking page width to mobile menu view */
+        animation: hideMobileGlitch 0.25s;
     }
 
     #header-content .content-main a {
@@ -435,5 +438,17 @@
     .main-link:hover::after {
         transform: none;
         background-color: none;
+    }
+}
+  
+@keyframes hideMobileGlitch {
+    from {
+        opacity: 0;
+    }
+    70% {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }

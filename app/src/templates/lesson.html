@@ -2,377 +2,367 @@
 {% block title %}Login - Gamified Learning Platform{% endblock %}
 
 {% block styling %}
-    <!-- Local Stylesheets -->
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/lesson.css') }}">
+<!-- Local Stylesheets -->
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/lesson.css') }}">
 {% endblock %}
 
 <!-- Note: Replace placeholder button text with Jinja blocks in the future -->
 {% block content %}
-    <main>
-        <div id="lesson-tabs" class="tabs-wrapper">
-            <div class="hide-tab">
-                <span></span>
-                <img src="" alt="">
+<main>
+    <div id="lesson-tabs" class="tabs-wrapper">
+
+        <!-- TODO: Implement Jinja to generate a tab structure like below based off the course entry relationships;
+                   currently, the below structure contains sample placeholder modules and lessons -->
+
+        <ul class="tabs-unit-menu">
+            <div class="tabs-module">
+                <button class="tabs-module-btn">
+                    <div class="tab-title">Pre-Algebra</div>
+                    <div class="tab-subtitle">15 MODULES - 179 TOPICS</div>
+                </button>
             </div>
-            <ul class="tabs-unit-menu">
-                <div class="tabs-module">
-                    <button class="tabs-module-btn">
-                        <div class="tab-title">Pre-Algebra</div>
-                        <div class="tab-subtitle">15 MODULES - 179 TOPICS</div>
-                    </button>
-                </div>
 
-                <li class="tabs-unit tabs-dropdown">
-                    <button class="tabs-unit-btn">
-                        <div class="tab-subtitle">MODULE 1</div>
-                        <div class="tab-title">Factors & Multiples</div>
-                    </button>
+            <li class="tabs-unit tabs-dropdown">
+                <button class="tabs-unit-btn">
+                    <div class="tab-subtitle">MODULE 1</div>
+                    <div class="tab-title">Factors & Multiples</div>
+                </button>
 
-                    <ul class="tabs-topic-menu">
-                        <li class="tabs-topic tabs-dropdown">
-                            <button class="tabs-topic-btn">
-                                <div class="tab-subtitle">TOPIC 1</div>
-                                <div class="tab-title">Factors & Multiples</div>
-                            </button>
+                <ul class="tabs-topic-menu">
+                    <li class="tabs-topic tabs-dropdown">
+                        <button class="tabs-topic-btn">
+                            <div class="tab-subtitle">TOPIC 1</div>
+                            <div class="tab-title">Factors & Multiples</div>
+                        </button>
 
-                            <ul class="tabs-activity-menu">
-                                <li class="tabs-activity tab-lesson">
-                                    <a href="#panel-1">
-                                        <button class="tabs-activity-btn">
-                                            <div class="tab-title">Lesson</div>
-                                        </button>
-                                    </a>
-                                </li>
+                        <ul class="tabs-activity-menu">
+                            <li class="tabs-activity tab-lesson">
+                                <a href="#panel-1">
+                                    <button class="tabs-activity-btn">
+                                        <div class="tab-title">Lesson</div>
+                                    </button>
+                                </a>
+                            </li>
 
-                                <li class="tabs-activity tab-quiz">
-                                    <a href="">
-                                        <button class="tabs-activity-btn">
-                                            <div class="tab-title">Quiz</div>
-                                        </button>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            <li class="tabs-activity tab-quiz">
+                                <a href="">
+                                    <button class="tabs-activity-btn">
+                                        <div class="tab-title">Quiz</div>
+                                    </button>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
-                        <li class="tabs-topic tabs-dropdown">
-                            <button class="tabs-topic-btn">
-                                <div class="tab-subtitle">TOPIC 2</div>
-                                <div class="tab-title">Prime & Composite Numbers</div>
-                            </button>
+                    <li class="tabs-topic tabs-dropdown">
+                        <button class="tabs-topic-btn">
+                            <div class="tab-subtitle">TOPIC 2</div>
+                            <div class="tab-title">Prime & Composite Numbers</div>
+                        </button>
 
-                            <ul class="tabs-activity-menu">
-                                <li class="tabs-activity tab-lesson">
-                                    <a href="#panel-2">
-                                        <button class="tabs-activity-btn">
-                                            <div class="tab-title">Lesson</div>
-                                        </button>
-                                    </a>
-                                </li>
+                        <ul class="tabs-activity-menu">
+                            <li class="tabs-activity tab-lesson">
+                                <a href="#panel-2">
+                                    <button class="tabs-activity-btn">
+                                        <div class="tab-title">Lesson</div>
+                                    </button>
+                                </a>
+                            </li>
 
-                                <li class="tabs-activity tab-quiz">
-                                    <a href="">
-                                        <button class="tabs-activity-btn">
-                                            <div class="tab-title">Quiz</div>
-                                        </button>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            <li class="tabs-activity tab-quiz">
+                                <a href="">
+                                    <button class="tabs-activity-btn">
+                                        <div class="tab-title">Quiz</div>
+                                    </button>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
-                        <li class="tabs-topic tabs-dropdown">
-                            <button class="tabs-topic-btn">
-                                <div class="tab-subtitle">TOPIC 3</div>
-                                <div class="tab-title">Prime Factorization</div>
-                            </button>
+                    <li class="tabs-topic tabs-dropdown">
+                        <button class="tabs-topic-btn">
+                            <div class="tab-subtitle">TOPIC 3</div>
+                            <div class="tab-title">Prime Factorization</div>
+                        </button>
 
-                            <ul class="tabs-activity-menu">
-                                <li class="tabs-activity tab-lesson">
-                                    <a href="#panel-3">
-                                        <button class="tabs-activity-btn">
-                                            <div class="tab-title">Lesson</div>
-                                        </button>
-                                    </a>
-                                </li>
+                        <ul class="tabs-activity-menu">
+                            <li class="tabs-activity tab-lesson">
+                                <a href="#panel-3">
+                                    <button class="tabs-activity-btn">
+                                        <div class="tab-title">Lesson</div>
+                                    </button>
+                                </a>
+                            </li>
 
-                                <li class="tabs-activity tab-quiz">
-                                    <a href="">
-                                        <button class="tabs-activity-btn">
-                                            <div class="tab-title">Quiz</div>
-                                        </button>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            <li class="tabs-activity tab-quiz">
+                                <a href="">
+                                    <button class="tabs-activity-btn">
+                                        <div class="tab-title">Quiz</div>
+                                    </button>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
+                </ul>
+            </li>
+
+            <li class="tabs-unit tabs-dropdown">
+                <button class="tabs-unit-btn">
+                    <div class="tab-subtitle">MODULE 2</div>
+                    <div class="tab-title">Patterns</div>
+                </button>
+            </li>
+
+            <li class="tabs-unit tabs-dropdown">
+                <button class="tabs-unit-btn">
+                    <div class="tab-subtitle">MODULE 3</div>
+                    <div class="tab-title">Ratios and Rates</div>
+                </button>
+            </li>
+
+            <li class="tabs-unit tabs-dropdown">
+                <button class="tabs-unit-btn">
+                    <div class="tab-subtitle">MODULE 4</div>
+                    <div class="tab-title">Percentages</div>
+                </button>
+            </li>
+
+            <li class="tabs-unit tabs-dropdown">
+                <button class="tabs-unit-btn">
+                    <div class="tab-subtitle">MODULE 5</div>
+                    <div class="tab-title">Exponents Intro & Order of Operations</div>
+                </button>
+            </li>
+
+            <li class="tabs-unit tabs-dropdown">
+                <button class="tabs-unit-btn">
+                    <div class="tab-subtitle">MODULE 6</div>
+                    <div class="tab-title">Variables & Expressions</div>
+                </button>
+            </li>
+
+            <li class="tabs-unit tabs-dropdown">
+                <button class="tabs-unit-btn">
+                    <div class="tab-subtitle">MODULE 7</div>
+                    <div class="tab-title">Equations & Inequalities</div>
+                </button>
+            </li>
+
+            <li class="tabs-unit tabs-dropdown">
+                <button class="tabs-unit-btn">
+                    <div class="tab-subtitle">MODULE 8</div>
+                    <div class="tab-title">Proportional Relationships</div>
+                </button>
+            </li>
+
+        </ul>
+    </div>
+
+    <!-- Possible idea: make this document a jinja template including only the tab HTML above, 
+                        then load whatever quiz/lesson here from another template? -->
+    <div id="lesson-panels" class="lesson-wrapper">
+        <!-- TODO: Implement Jinja to generate panels like below based off the lesson entry contents;
+                   currently, the below structure contains sample placeholder modules and lessons -->
+
+        <!-- Note: each panel ID corresponds to the anchor href link of the clicked tab that opens the panel -->
+        <div class="panel" id="panel-1" panel-type="video">
+            <div class="lesson-heading">
+                <h3>Factors & Multiples - Lesson</h3>
+            </div>
+
+            <div class="panel-wrapper">
+                <div class="lesson-obj">
+                    <h4>Learning Objectives</h4>
+                    <ul>
+                        <li>Understand and Identify Factors</li>
+                        <li>Apply factorization in real world contexts</li>
+                        <li>Utilize factors to Simplify Fractions</li>
+                        <li>Explore and apply prime factorization</li>
                     </ul>
-                </li>
-
-                <li class="tabs-unit tabs-dropdown">
-                    <button class="tabs-unit-btn">
-                        <div class="tab-subtitle">MODULE 2</div>
-                        <div class="tab-title">Patterns</div>
-                    </button>
-                </li>
-
-                <li class="tabs-unit tabs-dropdown">
-                    <button class="tabs-unit-btn">
-                        <div class="tab-subtitle">MODULE 3</div>
-                        <div class="tab-title">Ratios and Rates</div>
-                    </button>
-                </li>
-
-                <li class="tabs-unit tabs-dropdown">
-                    <button class="tabs-unit-btn">
-                        <div class="tab-subtitle">MODULE 4</div>
-                        <div class="tab-title">Percentages</div>
-                    </button>
-                </li>
-
-                <li class="tabs-unit tabs-dropdown">
-                    <button class="tabs-unit-btn">
-                        <div class="tab-subtitle">MODULE 5</div>
-                        <div class="tab-title">Exponents Intro & Order of Operations</div>
-                    </button>
-                </li>
-
-                <li class="tabs-unit tabs-dropdown">
-                    <button class="tabs-unit-btn">
-                        <div class="tab-subtitle">MODULE 6</div>
-                        <div class="tab-title">Variables & Expressions</div>
-                    </button>
-                </li>
-
-                <li class="tabs-unit tabs-dropdown">
-                    <button class="tabs-unit-btn">
-                        <div class="tab-subtitle">MODULE 7</div>
-                        <div class="tab-title">Equations & Inequalities</div>
-                    </button>
-                </li>
-
-                <li class="tabs-unit tabs-dropdown">
-                    <button class="tabs-unit-btn">
-                        <div class="tab-subtitle">MODULE 8</div>
-                        <div class="tab-title">Proportional Relationships</div>
-                    </button>
-                </li>
-
-            </ul>
-        </div>
-
-        <!-- Possible idea: make this document a jinja template, then load whatever quiz/lesson here from another template? -->
-        <div id="lesson-panels" class="lesson-wrapper">
-            <div class="panel" id="panel-1" panel-type="video">
-                <div class="lesson-heading">
-                    <h3>Factors & Multiples - Lesson</h3>
                 </div>
 
-                <div class="panel-wrapper">
-                    <div class="lesson-obj">
-                        <h4>Learning Objectives</h4>
+                <div class="lesson-video">
+                    <h4>Video Lesson</h4>
+                    <!-- Current video folder format (placeholder): "video-[course ID - 4 digits]-[moduleID - 2 digits]-[topicID - 2 digits]" -->
+
+                    <div class="video-wrapper">
+                        <video id="video-0000-01-01" playsinline crossorigin data-poster="">
+                            <!-- Note: video path and thumbnail are added dynamically through JS, based on the numbers in the video ID 
+                                           corresponding to the appropriate folder name in "static/vendor/lesson-videos/". -->
+                            <source src="" type="video/mp4" />
+                        </video>
+                    </div>
+                </div>
+
+                <div class="lesson-textbook">
+                    <h4>Textbook Work</h4>
+
+                    <div class="textbook-link">
+                        <span>Grade10_PreAlgebra_10thEdition.pdf</span>
+                        <!-- NOTE: will have to write an algorithm to automatically set href link to "a" anchors
+                                   for every lesson, based on the current course -->
+                        <a class="textbook-download" href="../static/vendor/textbooks/0000/sample.pdf" download="">DOWNLOAD</a>
+                    </div>
+
+                    <div class="textbook-pages">
                         <ul>
-                            <li>Understand and Identify Factors</li>
-                            <li>Apply factorization in real world contexts</li>
-                            <li>Utilize Factors to Simplify Fractions</li>
-                            <li>Explore and Apply prime factorization</li>
+                            <li>Chapter 3 - Read Pages 44 to 66</li>
+                            <li>Complete Exercises 1-10</li>
                         </ul>
                     </div>
-    
-                    <div class="lesson-video">
-                        <h4>Video Lesson</h4>
-                        <!-- Current video folder format (placeholder): "video-[course ID - 4 digits]-[moduleID - 2 digits]-[topicID - 2 digits]" -->
-
-                        <div class="video-wrapper">
-                            <video id="video-0000-01-01" playsinline crossorigin data-poster="">
-                                <!-- Note: video path and thumbnail are added dynamically through JS, based on the numbers in the video ID 
-                                           corresponding to the appropriate folder name in "static/vendor/lesson-videos/". -->
-                                <source src="" type="video/mp4" />  
-                            </video>
-                        </div>
-                    </div>
-    
-                    <div class="lesson-textbook">
-                        <h4>Textbook Work</h4>
-    
-                        <div class="textbook-link">
-                            <span>Grade10_PreAlgebra_10thEdition.pdf</span>
-                            <a>Download</a>
-                        </div>
-    
-                        <div class="textbook-pages">
-                            <ul>
-                                <li>Chapter 3 - Read Pages 44 to 66</li>
-                                <li>Complete Exercises 1-10</li>
-                            </ul>
-                        </div>
-                    </div>
-    
-                    <div class="lesson-practice">
-                        <h4>Practice and Familiarize</h4>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel" id="panel-2" panel-type="text">
-                <div class="lesson-heading">
-                    <h3>Prime & Composite Numbers - Lesson</h3>
                 </div>
 
-                <div class="panel-wrapper">
-                    <div class="lesson-obj">
-                        <h4>Learning Objectives</h4>
-                    </div>
-    
-                    <div class="lesson-text">
-                        <h4>Lesson Content</h4>
-                        <div>  <!-- Good 'ol lorem ipsum placeholder text -->
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate massa ac massa hendrerit pellentesque. 
-                            Proin accumsan, mauris et fringilla efficitur, felis dui dictum neque, sed lobortis elit nisi quis sapien. 
-                            Curabitur eget dui vel dolor auctor semper. Vestibulum scelerisque elit sit amet sagittis feugiat. Aenean 
-                            scelerisque egestas lorem, et rutrum massa dictum vitae. Morbi a justo id purus laoreet egestas ultricies 
-                            at nulla. Phasellus at imperdiet enim.
-                        </div>
-                    </div>
-    
-                    <div class="lesson-textbook">
-                        <h4>Textbook Work</h4>
-    
-                        <div class="textbook-link">
-                            <span>Grade10_PreAlgebra_10thEdition.pdf</span>
-                            <a>Download</a>
-                        </div>
-    
-                        <div class="textbook-pages">
-                            <ul>
-                                <li>Chapter 3 - Read Pages 44 to 66</li>
-                                <li>Complete Exercises 1-10</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="lesson-practice">
-                        <h4>Practice and Familiarize</h4>
+                <div class="lesson-practice">
+                    <h4>Practice and Familiarize</h4>
+                    <div class="lesson-practice-body">
+                        Spaced repetition learning here, maybe through some mini interactable 
+                        question module here (for no marks, just practice)?
                     </div>
                 </div>
-            </div>
-
-            <div class="panel" id="panel-3">
-                This is the third panel.
             </div>
         </div>
-    </main>
+
+        <div class="panel" id="panel-2" panel-type="text">
+            <div class="lesson-heading">
+                <h3>Prime & Composite Numbers - Lesson</h3>
+            </div>
+
+            <div class="panel-wrapper">
+                <div class="lesson-obj">
+                    <h4>Learning Objectives</h4>
+                    <ul>
+                        <li>Understand and Identify Factors</li>
+                        <li>Apply factorization in real world contexts</li>
+                        <li>Utilize factors to Simplify Fractions</li>
+                        <li>Explore and apply prime factorization</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-text">
+                    <h4>Lesson Content</h4>
+                    <div class="lesson-text-body"> <!-- Good 'ol lorem ipsum placeholder text :D -->
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lobortis maximus ex, sit amet 
+                            eleifend ante. Nam nec urna faucibus, sagittis leo eget, consequat tortor. Morbi sagittis congue 
+                            augue, vitae ornare tortor. Proin in turpis sit amet metus pulvinar pulvinar. Sed justo purus, 
+                            efficitur nec dolor in, iaculis rutrum augue. In eget vulputate tellus. Pellentesque vitae faucibus 
+                            augue, sit amet rhoncus turpis. Aliquam risus sem, sollicitudin vitae posuere eu, ultricies in purus. 
+                            Sed dictum viverra facilisis. Maecenas facilisis nisl leo, commodo blandit dui finibus vel.
+                        </p>
+
+                        <p>
+                            Sed varius felis eget tellus pulvinar sodales. Quisque ullamcorper enim et lectus pretium, vitae
+                            maximus ante scelerisque. Nulla ex elit, dignissim elementum rhoncus nec, efficitur eget sem. 
+                            Sed maximus vulputate tortor, in cursus dui rutrum nec. Nulla rutrum turpis vel lorem congue, 
+                            nec aliquam nunc pretium. Fusce at arcu eget neque volutpat tincidunt non vitae nibh. Cras fringilla 
+                            eros quis sapien viverra, quis scelerisque augue dictum. Sed dapibus hendrerit turpis. Sed rutrum 
+                            sed risus et gravida. Curabitur sodales id dolor vel interdum.
+                        </p>
+
+                        <p>
+                            Vestibulum scelerisque mattis consequat. In eget urna tellus. Morbi velit nunc, hendrerit vel lorem 
+                            quis, tincidunt gravida neque. Pellentesque egestas enim nec lacus tempor, sed bibendum felis lobortis. 
+                            Aenean vestibulum vel leo in semper. Integer gravida luctus ornare. Nullam magna tellus, sagittis sed 
+                            dapibus sed, congue quis turpis. Quisque id enim in arcu faucibus scelerisque. Suspendisse odio massa, 
+                            imperdiet et urna a, aliquam aliquet neque. Phasellus suscipit ex quis libero finibus, porta efficitur 
+                            augue gravida. Etiam ac pretium urna. Pellentesque posuere hendrerit turpis sed suscipit. Suspendisse 
+                            ultrices, augue in tristique ultricies, ligula diam facilisis justo, eget consequat mauris ipsum sit 
+                            amet nunc. Etiam non nisl justo. Donec dignissim ullamcorper maximus. Fusce rhoncus volutpat augue.  
+                        </p>
+                    </div>
+                </div>
+
+                <div class="lesson-textbook">
+                    <h4>Textbook Work</h4>
+
+                    <div class="textbook-link">
+                        <span>Grade10_PreAlgebra_10thEdition.pdf</span>
+                        <!-- NOTE: will have to write an algorithm to automatically set href link to "a" anchors
+                                   for every lesson, based on the current course -->
+                        <a class="textbook-download" href="../static/vendor/textbooks/0000/sample.pdf" download="">DOWNLOAD</a>
+                    </div>
+
+                    <div class="textbook-pages">
+                        <ul>
+                            <li>Chapter 3 - Read Pages 44 to 66</li>
+                            <li>Complete Exercises 1-10</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="lesson-practice">
+                    <h4>Practice and Familiarize</h4>
+                    <div class="lesson-practice-body">
+                        Spaced repetition learning here, maybe through some mini interactable 
+                        psuedo-randomized question module (for no marks, just practice)?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" id="panel-3" panel-type="video">
+            <div class="lesson-heading">
+                <h3>Factors & Multiples - Lesson</h3>
+            </div>
+
+            <div class="panel-wrapper">
+                <div class="lesson-obj">
+                    <h4>Learning Objectives</h4>
+                    <ul>
+                        <li>Understand and Identify Factors</li>
+                        <li>Apply factorization in real world contexts</li>
+                        <li>Utilize factors to Simplify Fractions</li>
+                        <li>Explore and apply prime factorization</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-video">
+                    <h4>Video Lesson</h4>
+                    <!-- Current video folder format (placeholder): "video-[course ID - 4 digits]-[moduleID - 2 digits]-[topicID - 2 digits]" -->
+
+                    <div class="video-wrapper">
+                        <video id="video-0000-01-03" playsinline crossorigin data-poster="">
+                            <!-- Note: video path and thumbnail are added dynamically through JS, based on the numbers in the video ID 
+                                           corresponding to the appropriate folder name in "static/vendor/lesson-videos/". -->
+                            <source src="" type="video/mp4" />
+                        </video>
+                    </div>
+                </div>
+
+                <div class="lesson-textbook">
+                    <h4>Textbook Work</h4>
+
+                    <div class="textbook-link">
+                        <span>Grade10_PreAlgebra_10thEdition.pdf</span>
+                        <!-- NOTE: will have to write an algorithm to automatically set href link to "a" anchors
+                                   for every lesson, based on the current course -->
+                        <a class="textbook-download" href="../static/vendor/textbooks/0000/sample.pdf" download="">DOWNLOAD</a>
+                    </div>
+
+                    <div class="textbook-pages">
+                        <ul>
+                            <li>Chapter 3 - Read Pages 44 to 66</li>
+                            <li>Complete Exercises 1-10</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="lesson-practice">
+                    <h4>Practice and Familiarize</h4>
+                    <div class="lesson-practice-body">
+                        Spaced repetition learning here, maybe through some mini interactable 
+                        psuedo-randomized question module (for no marks, just practice)?
+                    </div>
+                </div>
+            </div>
+    </div>
+</main>
 {% endblock %}
 
 {% block scripts %}
-    <!-- Insert local scripts here, if necessary -->
-    <!-- Plyr.js - https://github.com/sampotts/plyr -->
-    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-
-    <script>
-        // HTML DOM Elements
-        const tabDropdown = document.querySelectorAll(".tabs-dropdown > button");
-        const tabLessons = document.querySelectorAll(".tabs-activity.tab-lesson a");
-        const tabQuizzes = document.querySelectorAll(".tab-activity.tab-quiz a");
-        const panelContainer = document.querySelector("#lesson-panels");
-        const videoElements = document.querySelectorAll(".lesson-video");
-        const videoPlayers = {}; // ...in case if these videos ever have to be accessed in the future
-
-        // Plyr.js Elements - Add in proper video sources + thumbnails, and initialize Plyr objects using video element IDs
-        for (let videoElement of videoElements) {
-            let video = videoElement.querySelector("video");
-            let source = videoElement.querySelector("source");
-            let videoPathID = video.id.substr(6);
-            let videoPath = `../static/vendor/lesson-videos/${videoPathID}/`;
-            let videoPlayer;
-
-            source.src = videoPath + "video.mp4";
-            video.setAttribute("data-poster", videoPath + "thumbnail.png");
-            video.load();
-
-            videoPlayer = new Plyr(`#${video.id}`);
-            videoPlayers[video.id] = videoPlayer;
-        }
-
-        function toggleDropdown(event) {
-            let subMenu = this.nextElementSibling;
-            let subMenuItems = subMenu.querySelectorAll(":scope>li");
-            let parentMenu = this.closest("ul");
-            let numSubMenuHeight = 0;
-
-            this.classList.toggle("menu-open");
-
-            if (this.classList.contains("menu-open")) {
-                subMenuItems.forEach((item) => {
-                    numSubMenuHeight += item.offsetHeight;
-                })
-
-                subMenu.style.maxHeight = `${numSubMenuHeight}px`;
-
-                if (parentMenu != null) {
-                    let parentMenuHeight = parentMenu.style.maxHeight;
-                    parentMenuHeight = parentMenuHeight.slice(0, -2);
-
-                    parentMenu.style.maxHeight = `${parseInt(parentMenuHeight) + numSubMenuHeight}px`
-                }
-            } else {
-                subMenu.style.maxHeight = "0px";
-            }
-        }
-
-        function togglePanel(event) {
-            let panelBtn = this.querySelector("button");
-
-            let panelRef = this.hash;
-            let panel = panelContainer.querySelector(":scope > " + panelRef);
-            let otherPanels = panelContainer.querySelectorAll(`:scope > :not([id="${panelRef.substr(1)}"])`);
-
-            // Debug for filtering proper panels
-            // console.log(panel);
-            // console.log(otherPanels);
-
-            if (panel != null) {
-                otherPanels.forEach((otherPanel) => {
-                    otherPanel.classList.remove("show-panel");
-                });
-
-                tabLessons.forEach((otherTab) => {
-                    otherTab.querySelector("button").classList.remove("menu-open");
-                })
-
-                panel.classList.add("show-panel");
-                panelBtn.classList.add("menu-open");
-            }
-        }
-
-        function main() {
-            document.addEventListener("DOMContentLoaded", () => {
-                let currentLink = window.location.href;
-                let currentPanelID = currentLink.split("#")[1];
-                let tab, parentTab, parentParentTab;
-
-                if (currentPanelID == null) {
-                    tab = tabLessons[0];
-                } else {
-                    tab = document.querySelector(`a[href="#${currentPanelID}"]`);
-                }
-                
-                parentTab = tab.closest("ul").previousElementSibling;
-                parentParentTab = parentTab.closest("ul").previousElementSibling;
-
-                toggleDropdown.call(parentParentTab, null)
-                toggleDropdown.call(parentTab, null)
-                togglePanel.call(tab, null)
-            })
-
-            tabDropdown.forEach((tab) => {
-                tab.addEventListener("click", toggleDropdown);
-            });
-
-            tabLessons.forEach((tab) => {
-                tab.addEventListener("click", togglePanel);
-            });
-        }
-
-        main();
-    </script>
+<!-- Plyr.js - https://github.com/sampotts/plyr -->
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+<script src="../static/js/lesson.js"></script>
 {% endblock %}
