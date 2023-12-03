@@ -8,9 +8,9 @@ const videoElements = document.querySelectorAll(".lesson-video");
 const videoPlayers = {}; // ...in case if these videos ever have to be accessed in the future
 
 /**
- * This function is called whenever a tab with dropdown contents is clicked, causing
- * the element and its parent tab menus (if any) to toggle active classes ("menu-open") and 
- * increase/decrease in height size accordingly.
+ * This function is called whenever a lesson tab is clicked, causing
+ * the current panel to be halted & erased with the tab's respective panel to be rendered on the right
+ * of the screen.
 **/
 function togglePanel() {
     let panelBtn = this.querySelector("button");
