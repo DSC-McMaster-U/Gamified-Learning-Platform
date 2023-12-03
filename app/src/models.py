@@ -303,3 +303,4 @@ class QuizAnswer(db.Model):
     quiz_question_id = db.Column(db.Integer, db.ForeignKey('quiz_question.id'), nullable=False) # identify which quiz question the answer belongs to
     correct = db.Column(db.Boolean, nullable=False)
     answer_content = db.Column(db.Text, nullable=False)
+

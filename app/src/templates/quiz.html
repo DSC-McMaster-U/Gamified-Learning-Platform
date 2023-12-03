@@ -1,0 +1,154 @@
+{% extends "base.html" %} {% block title %}Quiz{% endblock %} {% block styling %}
+<!-- Local stylesheets -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}" />
+{% endblock %} {% block content %}
+<main>
+    <div id="heading">
+        <h1>Quiz: {{ quiz.title }}</h1>
+    </div>
+
+    <div id="quiz-container">
+        <div id="quiz-heading">
+            <div id="progress-container">
+                <p class="count-box" id="selectedCount">Questions Remaining: 0</p>
+                <progress value="0" max="100" id="progress-bar" />
+            </div>
+            <h2 id="questions-title">Questions</h2>
+        </div>
+        <div id="quiz-questions">
+            <form id="quiz-form">
+                <!-- Temporary workaround since there are no quizzes. DO NOT MODIFY THE IF STATEMENT -->
+                {% if quiz and quiz.questions %} {% for question_num, question in questions %}
+                <div class="question-block">
+                    <p class="question">{{ question_num }}. {{ question.question_content }}</p>
+
+                    {% for option in question.options %}
+                    <label>
+                        <input
+                            type="radio"
+                            value="{{ option }}"
+                            name="question_{{ question.id }}"
+                            onclick="updateCount()"
+                        />
+                        {{ option }}
+                    </label>
+                    {% endfor %}
+                </div>
+                {% endfor %} {% else %}
+                <!-- Else condition, this is temporary -->
+                {% endif %}
+                <!-- Sample questions to test formatting -->
+                <div class="question-block">
+                    <p class="question">1. Test question</p>
+                    <div class="question-options">
+                        <label>
+                            <input
+                                type="radio"
+                                value="q1option1"
+                                name="test1"
+                                onclick="updateCount()"
+                            />
+                            Q1 Option 1
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                value="q1option2"
+                                name="test1"
+                                onclick="updateCount()"
+                            />
+                            Q1 Option 2
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                value="q1option3"
+                                name="test1"
+                                onclick="updateCount()"
+                            />
+                            Q1 Option 3
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                value="q1option4"
+                                name="test1"
+                                onclick="updateCount()"
+                            />
+                            Q1 Option 4
+                        </label>
+                    </div>
+                    <p class="question">2. Test question</p>
+                    <div class="question-options">
+                        <label>
+                            <input
+                                type="radio"
+                                value="q2option1"
+                                name="test2"
+                                onclick="updateCount()"
+                            />
+                            Q2 Option 1
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                value="q2option2"
+                                name="test2"
+                                onclick="updateCount()"
+                            />
+                            Q2 Option 2
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                value="q2option3"
+                                name="test2"
+                                onclick="updateCount()"
+                            />
+                            Q2 Option 3
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                value="q2option4"
+                                name="test2"
+                                onclick="updateCount()"
+                            />
+                            Q2 Option 4
+                        </label>
+                    </div>
+                </div>
+
+                <button disabled id="submit-quiz" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %} {% block scripts %}
+<script>
+    let totalCount;
+    document.addEventListener("DOMContentLoaded", () => {
+        totalCount = document.getElementsByClassName("question").length;
+        document.getElementById("selectedCount").textContent = `Questions Remaining: ${totalCount}`;
+    });
+
+    function updateCount() {
+        let inputs = document.getElementById("quiz-form").elements;
+        let count = 0;
+        let answered = document.querySelectorAll('input[type="radio"]:checked').length;
+        let progressBar = document.getElementById("progress-bar");
+
+        document.getElementById("selectedCount").textContent = `Questions Remaining: ${
+            totalCount - answered
+        }`;
+
+        progressBar.value = (answered / totalCount) * 100;
+
+        if (progressBar.value == 100) {
+            let submitButton = document.getElementById("submit-quiz");
+            submitButton.disabled = false;
+            submitButton.classList.add("clickable");
+        }
+    }
+</script>
+{% endblock %}
