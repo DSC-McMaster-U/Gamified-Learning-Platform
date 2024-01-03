@@ -7,3 +7,51 @@
 {% endblock %} 
 
 {% block content %}
+<main>
+    <div id="heading">
+        <h1>Welcome to your Dashboard, {{ current_user.username }}</h1>
+    </div>
+
+    <div id="dashboard-container">
+        <div id="dashboard-heading">
+            <div id="user-points">
+                <!-- Replace with actual points count later, user points from model -->
+                <img
+                    id="points-logo-img"
+                    src="../static/vendor/images/dashboard/points-logo.png"
+                    alt=""
+                />
+                <span id="number-points">500</span>
+            </div>
+            <div id="user-level">
+                <div id="level-progress-container">
+                    <label for="progress-bar">Level 1</label>
+                    <progress id="progress-bar" value="250" max="1000"></progress>
+                </div>
+                <p id="remaining-xp">750 more XP until next level!</p> 
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h2>Learn</h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h2>Daily Challenge</h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h2>Test Yourself!</h2>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h2>Weekly Leaderboard</h2>
+        </div>
+    </div>
+</main>
+{% endblock %}

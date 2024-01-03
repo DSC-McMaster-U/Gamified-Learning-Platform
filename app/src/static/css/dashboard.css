@@ -83,3 +83,133 @@
     --btn-transition-1: all 0.1s linear;
     --btn-transition-2: all 0.7s ease;
 }
+
+/**
+ * ========
+ * General Styling
+ * ========
+**/
+
+.body-text {
+    font: var(--body-font);
+}
+
+main a {
+    position: relative;
+}
+
+main a::after {
+    background-color: var(--textbox-bg-clr);
+    position: absolute;
+    content: "";
+    height: 1.5px;
+    width: 100%;
+    bottom: -2px;
+    left: 0;
+
+    transform: scaleX(0);
+    transform-origin: bottom left;
+    transition: var(--underline-transition);
+}
+
+main a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/**
+ * ========
+ * Specific Element Styling
+ * ========
+**/
+#heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+#heading h1 {
+    font: var(--heading-font);
+    color: var(--heading-clr);
+}
+
+#dashboard-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--box-clr);
+    box-shadow: var(--box-shadow);
+}
+
+#dashboard-heading {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: var(--textbox-bg-clr);
+}
+
+#user-points {
+    display: inline-flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+#points-logo-img {
+    height: 25px;
+    width: auto;
+    margin-right: 10px;
+}
+
+#number-points {
+    font: var(--body-font);
+    color: var(--heading-clr);
+}
+
+#user-level {
+    display: inline-flex;
+    flex-direction: column;
+    margin-left: 100px;
+    padding-top: 10px;
+}
+
+#level-progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#user-level label {
+    color: var(--textbox-txt-clr);
+    margin-right: 20px;
+    white-space: nowrap;
+    flex-shrink: 0; 
+}
+
+#progress-bar {
+    width: 400px;
+    height: 15px;
+    color: var(--heading-clr);
+    border: none;
+    border-radius: 10px;
+}
+
+progress::-webkit-progress-bar {
+    background-color: var(--checkbox-clr);
+    border-radius: 10px;
+}
+
+progress::-webkit-progress-value {
+    background-color: var(--heading-clr);
+    transition: width 0.25s ease-in-out;
+    border-radius: 10px;
+}
+
+#remaining-xp {
+    color: var(--textbox-txt-clr);
+    margin-top: 10px;
+    margin-left: 150px;
+}

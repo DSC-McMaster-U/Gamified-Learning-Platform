@@ -84,7 +84,7 @@ class User(UserMixin, db.Model):
     favorite_subject = db.Column(db.String(50), nullable=True)
     failed_signin_attempts = db.Column(db.Integer, default=0)
     points = db.relationship('Points', uselist=False, backref='user') # establish one-to-one relationship between 'points' and 'user' model
-    progress = db.relationship('UserProgress', uselist=False, backref='user')
+    progress = db.relationship('UserProgress', back_populates='user', uselist=False)
     streak = db.Column(db.Integer, default=0)
     courses = db.relationship('Course', secondary=user_course, backref='enrolled_users')
     modules = db.relationship('Module', secondary=user_module, backref='enrolled_users')
@@ -314,11 +314,11 @@ class UserProgress(db.Model):
     current_lesson_id = db.Column(db.Integer, ForeignKey('lesson.id'), nullable=True)
     # add lesson progress or unit progress attribute?
     xp = db.Column(db.Integer, default=0)
-    next_level_xp = db.Column(db.Integer, default=1000)
+    next_level_xp = db.Column(db.Integer, default=1000) # added this attribute in case we want to gradually increase xp needed to level up
     current_streak = db.Column(db.Integer, default=0) # can delete streak attribute from user
     longest_streak = db.Column(db.Integer, default=0)
 
-    user = db.relationship('User', backref='progress', uselist=False)
+    user = db.relationship('User', back_populates='progress', uselist=False)
     current_lesson = db.relationship('Lesson', backref='user_progress')
 
 

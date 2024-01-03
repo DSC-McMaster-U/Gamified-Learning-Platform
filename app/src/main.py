@@ -17,6 +17,27 @@ def profile():
         logged_in=True
     )
 
+@main.route('/test/profile')
+def test_profile():
+    # Create a mock user object with the attributes needed for the template
+    mock_user = {
+        'name': 'John Doe',
+        'username': 'johndoe',
+        'email': 'johndoe@example.com',
+        'age': 30,
+        'grade': 'A'  # Assuming 'grade' is a simple attribute for this example
+    }
+
+    return render_template(
+        'user_profile.html', 
+        name=mock_user['name'], 
+        username=mock_user['username'],
+        email=mock_user['email'],
+        age=mock_user['age'],
+        grade=mock_user['grade'],
+        logged_in=True  # Assuming this is used to control template logic for logged in state
+    )
+
 @main.route('/quiz/<int:quiz_id>', methods=['GET'])
 @login_required
 def quiz_page(quiz_id):
@@ -34,7 +55,8 @@ def quiz_page(quiz_id):
 @login_required
 def dashboard_page():
     user_progress = current_user.progress
-    return render_template('dashboard.html', user_progress=user_progress)
+    user_points = current_user.points
+    return render_template('dashboard.html', current_user=current_user, user_progress=user_progress)
 
 @main.route('/test/dashboard')
 def test_dashboard():
