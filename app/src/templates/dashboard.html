@@ -31,27 +31,45 @@
                 <p id="remaining-xp">750 more XP until next level!</p> 
             </div>
         </div>
-    </div>
 
-    <div class="card">
-        <div class="card-body">
-            <h2>Learn</h2>
+        <div id="cards-container">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Learn</h4>
+                    <div id="unit-progress">
+                        <p id="unit-number">UNIT 1:</p>
+                        <!-- replace with actual lesson progress -->
+                        <p id="current-lesson">0/4</p>
+                    </div>
+                    <div id="circular-progress-bar">
+                        <div id="inner-circle"></div>
+                        <!-- replace percentage with actual progress after -->
+                        <p id="percentage">0%</p>
+                    </div>
+                    <button id="continue-lesson">CONTINUE</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h4>Daily Challenge</h4>
+                </div>
+            </div>
+    
+            <div class="card">
+                <div class="card-body">
+                    <h4>Test Yourself!</h4>
+                </div>
+            </div>
+    
+            <div class="card">
+                <div class="card-body">
+                    <h4>Weekly Leaderboard</h4>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <h2>Daily Challenge</h2>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <h2>Test Yourself!</h2>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <h2>Weekly Leaderboard</h2>
-        </div>
+
+        <div id="streak-tracker"></div>
     </div>
 </main>
 {% endblock %}
