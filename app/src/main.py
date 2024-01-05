@@ -61,4 +61,3 @@ def dashboard_page():
 @main.route('/test/dashboard')
 def test_dashboard():
     return render_template('dashboard.html')
-

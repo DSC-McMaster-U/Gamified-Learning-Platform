@@ -35,18 +35,26 @@
         <div id="cards-container">
             <div class="card">
                 <div class="card-body">
-                    <h4>Learn</h4>
-                    <div id="unit-progress">
-                        <p id="unit-number">UNIT 1:</p>
-                        <!-- replace with actual lesson progress -->
-                        <p id="current-lesson">0/4</p>
+                    <div id="left-side-content">
+                        <h4>Learn</h4>
+                        <div id="unit-progress">
+                            <p id="unit-number">UNIT 1:</p>
+                            <!-- replace with actual lesson progress -->
+                            <p id="current-lesson">2/4</p>
+                        </div>
+                        <!-- <a href="{{ current_lesson_url }}" id="continue-lesson-link">
+                            
+                        </a> -->
+                        <!-- put the button line inside the <a> tag above after we set up the dashboard route to send in 
+                            the user's current lesson url (need to update the route in main.py/update models?) -->
+                        <button id="continue-lesson">CONTINUE</button>
                     </div>
                     <div id="circular-progress-bar">
+                        <!-- use inline style to set the progress value after setting up models to get percentage (create conic gradient here and not in css) -->
                         <div id="inner-circle"></div>
                         <!-- replace percentage with actual progress after -->
-                        <p id="percentage">0%</p>
+                        <p id="percentage">50%</p>
                     </div>
-                    <button id="continue-lesson">CONTINUE</button>
                 </div>
             </div>
             

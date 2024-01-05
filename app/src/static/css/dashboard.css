@@ -182,6 +182,7 @@ main a:hover::after {
 }
 
 #user-level label {
+    /* use root fonts for label and remaining xp text later? */
     color: var(--textbox-txt-clr);
     margin-right: 20px;
     white-space: nowrap;
@@ -233,11 +234,79 @@ progress::-webkit-progress-value {
 }
 
 .card-body {
+    /* create different card body for other cards with vertical direction? */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#left-side-content {
     display: flex;
     flex-direction: column;
     align-items: start;
 }
 
 .card-body h4 {
-    color: var(--heading-clr)
+    color: var(--heading-clr);
+}
+
+#unit-progress {
+    margin-top: 10px;
+}
+
+#unit-number {
+    font: var(--heading-font);
+    color: var(--textbox-txt-clr);
+}
+
+#current-lesson {
+    font-family: var(--heading-font-family);
+    font-size: 24px;
+    color: var(--textbox-txt-clr);
+}
+
+#circular-progress-bar {
+    margin-left: 200px;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--heading-clr) 0deg,
+        var(--heading-clr) calc(50 * 3.6deg),
+        #ddddff calc(50 * 3.6deg),
+        #ddddff 360deg
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#inner-circle {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background-color: var(--textbox-bg-clr);
+}
+
+#percentage {
+    position: relative;
+    font: var(--body-font);
+    color: var(--textbox-txt-clr);
+}
+
+#continue-lesson {
+    width: 125px;
+    height: 40px;
+    color: var(--btn-txt-clr);
+    background-color: var(--btn-bg-clr);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--btn-transition-1);
+}
+
+#continue-lesson:hover {
+    background-color: var(--btn-bg-hover-clr);
+    box-shadow: var(--btn-shadow-2);
 }
