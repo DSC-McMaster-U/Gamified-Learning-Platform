@@ -147,13 +147,14 @@ main a:hover::after {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    padding-left: 20px;
+    padding-right: 20px;
     background-color: var(--textbox-bg-clr);
 }
 
-#user-points {
+.points {
     display: inline-flex;
     align-items: center;
-    padding-left: 20px;
 }
 
 #points-logo-img {
@@ -162,7 +163,7 @@ main a:hover::after {
     margin-right: 10px;
 }
 
-#number-points {
+.number-points {
     font: var(--body-font);
     color: var(--heading-clr);
 }
@@ -227,17 +228,17 @@ progress::-webkit-progress-value {
     background-color: var(--box-clr);
     border-radius: 8px;
     box-shadow: var(--form-item-shadow);
-    padding-left: 25px;
-    padding-right: 25px;
-    padding-top: 5px;
-    padding-bottom: 5px;
 }
 
-.card-body {
+.card-body1 {
     /* create different card body for other cards with vertical direction? */
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 #left-side-content {
@@ -246,7 +247,7 @@ progress::-webkit-progress-value {
     align-items: start;
 }
 
-.card-body h4 {
+.card-body1 h4 {
     color: var(--heading-clr);
 }
 
@@ -298,6 +299,7 @@ progress::-webkit-progress-value {
 #continue-lesson {
     width: 125px;
     height: 40px;
+    font: var(--body-font);
     color: var(--btn-txt-clr);
     background-color: var(--btn-bg-clr);
     border: none;
@@ -310,3 +312,69 @@ progress::-webkit-progress-value {
     background-color: var(--btn-bg-hover-clr);
     box-shadow: var(--btn-shadow-2);
 }
+
+.card-body2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.card-body2 h4 {
+    color: var(--heading-clr);
+}
+
+#challenge-card-header {
+    display: flex;
+    align-items: center;
+}
+
+#challenge-icon-img {
+    height: 25px;
+    width: auto;
+    margin-left: 10px;
+    margin-bottom: 8px;
+}
+
+.card-caption {
+    font: var(--body-font);
+    color: var(--textbox-txt-clr);
+}
+
+#challenge-button {
+    /* make class for button? */
+    width: 300px;
+    display: block;
+    font: var(--body-font);
+    color: var(--btn-txt-clr);
+    background-color: var(--btn-bg-clr);
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--btn-transition-1);
+}
+
+#challenge-button:hover {
+    background-color: var(--btn-bg-hover-clr);
+    box-shadow: var(--btn-shadow-2);
+}
+
+.button-content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+}
+
+#challenge-question {
+    font-family: var(--body-font-family);
+    font-size: 22px;
+    color: var(--btn-txt-clr);
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+

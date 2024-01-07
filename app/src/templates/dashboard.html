@@ -14,14 +14,14 @@
 
     <div id="dashboard-container">
         <div id="dashboard-heading">
-            <div id="user-points">
+            <div class="points">
                 <!-- Replace with actual points count later, user points from model -->
                 <img
                     id="points-logo-img"
                     src="../static/vendor/images/dashboard/points-logo.png"
                     alt=""
                 />
-                <span id="number-points">500</span>
+                <span class="number-points">500</span>
             </div>
             <div id="user-level">
                 <div id="level-progress-container">
@@ -34,7 +34,7 @@
 
         <div id="cards-container">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body1">
                     <div id="left-side-content">
                         <h4>Learn</h4>
                         <div id="unit-progress">
@@ -59,13 +59,39 @@
             </div>
             
             <div class="card">
-                <div class="card-body">
-                    <h4>Daily Challenge</h4>
+                <div class="card-body2">
+                    <div id="challenge-card-header">
+                        <h4>Daily Challenge</h4>
+                        <img
+                        id="challenge-icon-img"
+                        src="../static/vendor/images/dashboard/challenge_icon.png"
+                        alt=""
+                        />
+                    </div>
+                    <p class="card-caption">Solve exciting daily challenges for points!</p>
+                    <a id="challenge-button">
+                        <div class="button-content">
+                            <span class="button-content-text">Factors and Multiples</span>
+                            <span id="challenge-question">Number of CDs in Box</span>
+                            <div class="points">
+                                <!-- Replace with actual points count later, user points from model -->
+                                <img
+                                    id="points-logo-img"
+                                    src="../static/vendor/images/dashboard/points-logo.png"
+                                    alt=""
+                                />
+                                <span class="number-points">1000</span>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- add in href="{{ challenge_page_url }}" to the <a> tag after we set up the dashboard route to send in 
+                        the daily challenge page url (need to update the route in main.py/update models?) -->
+                    <!-- add in specific data using Jinja for the challenge topic, question, and points amount after -->
                 </div>
             </div>
     
             <div class="card">
-                <div class="card-body">
+                <div class="card-body2">
                     <h4>Test Yourself!</h4>
                 </div>
             </div>
