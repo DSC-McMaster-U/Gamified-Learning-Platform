@@ -160,7 +160,7 @@ main a:hover::after {
 #points-logo-img {
     height: 25px;
     width: auto;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .number-points {
@@ -376,5 +376,42 @@ progress::-webkit-progress-value {
     color: var(--btn-txt-clr);
     margin-top: 8px;
     margin-bottom: 15px;
+}
+
+#continue-quizzes-button {
+    /* make class for button? */
+    width: 300px;
+    margin-top: 15px;
+    display: block;
+    font: var(--body-font);
+    color: var(--btn-txt-clr);
+    background-color: var(--btn-bg-clr);
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--btn-transition-1);
+}
+
+#continue-quizzes-button:hover {
+    background-color: var(--btn-bg-hover-clr);
+    box-shadow: var(--btn-shadow-2);
+}
+
+.button-content-left-align {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    padding: 10px;
+}
+
+#quiz-information {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#quiz-difficulty {
+    margin-right: 35px;
 }
 
