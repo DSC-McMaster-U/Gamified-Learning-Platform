@@ -116,13 +116,50 @@
             </div>
     
             <div class="card">
-                <div class="card-body">
-                    <h4>Weekly Leaderboard</h4>
+                <div class="card-body3">
+                    <div id="leaderboard-card-header">
+                        <h4>Weekly Leaderboard</h4>
+                        <!-- <a href="{{ leaderboard_url }}" id="leaderboard-link">
+                            
+                        </a> -->
+                        <!-- put the button line inside the <a> tag above after we set up the dashboard route to send in 
+                            the leaderboard info -->
+                        <button id="view-leaderboard">VIEW ALL</button>
+                    </div>
+                    <ul id="leaderboard-list">
+                        <li class="leaderboard-entry">
+                            <span class="leaderboard-rank">1</span>
+                            <span class="leaderboard-name">James Smith</span>
+                            <span class="leaderboard-points">100 XP</span>
+                        </li>
+                        <li class="leaderboard-entry">
+                            <span class="leaderboard-rank">2</span>
+                            <span class="leaderboard-name">John Smith</span>
+                            <span class="leaderboard-points">90 XP</span>
+                        </li>
+                        <li class="leaderboard-entry">
+                            <span class="leaderboard-rank">3</span>
+                            <span class="leaderboard-name">Jane Smith</span>
+                            <span class="leaderboard-points">80 XP</span>
+                        </li>
+                        <li class="leaderboard-entry">
+                            <span class="leaderboard-rank">4</span>
+                            <span class="leaderboard-name">Kevin Smith</span>
+                            <span class="leaderboard-points">70 XP</span>
+                        </li>
+                        <li class="leaderboard-entry">
+                            <span class="leaderboard-rank">5</span>
+                            <span class="leaderboard-name">Mike Smith</span>
+                            <span class="leaderboard-points">60 XP</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
 
-        <div id="streak-tracker"></div>
+        <div id="streak-tracker">
+            
+        </div>
     </div>
 </main>
 {% endblock %}
