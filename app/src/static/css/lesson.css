@@ -1,0 +1,546 @@
+/**
+ * ========
+ * Imported Fonts
+ * ========
+**/
+
+/* Jeju Gothic (original font in design) */
+@font-face {
+    font-family: "JejuGothic";
+    src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
+}
+
+/* Nanum Gothic (fallback font) */
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Regular.ttf");
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Bold.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-ExtraBold.ttf");
+    font-weight: bolder;
+}
+
+/**
+ * ========
+ * Variables
+ * ========
+**/
+
+:root {
+    /* Plyr.js Custom Properties (docs: "github.com/sampotts/plyr") */
+    --plyr-color-main: #5b83eb;
+
+    /* Main Colours */
+    --tab-module-clr: #5b83eb;
+    --tab-unit-clr: #ff0615;
+    --tab-topic-clr: #14792a;
+    --tab-activity-clr: #fbbc04;
+
+    --tab-title-clr: #000000;
+    --tab-subtitle-clr: rgba(0, 0, 0, 0.50);
+
+    --panel-h3-clr: black;
+    --panel-h4-clr: #575757;
+    --panel-body-clr: black;
+
+    /* Font Families/Presets */
+    --general-font-family: "JejuGothic", "NanumGothic";
+
+    --tab-title-font: normal 400 17px / normal var(--general-font-family);
+    --tab-subtitle-font: normal 400 14px / normal var(--general-font-family);
+    --body-font: normal 400 14px / normal var(--general-font-family);
+    --heading-3-font: normal 400 22px / normal var(--general-font-family);
+    --heading-4-font: normal 400 20px / normal var(--general-font-family); 
+
+    /* Shadows */
+    --tab-text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+
+    /* Transitions */
+    --tab-menu-transition: width 0.5s ease;
+    --tab-bg-transition: background-color 0.5s ease;
+    --tab-clr-transition: border-left-width 0.2s ease-out;
+
+}
+
+/**
+ * ========
+ * General
+ * ========
+**/
+
+:target {
+    scroll-margin-top: 100px;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    /* overflow: auto; */
+
+    margin-top: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+}
+
+.tabs-wrapper {
+    width: 300px;
+    height: fit-content;
+    margin-right: 25px;
+    transition: var(--tab-menu-transition);
+}
+
+.lesson-wrapper {
+    width: auto;
+    height: fit-content;   /* Change to "fit-content" later */
+    min-width: 500px;
+    flex-grow: 1;
+    
+}
+
+.lesson-wrapper h3 {
+    color: var(--panel-h3-clr);
+    font: var(--heading-3-font);
+}
+
+.lesson-wrapper h4 {
+    color: var(--panel-h4-clr);
+    font: var(--heading-4-font);
+}
+
+.tabs-wrapper ul {
+    padding-left: 1.1rem;
+}
+
+@media screen and (min-width: 1400px) {
+    main {
+        width: 1260px;
+        margin-left: auto;
+        margin-right: auto;
+    }    
+}
+
+@media screen and (max-width: 935px) {
+    main {
+        flex-wrap: wrap;
+    }
+
+    .tabs-wrapper {
+        position: relative;
+        min-width: auto;
+        max-width: auto;
+        width: 100%;
+        padding-bottom: 20px;
+        /* border-bottom: 2px solid #D4D4D4; */
+    }
+
+    .tabs-wrapper::after {
+        position: absolute;
+        content: "";
+        width: 103%;
+        height: 2px;
+        left: 0;
+        bottom: 0px;
+
+        background-color: #d4d4d4;
+        
+    }
+
+    .lesson-wrapper {
+        padding-top: 30px;
+        min-width: auto;
+        width: 100%;
+    }
+}
+
+/**
+ * ========
+ * Nav Tabs
+ * ========
+**/
+
+.tab-title {
+    font: var(--tab-title-font);
+    color: var(--tab-title-clr);
+    text-shadow: var(--tab-text-shadow);
+}
+
+.tab-subtitle {
+    font: var(--tab-subtitle-font);
+    color: var(--tab-subtitle-clr);
+    text-shadow: var(--tab-text-shadow);
+}
+
+.tabs-wrapper button {
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+}
+
+.tabs-unit-menu {
+    border-right: 0.5px #dedddd solid;
+}
+
+li.tabs-unit {
+    margin-left: 0;
+}
+
+.tabs-module button {
+    position: relative;
+    width: 100%; 
+    min-height: 70px;
+    height: fit-content;
+    padding-left: 20px;
+
+    border-left: 10px var(--tab-module-clr) solid;
+    background-color: #f5f5f5;
+    transition: var(--tab-bg-transition);
+}
+
+.tabs-module button:hover {
+    background-color: #f0f0f0;
+}
+
+.tabs-module button:hover .tab-title {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+ul.tabs-unit-menu {
+    padding-left: 0;
+}
+
+.tabs-module button .tab-title,
+.tabs-unit button .tab-subtitle {
+    margin-bottom: 3px;
+}
+
+.tabs-unit-btn, 
+.tabs-topic-btn,
+.tabs-activity-btn {
+    position: relative;
+}
+
+/* WIP, borders are not working */
+.tabs-module button::before,
+.tabs-unit-menu li button::before,
+.tabs-topic-menu li button::before,
+.tabs-activity-menu li button::before {
+    background-color: #dedddd;
+    position: absolute;
+    content: "";
+    height: 2px;
+    width: 100%;
+    right: 0;
+    top: 0;
+}
+
+.tabs-module button::after,
+.tabs-unit-menu li button::after,
+.tabs-topic-menu li button::after,
+.tabs-activity-menu li button::after {
+    background-color: #dedddd;
+    position: absolute;
+    content: "";
+    height: 2px;
+    width: 100%;
+    right: 0;
+    bottom: 0;
+}
+
+.tabs-unit {
+    margin-left: 15px;
+}
+
+.tabs-unit button {
+    min-height: 65px;
+    height: fit-content;
+    padding-left: 20px;
+    padding-bottom: 7.5px;
+    padding-top: 7.5px;
+    cursor: pointer;
+    transition: var(--tab-bg-transition), var(--tab-clr-transition);
+}
+
+.tabs-activity button {
+    min-height: 55px;
+}
+
+.tabs-unit button + ul {
+    height: auto;
+    max-height: 0;
+    transition: max-height 0.5s ease;
+    overflow: hidden;
+}
+
+.tabs-dropdown > button {
+    border-left: 2px var(--tab-unit-clr) solid;
+}
+
+.tabs-topic > button {
+    border-left: 2px var(--tab-topic-clr) solid;
+}
+
+.tabs-activity button {
+    border-left: 2px var(--tab-activity-clr) solid;
+}
+
+.tabs-unit button:hover {
+    background-color: #f5f5f5;
+    border-left-width: 7px;
+}
+
+.tabs-activity > button:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    background-color: #fdf8de;
+}
+
+.tabs-unit button.menu-open {
+    background-color: #f0f0f0;
+}
+
+.tabs-unit button.menu-open:hover {
+    background-color: #e0e0e0;
+}
+
+.tabs-unit button.menu-open,
+.tabs-unit button.menu-open :hover {
+    border-left-width: 10px;
+}
+
+/**
+ * ========
+ * Nav Panels - General
+ * ========
+**/
+
+.panel {
+    display: none;
+    -webkit-animation: panelFadeIn 1.5s;
+    animation: panelFadeIn 1.5s;
+}
+
+.show-panel {
+    display: block;
+}
+
+.panel-wrapper {
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
+    background-color: rgba(222, 221, 221, 0.30);
+    width: 100%;
+    padding-top: 25px;
+    padding-bottom: 20px;
+}
+
+.panel-wrapper > * {
+    background-color: #ffffff;
+    border: 2px solid #D4D4D4;
+}
+
+.lesson-heading {
+    width: 100%;
+    border: 2px solid #afafaf;
+    border-top: 6px solid rgb(91, 131, 235);
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.lesson-heading h3 {
+    margin-top: 17px;
+    margin-bottom: 12px;
+}
+
+.lesson-obj {
+    max-width: 800px;
+    width: 90%;
+    height: auto;
+    border-radius: 100px;
+    border-color: var(--tab-module-clr);
+    border-width: 3px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 25px;
+
+    padding-top: 20px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.lesson-obj ul,
+.textbook-pages ul {
+    text-align: left;
+    list-style-type: disc;
+    margin-top: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: auto;
+
+    columns: 2;
+    column-gap: 25px;
+    font: var(--body-font);
+}
+
+
+.lesson-obj li,
+.textbook-pages li {
+    margin-bottom: 5px;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    color: var(--panel-body-clr);
+}
+
+.lesson-video,
+.lesson-text,
+.lesson-textbook {
+    margin-bottom: 20px;
+}
+
+.lesson-video {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 700px;
+    width: 75%;
+
+    padding-top: 15px;
+    padding-bottom: 25px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.lesson-video h4 {
+    margin-bottom: 15px;
+}
+
+.lesson-video .video-wrapper {
+    width: 85%;
+    height: auto;
+    max-width: 700px;
+
+    /* border-radius: 10px; */
+    border: 2px solid #a7a7a7;
+    /* overflow: hidden; */
+}
+
+.lesson-text,
+.lesson-textbook,
+.lesson-practice {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    max-width: 700px;
+    width: 75%;
+    padding-top: 20px;
+    padding-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.lesson-textbook h4 {
+    margin-bottom: 15px;
+}
+
+.textbook-link {
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    align-items: center;
+    word-break: break-all;
+}
+
+.textbook-link span {
+    font: var(--heading-4-font);
+    color: #13348b;
+    font-size: 15px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+a.textbook-download {
+    cursor: pointer;
+    text-decoration: underline;
+    font: var(--body-font);
+    font-size: 15px;
+    color: #a6a3cd;
+}
+
+.textbook-pages ul {
+    margin-top: 15px;
+}
+
+.lesson-text-body,
+.lesson-practice-body {
+    font: var(--body-font);
+    color: var(--panel-body-clr);
+
+    margin-top: 7.5px;
+    margin-left: 30px;
+    margin-right: 30px;
+    line-height: 1.2rem;
+}
+
+.lesson-text-body {
+    text-align: left;
+}
+
+.lesson-text-body p {
+    text-indent: 30pt;
+}
+
+@media screen and (min-width: 1300px) {
+    .lesson-wrapper h3 {
+        font-size: 24px;
+    }
+
+    .lesson-wrapper h4 {
+        font-size: 22px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .textbook-link span {
+        display: none;
+    }
+}
+
+/* Fade in panel animation */
+@-webkit-keyframes panelFadeIn {
+    from {
+        opacity: 0;
+    }
+    40% {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+  
+@keyframes panelFadeIn {
+    from {
+        opacity: 0;
+    }
+    40% {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
