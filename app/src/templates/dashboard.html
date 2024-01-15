@@ -157,9 +157,53 @@
             </div>
         </div>
 
+        <!-- May need to take different approach for streak tracker, a bit complicated because we need to make sure month labels align with the
+        right columns based on the specific year and also shade in the correct boxes based on the date -->
         <div id="streak-tracker">
-            
-        </div>
+            <span id="tracker-title">Streak Tracker</span>
+            <div class="month-labels">
+                <!-- Add individual month labels here -->
+                <span>Jan</span>
+                <span>Feb</span>
+                <span>Mar</span>
+                <span>Apr</span>
+                <span>May</span>
+                <span>Jun</span>
+                <span>Jul</span>
+                <span>Aug</span>
+                <span>Sep</span>
+                <span>Oct</span>
+                <span>Nov</span>
+                <span>Dec</span>
+            </div>
+            <div class="days-grid">
+                <!-- Create enough divs to represent all days across the year -->
+                {% for week in range(53) %} <!-- Adjust if your year starts in the middle of a week -->
+                    <div class="week">
+                        {% for day in range(7) %}
+                        <!-- Just set a couple tiles green for now, set up Jinja2 to update tile colour based on user activity sent in after -->
+                            {% if loop.index0 == 1 and week == 1 %}
+                                <div class="day active"></div>
+                            {% elif loop.index0 == 3 and week == 2 %}
+                                <div class="day active"></div>
+                            {% else %}
+                                <div class="day"></div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div id="activity-legend">
+                <div class="legend-item">
+                    <span id="activity-label">Activity</span>
+                    <div class="legend-color" style="background-color: #ffffff;"></div>
+                    <div class="legend-color" style="background-color: #32cd32;"></div>
+                </div>
+                <span id="current-streak">Current Streak: 1 day</span>
+                <span id="longest-streak">Longest Streak: 1 day</span>
+            </div>
+        </div>           
     </div>
 </main>
 {% endblock %}
+ 

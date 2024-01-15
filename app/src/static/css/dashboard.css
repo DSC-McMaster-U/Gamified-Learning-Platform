@@ -487,3 +487,94 @@ progress::-webkit-progress-value {
     white-space: nowrap;
 }
 
+#streak-tracker {
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #cbc3e3;
+}
+
+#tracker-title {
+    font: var(--body-font);
+    color: var(--textbox-txt-clr);
+    margin-bottom: 10px;
+}
+
+.month-labels {
+    display: flex;
+    justify-content: space-between; 
+    text-align: center;
+    font: var(--body-sub-font);
+    color: var(--textbox-txt-clr);
+    width: 92.5%;
+    margin-bottom: 5px;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(53, 1fr); 
+    gap: 2px; 
+    width: 100%;
+}
+
+.week {
+    display: grid;
+    grid-template-rows: repeat(7, 1fr); 
+    grid-row-gap: 2px;
+}
+
+.day {
+    width: 20px; 
+    height: 20px; 
+    background-color: var(--textbox-bg-clr);
+    border-radius: 4px;
+    margin-bottom: 2px; 
+}
+
+.day.active {
+    background-color: #32cd32; 
+}
+
+#activity-legend {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    justify-content: space-around;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+#activity-label {
+    font: var(--body-sub-font);
+    color: var(--textbox-txt-clr);
+    margin-right: 8px;
+}
+
+#current-streak {
+    font: var(--body-sub-font);
+    color: var(--textbox-txt-clr);
+    /* margin-left: 300px; */
+}
+
+#longest-streak {
+    font: var(--body-sub-font);
+    color: var(--textbox-txt-clr);
+    /* margin-left: 300px; */
+}
+
+
+
+
+
