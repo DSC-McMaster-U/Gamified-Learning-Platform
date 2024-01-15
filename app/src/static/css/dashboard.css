@@ -183,7 +183,7 @@ main a:hover::after {
 }
 
 #user-level label {
-    /* use root fonts for label and remaining xp text later? */
+    font: var(--body-font);
     color: var(--textbox-txt-clr);
     margin-right: 20px;
     white-space: nowrap;
@@ -210,6 +210,7 @@ progress::-webkit-progress-value {
 }
 
 #remaining-xp {
+    font: var(--body-font);
     color: var(--textbox-txt-clr);
     margin-top: 10px;
     margin-left: 150px;
@@ -221,7 +222,6 @@ progress::-webkit-progress-value {
     grid-template-rows: repeat(2, 1fr);
     grid-gap: 20px;
     margin-top: 10px;
-    /* align-items: start; */
 }
 
 .card {
@@ -231,7 +231,6 @@ progress::-webkit-progress-value {
 }
 
 .card-body1 {
-    /* create different card body for other cards with vertical direction? */
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -345,7 +344,6 @@ progress::-webkit-progress-value {
 }
 
 #challenge-button {
-    /* make class for button? */
     width: 300px;
     display: block;
     font: var(--body-font);
@@ -379,7 +377,6 @@ progress::-webkit-progress-value {
 }
 
 #continue-quizzes-button {
-    /* make class for button? */
     width: 300px;
     margin-top: 15px;
     display: block;
@@ -565,13 +562,11 @@ progress::-webkit-progress-value {
 #current-streak {
     font: var(--body-sub-font);
     color: var(--textbox-txt-clr);
-    /* margin-left: 300px; */
 }
 
 #longest-streak {
     font: var(--body-sub-font);
     color: var(--textbox-txt-clr);
-    /* margin-left: 300px; */
 }
 
 
