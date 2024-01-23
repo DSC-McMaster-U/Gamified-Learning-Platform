@@ -86,9 +86,9 @@ class User(UserMixin, db.Model):
     points = db.relationship('Points', uselist=False, backref='user') # establish one-to-one relationship between 'points' and 'user' model
     progress = db.relationship('UserProgress', back_populates='user', uselist=False)
     streak = db.Column(db.Integer, default=0)
-    courses = db.relationship('Course', secondary=user_course, backref='enrolled_users')
-    modules = db.relationship('Module', secondary=user_module, backref='enrolled_users')
-    topics = db.relationship('Topic', secondary=user_topic, backref='enrolled_users')
+    # courses = db.relationship('Course', secondary=user_course, backref='enrolled_users')
+    # modules = db.relationship('Module', secondary=user_module, backref='enrolled_users')
+    # topics = db.relationship('Topic', secondary=user_topic, backref='enrolled_users')
     # ^^^ Added new relationships between user and courses/modules/topics
     
     # Set user password
@@ -284,7 +284,7 @@ class Quiz(Activity):
     level = db.Column(db.Integer, nullable=False)  # how difficult is the quiz (easy=1, medium=2, hard=3)
     score = db.Column(db.Integer, nullable=False)  # quiz score
     users = db.relationship('User', secondary=user_quiz, backref='quizzes')
-    topic_id = db.Column(db.Integer, ForeignKey('topic.id'), nullable=True)
+    topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'), nullable=True)
     # ^ Establish relationship where each unique quiz is a part of a single topic.
 
     __mapper_args__ = {
