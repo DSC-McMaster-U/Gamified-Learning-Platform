@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from .models import User, db, GradeEnum, UserProgress
 from flask_login import login_user
-from .passwordStrength import check_password_strength
-from .calculateAge import calculate_age
+from .utils.passwordStrength import check_password_strength
+from .utils.calculateAge import calculate_age
 
 # Create authentication blueprint for handling relevant routes (signup, login, logout, etc.)
 auth = Blueprint('auth', __name__)
