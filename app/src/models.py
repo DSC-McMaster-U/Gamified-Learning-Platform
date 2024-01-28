@@ -120,6 +120,9 @@ class Teacher(UserMixin, db.Model):
     yrs_experience = db.Column(db.Integer, nullable=False)
     specialization = db.Column(db.String(50), nullable=True)
     students = db.relationship('User', secondary=teacher_student, backref='teachers')
+    courses = db.relationship('Course', secondary=teacher_course, backref='teachers')
+    modules = db.relationship('Module', secondary=teacher_module, backref='teachers')
+    topics = db.relationship('Topic', secondary=teacher_topic, backref='teachers')
         # Set teacher password
     def set_password(self, password):
         self.hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -143,9 +146,10 @@ class User(UserMixin, db.Model):
     points = db.relationship('Points', uselist=False, backref='user') # establish one-to-one relationship between 'points' and 'user' model
     progress = db.relationship('UserProgress', back_populates='user', uselist=False)
     streak = db.Column(db.Integer, default=0)
-    # courses = db.relationship('Course', secondary=user_course, backref='enrolled_users')
-    # modules = db.relationship('Module', secondary=user_module, backref='enrolled_users')
-    # topics = db.relationship('Topic', secondary=user_topic, backref='enrolled_users')
+    teachers = db.relationship('Teacher', secondary=teacher_student, backref='students')
+    courses = db.relationship('Course', secondary=user_course, backref='users')
+    modules = db.relationship('Module', secondary=user_module, backref='users')
+    topics = db.relationship('Topic', secondary=user_topic, backref='users')
     # ^^^ Added new relationships between user and courses/modules/topics
     
     # Set user password
@@ -227,14 +231,14 @@ Explanation: Before, unique activities would have to be created for each individ
 """
 user_quiz = db.Table(
     'user_quiz',
-    db.Column('user_id', db.Integer, ForeignKey('user.id'), nullable=False),
-    db.Column('quiz_id', db.Integer, ForeignKey('quiz.id'), nullable=False)
+    db.Column('user_id', db.Integer, ForeignKey('user.id'), primary_key=True),
+    db.Column('quiz_id', db.Integer, ForeignKey('quiz.id'), primary_key=True)
 )
 
 user_lesson = db.Table(
     'user_lesson',
-    db.Column('user_id', db.Integer, ForeignKey('user.id'), nullable=False),
-    db.Column('lesson_id', db.Integer, ForeignKey('lesson.id'), nullable=False)
+    db.Column('user_id', db.Integer, ForeignKey('user.id'), primary_key=True),
+    db.Column('lesson_id', db.Integer, ForeignKey('lesson.id'), primary_key=True)
 )
 
 '''
@@ -247,13 +251,13 @@ By doing so, we can track and enable mutiple teachers to collaborate on an activ
 teacher_quiz = db.Table(
     'teacher_quiz',
     db.Column('teacher_id', db.Integer, ForeignKey('teacher.tid'), primary_key=True),
-    db.Column('quiz_id', db.Integer, ForeignKey('quiz.id'), nullable=False)
+    db.Column('quiz_id', db.Integer, ForeignKey('quiz.id'), primary_key=True)
 )
 
 teacher_lesson = db.Table(
     'teacher_lesson',
     db.Column('teacher_id', db.Integer, ForeignKey('teacher.tid'), primary_key=True),
-    db.Column('lesson_id', db.Integer, ForeignKey('lesson.id'), nullable=False)
+    db.Column('lesson_id', db.Integer, ForeignKey('lesson.id'), primary_key=True)
 )
 
 """
@@ -279,8 +283,8 @@ class Course(db.Model):
     name = db.Column(db.String(100), nullable=False)
     subject_type = db.Column(SQLAlchemyEnum(Subject), nullable=False)
     modules = db.relationship('Module', backref='course', lazy='dynamic')
-    users = db.relationship('User', secondary=user_course, backref=db.backref('courses', lazy='dynamic'))
-    teacher = db.relationship('Teacher', secondary=teacher_course, backref=db.backref('courses', lazy='dynamic'))
+    users = db.relationship('User', secondary=user_course, backref='courses', lazy='dynamic')
+    teacher = db.relationship('Teacher', secondary=teacher_course, backref='courses', lazy='dynamic')
     # ^^ Relationships defined so that each course can have many modules, and be accessed by many users
 
 class Module(db.Model):
@@ -288,8 +292,8 @@ class Module(db.Model):
     name = db.Column(db.String(100), nullable=False)
     course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
     topics = db.relationship('Topic', backref='module', lazy='dynamic')
-    users = db.relationship('User', secondary=user_module, backref=db.backref('modules', lazy='dynamic'))
-    teacher = db.relationship('Teacher', secondary=teacher_module, backref=db.backref('modules', lazy='dynamic'))
+    users = db.relationship('User', secondary=user_module, backref='modules', lazy='dynamic')
+    teacher = db.relationship('Teacher', secondary=teacher_module, backref='modules', lazy='dynamic')
     # ^^ Relationships defined so that each module can have many topics, and be accessed by many users
 
 class Topic(db.Model):
@@ -298,8 +302,8 @@ class Topic(db.Model):
     module_id = db.Column(db.Integer, ForeignKey('module.id'), nullable=False)
     quiz_id = db.Column(db.Integer, ForeignKey('quiz.id'), nullable=True)
     lesson_id = db.Column(db.Integer, ForeignKey('lesson.id'), nullable=True)
-    users = db.relationship('User', secondary=user_topic, backref=db.backref('topics', lazy='dynamic'))
-    teacher = db.relationship('Teacher', secondary=teacher_topic, backref=db.backref('topics', lazy='dynamic'))
+    users = db.relationship('User', secondary=user_topic, backref='topics', lazy='dynamic')
+    teacher = db.relationship('Teacher', secondary=teacher_topic, backref='topics', lazy='dynamic')
     # ^^^ Relationships defined so that each topic has a unique lesson and unique quiz, and can be accessed by many users.
 
 
