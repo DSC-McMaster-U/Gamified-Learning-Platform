@@ -1,7 +1,6 @@
 from enum import Enum
-from sqlalchemy import Enum as SQLAlchemyEnum, ForeignKey
+from sqlalchemy import Enum as SQLAlchemyEnum, ForeignKey, func, CheckConstraint
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import CheckConstraint, func, ForeignKey
 from datetime import datetime, timezone, timedelta
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin
