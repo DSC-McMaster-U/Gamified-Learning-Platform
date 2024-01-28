@@ -14,7 +14,9 @@ Plan:
 
 from math import ceil
 from enum import Enum
-from ..models import User, db, GradeEnum, UserProgress
+from app.src.models import User, user_course, Course, Points, db, Subject
+# from app.src.auth import db
+# from app.src.app import app
 from sqlalchemy import text
 
 class UserDBError(Exception):
@@ -96,7 +98,7 @@ class UserHashTable:
 
             return None
 
-    def deleteUser(self, username: str):
+    def deleteUser(self, username: str) -> None:
         hashIndex: int = self.__hashingFunc(username)
 
         currentNode: UserEntryNode = self.items[hashIndex]
@@ -154,7 +156,7 @@ class PointsNode:
         self.numNodes: int = 1          # Number of nodes within current tree; use this to determine index/ranking of users in nodes
         self.colour: RBTreeColour = RBTreeColour.RED
 
-    def addUserEntry(self, userEntry: UserEntryNode):
+    def addUserEntry(self, userEntry: UserEntryNode) -> None:
         usernamesRef = [entry.username for entry in self.userEntryRefs]
 
         if userEntry.username in usernamesRef:
@@ -345,7 +347,7 @@ class PointsTree:
             node = self.__insertRotateLeft(node)
 
         # Case 2: Current node and its left child both have left red-linked children -- right rotate
-        if all([self.isNodeRed(child) for child in [node.left, node.left.left]]):
+        if node.left is not None and all([self.isNodeRed(child) for child in [node.left, node.left.left]]):
             node = self.__insertRotateRight(node)
 
         # Case 3: Current node has both left and right children as red-linked -- colour-flip
@@ -578,21 +580,48 @@ class PointsTree:
         self.__getAllUsersAux(rankings, node.left, leftNodeRank)
 
 
+# Might not be necessary... check design of Mithun's leaderboard database schema
 class Leaderboard():
-    def __init__(self, courseID : int = None):
-        self.rankings = PointsTree()
-        self.userInfo = None
+    def __init__(self, courseID: int = None):
+        self.rankings: PointsTree = PointsTree()
+        self.userInfo: UserHashTable = None
         self.userDBQuery = None
-        self.courseID = courseID
+        self.courseID: int = courseID
 
         self.setUpLeaderboard()
 
     def setUpLeaderboard(self):
         if self.courseID is None:
-            queryString = text("SELECT u.username, u.name, p.points FROM user u, points p WHERE u.id = p.user_id")
+            self.userDBQuery = db.session.query(User.name, User.username, Points.points).distinct().filter(                
+                User.id == Points.user_id
+            )
         else:
-            queryString = text(f"SELECT u.username, u.name, p.points FROM user u, points p WHERE u.id = p.user_id")
-        self.userDBQuery = db.engine.connect().execute(queryString)
+            self.userDBQuery = db.session.query(User.name, User.username, Points.points).distinct().filter(
+                User.id == Points.user_id
+            ).filter(
+                user_course.c.course_id == self.courseID
+            )
+
+        dbEntries: list[tuple] = self.userDBQuery.all()
+        # print(dbEntries)
+
+        if dbEntries is not None:
+            # Create UserHashTable with necessary args and insert all database query entries inside
+            self.userInfo = UserHashTable(len(dbEntries), self.courseID)
+
+            for dbEntry in dbEntries:
+                userEntry = UserEntryNode(dbEntry[0], dbEntry[1], dbEntry[2])
+                self.userInfo.insertUser(userEntry)
+                self.rankings.insertUser(userEntry)
+
+            # print_tree(self.rankings)
+
+        else:
+            if self.courseID is not None:
+                raise UserDBError("Error creating leaderboard: no users exist that are taking the specified course!")
+            
+            raise UserDBError("Error creating leaderboard: no users are registered within the database yet!")
+        
 
     # Query from database a custom table containing user name, user's username, and points for when Points.user_id == User.id; users can be filtered from a specific course,
     # or everyone can just be given at once.
@@ -600,12 +629,56 @@ class Leaderboard():
     def updateLeaderboard(self):
         pass
 
+
     def getUserByRank(self):
         pass
 
-    def getRankByUser(self):
-        pass
+
+    def getRankByUser(self, username: str):
+        userEntry: UserEntryNode = self.userInfo.getUser(username)
+        return self.rankings.getRankByPoints(userEntry.points)
+
+##########
     
+# Set up leaderboard and sort all user entries in it, then create a database entry for the leaderboard and return the corresponding ID/primary key value
+def setUpLeaderboard(courseID: int = None) -> int:
+    rankings: PointsTree = PointsTree()
+
+    if courseID is None:
+        userDBQuery = db.session.query(User.name, User.username, Points.points).distinct().filter(                
+            User.id == Points.user_id
+        )
+    else:
+        userDBQuery = db.session.query(User.name, User.username, Points.points).distinct().filter(
+            User.id == Points.user_id
+        ).filter(
+            user_course.c.course_id == courseID
+        )
+
+    dbEntries: list[tuple] = userDBQuery.all()
+    # print(dbEntries)
+
+    if dbEntries is not None:
+        # Create UserHashTable with necessary args and insert all database query entries inside
+        userInfo = UserHashTable(len(dbEntries), courseID)
+
+        for dbEntry in dbEntries:
+            userEntry = UserEntryNode(dbEntry[0], dbEntry[1], dbEntry[2])
+            userInfo.insertUser(userEntry)
+            rankings.insertUser(userEntry)
+
+        print_tree(rankings)
+        test = rankings.getAllUsers()
+
+        # Here would be setup for the leaderboard database entry; TBD
+        return 0
+
+    else:
+        if courseID is not None:
+            raise UserDBError("Error creating leaderboard: no users exist that are taking the specified course!")
+        
+        raise UserDBError("Error creating leaderboard: no users are registered within the database yet!")
+
 
 ##########
 
@@ -663,7 +736,63 @@ def print_tree(tree, points="points", left="left", right="right"):
         print(line)
 
 
-####################
+def debugLeaderboard():
+    # This is outdated (using the Leaderboard class), change in the future
+    #### DATABASE SET UP ####
+    new_course = Course(
+        name="Organic Chemistry",
+        subject_type=Subject.CHEMISTRY
+    )
+
+    db.session.add(new_course)
+    db.session.commit()
+
+    new_user1 = User(
+        email="testboard20@gmail.com", 
+        username="test-board20", 
+        name="Test1 Board",
+        age=50
+    )
+
+    new_user2 = User(
+        email="testboards20@gmail.com", 
+        username="test-boards20", 
+        name="Test2 Board",
+        age=50
+    )
+
+    new_user1.set_password("Test-12345")
+    new_user2.set_password("Test-12345")
+
+    new_course.users.append(new_user1)
+    new_course.users.append(new_user2)
+    db.session.add(new_user1)
+    db.session.add(new_user2)
+    db.session.commit()
+    
+    new_user1_points = Points(
+        user_id=new_user1.id, 
+        points=50
+    )
+
+    new_user2_points = Points(
+        user_id=new_user2.id,
+        points=25
+    )
+
+    db.session.add(new_user1_points)
+    db.session.add(new_user2_points)
+    db.session.commit()
+
+    #### CLASS TESTING ####
+    testLeaderboard = Leaderboard(new_course.id)
+
+    #### DATABASE TEAR DOWN ####
+    db.session.query(Points).delete()
+    db.session.query(User).delete()
+    db.session.query(Course).delete()
+    db.session.commit()
+
 
 def debug():
     # Rough debugging tests -- expand on this and convert this over to pytest format in the future
@@ -744,5 +873,7 @@ def debug():
 
 ####################
 
-if __name__ == "__main__":
-    debug()
+if __name__ == "__main__":  
+    debugLeaderboard()
+
+
