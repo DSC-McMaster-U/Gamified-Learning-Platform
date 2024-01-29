@@ -1,0 +1,22 @@
+name: Gamified Learning Platform Testing Suite
+on:
+    workflow_dispatch
+
+jobs:
+    update:
+        name: Run GLP Tests
+        runs-on: ubuntu-20.04
+        steps:
+            - uses: actions/checkout@v4
+            
+            - name: Python Setup
+              uses: actions/setup-python@v4
+              with:
+                python-version: 3.8.10
+                cache: pip
+      
+            - name: Install requirements
+              run: pip install -r requirements.txt
+      
+            - name: Run tests
+              run: python -B -m pytest
