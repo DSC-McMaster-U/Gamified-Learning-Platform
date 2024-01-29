@@ -18,8 +18,7 @@ jobs:
               run: pip install -r requirements.txt
       
             - name: Run tests
-              run: python -m coverage report -m tests/test_registration.py
-
+              run: python -m coverage run -m pytest tests/test_registration.py
 
             - name: Print Coverage
               run: python -m coverage report -m tests/test_registration.py
