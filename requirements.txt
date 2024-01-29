@@ -9,3 +9,5 @@ flask_bcrypt
 password_strength
 Werkzeug==2.3.0
 python-dotenv
+pytest
+coverage

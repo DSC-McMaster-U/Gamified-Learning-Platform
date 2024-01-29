@@ -1,9 +1,10 @@
-name: Complete Gamified Learning Platform Testing Suite
+name: Login Testing Suite
 on:
     workflow_dispatch
+
 jobs:
     update:
-        name: Run GLP Tests
+        name: Run GLP Login Tests
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -16,9 +17,12 @@ jobs:
       
             - name: Install Requirements
               run: pip install -r requirements.txt
-      
-            - name: Run All Tests
-              run: python -m coverage run -m pytest 
+            
+            - name: Run App Tests
+              run: python -m pytest tests/test_app.py  
+            
+            - name: Run Login Tests
+              run: python -m coverage run -m pytest tests/test_login.py
 
-            - name: Print Coverage
-              run: python -m coverage report 
+            - name: Print Coverage Report
+              run: python -m coverage report -m tests/test_login.py

@@ -24,12 +24,12 @@ class LoginTestCase(unittest.TestCase):
         with self.app.app_context():
             db.drop_all()
 
-    def TestLoginPage(self):
+    def test_login_page(self):
         # test if login page is accessible. sends HTTP GET request to login route of app, check if HTTP status code is 200 (200 means ok)
         response=self.client.get('/login')
         self.assertEqual(response.status_code, 200) 
     
-    def TestLoginValidUser(self):
+    def test_login_valid_user(self):
         # login with valid user credentials
         # enter application context using context maanger; create test user and set password; add test user to databse, and commit changes to database,
         # inserting the user into the database
@@ -44,7 +44,7 @@ class LoginTestCase(unittest.TestCase):
         # redirect on successful login, 302 = "found" redirection response
         self.assertEqual(response.status_code, 302)
 
-    def TestLoginInavlidUser(self):
+    def test_login_invalid_user(self):
 
         with self.app.app_context(): 
             test_user = User(email='test@example.com')
