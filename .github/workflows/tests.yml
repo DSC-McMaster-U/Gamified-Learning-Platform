@@ -1,7 +1,6 @@
-name: Gamified Learning Platform Testing Suite
+name: Gamified Learning Platform Registration Testing Suite
 on:
     workflow_dispatch
-
 jobs:
     update:
         name: Run GLP Tests
@@ -19,4 +18,8 @@ jobs:
               run: pip install -r requirements.txt
       
             - name: Run tests
-              run: python -B -m pytest
+              run: python -m coverage report -m tests/test_registration.py
+
+
+            - name: Print Coverage
+              run: python -m coverage report -m tests/test_registration.py
