@@ -25,6 +25,10 @@ def client_tempdb():
 
         # this will execute after the tests are completed to delete the temporary database
         db.session.remove()
+        db.session.close()
+        db.drop_all()    
+
+        # ISSUE: pytest seems to throw an exception here on Windows, due to how the OS handles temp files; in the future, try to look for workarounds regarding this problem.
         os.close(db_fd)
         os.unlink(db_fname)
 
