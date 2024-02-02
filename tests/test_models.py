@@ -2,7 +2,7 @@ import pytest
 from app.src.models import User, GradeEnum
 
 # Sample model
-james = User(name="James Smith",username="jsmith", email="jsmith99@gmail.com", age=18, grade=GradeEnum.SOPHMORE, favorite_subject="Computer Science")
+james = User(name="James Smith",username="jsmith", email="jsmith99@gmail.com", age=18, grade=GradeEnum.SOPHOMORE, favorite_subject="Computer Science")
 james.set_password("jsmith123")
 
 def test_models():
@@ -12,7 +12,7 @@ def test_models():
     assert james.username == "jsmith"
     assert james.email == "jsmith99@gmail.com"
     assert james.age == 18
-    assert james.grade == GradeEnum.SOPHMORE
+    assert james.grade == GradeEnum.SOPHOMORE
     assert james.favorite_subject == "Computer Science"
     assert james.check_password("jsmith123")
 
