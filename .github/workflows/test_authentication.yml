@@ -1,0 +1,28 @@
+name: Authentication Testing Suite
+on:
+    workflow_dispatch
+
+jobs:
+    update:
+        name: Run GLP Authentication Tests
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            
+            - name: Python Setup
+              uses: actions/setup-python@v4
+              with:
+                python-version: '3.10'  
+                cache: pip
+      
+            - name: Install Requirements
+              run: pip install -r requirements.txt
+        
+            - name: Run App Tests
+              run: python -m pytest tests/test_app.py                
+      
+            - name: Run Autehntication Tests
+              run: python -m coverage run -m pytest tests/test_authentication_flow.py
+
+            - name: Print Coverage Report
+              run: python -m coverage report -m tests/test_authentication_flow.py

@@ -11,3 +11,5 @@ Werkzeug==2.3.0
 python-dotenv
 selenium~=4.16.0
 webdriver-manager~=4.0.1
+pytest
+coverage
