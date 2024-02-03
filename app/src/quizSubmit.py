@@ -1,7 +1,15 @@
 import json
 from flask import render_template
+from flask import Blueprint
 
 score = 0
+
+quiz_api = Blueprint("quiz_api", __name__)
+
+#remove this later
+@quiz_api.route("/quiz", methods=["GET"])
+def GetScore():
+    return score
 
 try:
     # Pulling json data from "questions.json"
@@ -27,7 +35,8 @@ for i in range(data["module"]["num_questions"]):
             "number": str(data["module"]["questions"][i]["number"]),
             "question": str(data["module"]["questions"][i]["question"]),
             "answers": str(data["module"]["questions"][i]["answers"]),
-            "user_answer": response
+            "user_answer": response,
+            "correct" : response == correct_resp
         })
         with open("json/responses.json", 'w') as f:
             json.dump(listObj, f, indent = 4, separators=(',',': '))
