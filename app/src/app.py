@@ -6,6 +6,7 @@ from .auth import auth as auth_blueprint
 from .main import main as main_blueprint
 from .routes import routes as routes_blueprint
 from .lesson_api import api as api_blueprint
+from .quizSubmit import quiz_api as quiz_blueprint
 from dotenv import load_dotenv
 import os
 
@@ -22,6 +23,7 @@ def create_app(test_config=None):
     app.register_blueprint(main_blueprint)
     app.register_blueprint(routes_blueprint)
     app.register_blueprint(api_blueprint)
+    app.register_blueprint(quiz_blueprint)
     
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
