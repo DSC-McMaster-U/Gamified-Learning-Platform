@@ -373,4 +373,28 @@ def modify_user_lesson():
 @routes.route('/api/leaderboard', methods=['GET'])
 @login_required
 def leaderboard_api():
-    
+    # Return JSON response to dynamically view more users on leaderboard page
+    page = request.args.get('page', 1, type=int)
+    users_per_page = 20 # render 20 users per page
+
+    # retrieve the next users from leaderboard, set error_out to False so that the application does not return a 404 error when there are no remaining users
+    leaderboard_next_users = User.query.join(UserProgress).order_by(UserProgress.xp.desc()).paginate(page=page, per_page=users_per_page,
+                            error_out=False)
+    leaderboard_users = leaderboard_next_users.items
+
+    users_json = []
+    for user in leaderboard_users:
+        user_data = {
+            'name': user.name,
+            'xp': user.progress.xp
+        }
+        users_json.append(user_data)
+
+    # check if there is another page of users when sending the JSON response
+    return jsonify({
+        'leaderboard': users_json,
+        'has_next': leaderboard_next_users.has_next,
+        'next_page': page + 1 if leaderboard_next_users.has_next else None
+    })
+
+
