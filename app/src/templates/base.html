@@ -77,13 +77,10 @@
                     <div id="content-body" class="offcanvas-body">
                         {% if logged_in %} {# Insert header design for logged in user here #}
                         <ul class="content-main navbar-nav">
-                            <a href="">
-                                <li id="main-home" class="main-link navbar-item">Home</li>
-                            </a>
-                            <a href="">
+                            <a href="/dashboard">
                                 <li id="main-dashboard" class="main-link navbar-item">Dashboard</li>
                             </a>
-                            <a href="lesson/0">  <!-- Temporary link here for now -->
+                            <a href="/lesson/0">  <!-- Temporary link here for now -->
                                 <li id="main-lessons" class="main-link navbar-item">Lessons</li>
                             </a>
                             <a href="">
@@ -95,7 +92,13 @@
                         </ul>
 
                         <!-- NOTE: Complete logged-in auth navlist (probably profile pic with dropdown menu?) -->
-                        <ul class="content-auth navbar-nav"></ul>
+                        <ul class="content-auth navbar-nav">
+                            <hr class="sidebar-break" />
+                            <div class="content-auth-msg">Welcome, {{ current_user.username }}.</div>
+                            <a href="/profile">
+                                <li id="auth-login" class="auth-link navbar-item">Profile</li>
+                            </a>
+                        </ul>
                         {% else %}
                         <!-- PLACEHOLDER: Change these links to ones suitable for not being logged in -->
                         <ul class="content-main navbar-nav">
