@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from .models import User, db, GradeEnum, UserProgress
 from flask_login import login_user
-from .passwordStrength import check_password_strength
-from .calculateAge import calculate_age
+from .utils.passwordStrength import check_password_strength
+from .utils.calculateAge import calculate_age
 
 # Create authentication blueprint for handling relevant routes (signup, login, logout, etc.)
 auth = Blueprint('auth', __name__)
@@ -12,9 +12,8 @@ def redirectLogin():
     return redirect('/login', code=302)
 
 @auth.route('/login')
-def login():
-    logged_in = False  # Temporary logged-in value for now, changes header appearance
-    return render_template('login.html', logged_in=logged_in)
+def login(): 
+    return render_template('login.html', logged_in=False) # Temporary logged-in value for now, changes header appearance
 
 @auth.route('/login', methods=['POST'])
 def login_post():
@@ -129,4 +128,4 @@ def register():
         return redirect(url_for("auth.login"))
 
     else:
-        return render_template("register.html")
+        return render_template("register.html", logged_in=False)
