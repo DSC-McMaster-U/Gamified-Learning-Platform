@@ -1,10 +1,80 @@
 {% extends "base.html" %} {% block title %}Leaderboard{% endblock %} {% block styling %}
 <!-- Local stylesheets -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/leaderboard.css') }}" />
+{% endblock %} {% block scripts %}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    // User stats
+    function userStats() {
+        $.ajax({
+            url: "/user_points",
+            method: "GET",
+            success: function (data) {
+                $("#streakDisplay").text(data.streak);
+                $("#pointsDisplay").text(data.points);
+            },
+            error: function (error) {
+                console.error("Error fetching user stats:", error);
+            },
+        });
+    }
+
+    $(document).ready(function () {
+        userStats();
+
+        // Update every minute
+        setInterval(userStats, 60000);
+    });
+
+        window.addEventListener("DOMContentLoaded", () => {
+            if (sessionStorage.includes("signUpInfo")) {
+                sessionStorage.removeItem("signUpInfo");
+            }
+        })
+    </script>
 {% endblock %} {% block content %}
 <main>
-    <div id="heading">
-        <h1>Leaderboard</h1>
+    <div id="leaderboard-section">
+        <div id="personal-info">
+            <h1 id="name">{{ name }}</h1>
+            <h3 id="username">{{ username }}</h1>
+
+            <div id="points-streak">
+                <span id="points">Points: <span id="pointsDisplay"></span></span>
+                <span id="streak">Streak: <span id="streakDisplay"></span></span>
+            </div>
+
+            {% if user_ranking is not none %}
+            <h4 id="ranking">Ranking: {{ user_ranking }}</h4>
+            {% else %}
+            <p>You are not ranked yet.</p>
+            {% endif %}
+        </div>
+        <div id="leaderboard-table-div">
+            <div id="heading">
+                <h1>Leaderboard</h1>
+            </div>
+            <table id="leaderboard-table">
+                <thead>
+                    <tr id="table-heading">
+                        <th id="rank-heading">Rank</th>
+                        <th id="username-heading">Username</th>
+                        <th id="points-heading">Points</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                {% for entry in leaderboard_data %}
+                    <tr class="table-entry" id="rank-{{ loop.index }}">
+                        <td class="entry-ranking">{{ loop.index }}</td>
+                        <td class="entry-username">{{ entry.user.name }}</td>
+                        <td class="entry-points">{{ entry.points }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </main>
 {% endblock %}

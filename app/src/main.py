@@ -45,9 +45,30 @@ def quiz_page(quiz_id):
 @login_required
 def dashboard_page():
     user_progress = current_user.progress
-    user_points = current_user.points
     return render_template('dashboard.html', current_user=current_user, user_progress=user_progress)
 
 @main.route('/test/dashboard')
 def test_dashboard():
     return render_template('dashboard.html')
+
+@main.route('/leaderboard')
+@login_required
+def leaderboard_page():
+    leaderboard_data = Points.get_leaderboard()
+    user_ranking = None
+    
+    user_points = Points.query.filter_by(user_id=current_user.id).first()
+    if user_points:
+        user_ranking = Points.query.filter(Points.points > user_points.points).count() + 1
+
+    
+    
+    
+    return render_template(
+        'leaderboard.html', 
+        name=current_user.name, 
+        username=current_user.username,
+        leaderboard_data=leaderboard_data, 
+        user_ranking=user_ranking,
+        logged_in=True
+    )

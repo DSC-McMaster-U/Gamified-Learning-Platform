@@ -4,4 +4,5 @@ tests/__pycache__/
 tests/.pytest_cache
 .env
 .venv/
-instance/site.db 
+instance/site.db
+instance/site.sql

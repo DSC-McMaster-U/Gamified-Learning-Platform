@@ -106,6 +106,10 @@ class Points(db.Model):
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False, unique=True)
     points = db.Column(db.Integer, default=0)
     # user = db.relationship('User', uselist=False, backref='points')
+    
+    @classmethod
+    def get_leaderboard(cls):
+        return cls.query.order_by(cls.points.desc()).all()
 
 # Helper table to join User and Badges into many-to-many relationship
 user_badge = db.Table(
