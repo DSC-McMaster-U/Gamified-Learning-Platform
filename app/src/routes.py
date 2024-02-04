@@ -369,3 +369,8 @@ def modify_user_lesson():
         
         case _:
             return "400: Bad request", 400
+        
+@routes.route('/api/leaderboard', methods=['GET'])
+@login_required
+def leaderboard_api():
+    
