@@ -1,0 +1,42 @@
+{% extends "base.html" %} {% block title %}User Profile - Gamified Learning Platform{% endblock %}
+{% block styling %}
+<!-- Local Stylesheets -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}" />
+{% endblock %} {% block scripts %}
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    //AJAX request for leaderboard data
+    function leaderboardStats() {
+        $.ajax({
+            url:"/leaderboard",
+            method: "GET",
+            success: function (data) {
+                $("#pointsDisplay").text(data.points);
+                $('#streakDisplay').text(data.streak);
+                $("#levelDisplay").text(data.level);
+            },
+            error: function(error) {
+                console.error("Error fetching user stats:", error);
+            },
+        });
+    }
+
+    $(document).ready(function () {
+        leaderboardStats();
+
+        // Update every 30s
+        setInterval(leaderboardStats, 30000);
+
+    });
+        window.addEventListener("DOMContentLoaded", () => {
+            if(sessionStorage.getItem("signUpInfo") !== null) {
+                sessionStorage.removeItem("signUpInfo");
+        }
+        })
+
+</script>
+
+<!-- rest of leaderboard implementation -->
