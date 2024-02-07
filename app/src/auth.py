@@ -13,10 +13,9 @@ def redirectLogin():
     return redirect('/login', code=302)
 
 @auth.route('/login')
-def login():
-    logged_in = False  # Temporary logged-in value for now, changes header appearance
+def login(): 
     debugLeaderboard()
-    return render_template('login.html', logged_in=logged_in)
+    return render_template('login.html', logged_in=False) # Temporary logged-in value for now, changes header appearance
 
 @auth.route('/login', methods=['POST'])
 def login_post():
@@ -136,4 +135,4 @@ def register():
         return redirect(url_for("auth.login"))
 
     else:
-        return render_template("register.html")
+        return render_template("register.html", logged_in=False)
