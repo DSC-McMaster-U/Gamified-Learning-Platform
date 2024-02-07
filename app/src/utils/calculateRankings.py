@@ -133,6 +133,7 @@ class UserHashTable:
 
         raise UserDoesNotExistError("The user you're trying to get doesn't exist!")
 
+    # Implement these
     def checkTableLoad(self):
         pass
 
@@ -239,8 +240,11 @@ class PointsTree:
         return node.userEntryRefs
 
     # Returns a tuple of the highest-scoring users currently in DB, along with their point count (points, users)
-    def getMaxUsers(self) -> PointsNode:
-        return self.__getMaxUsersAux(self.root)
+    def getMaxUsers(self, subTreeRoot=None) -> PointsNode:
+        if subTreeRoot is None:
+            subTreeRoot = self.root
+
+        return self.__getMaxUsersAux(subTreeRoot)
 
     def __getMaxUsersAux(self, node: PointsNode) -> PointsNode:
         if node is None:
@@ -254,8 +258,11 @@ class PointsTree:
         return self.__getMaxUsersAux(node.right)
     
     # Returns a tuple of the highest-scoring users currently in DB, along with their point count (points, users)
-    def getMinUsers(self) -> PointsNode:
-        return self.__getMinUsersAux(self.root)
+    def getMinUsers(self, subTreeRoot=None) -> PointsNode:
+        if subTreeRoot is None:
+            subTreeRoot = self.root
+        
+        return self.__getMinUsersAux(subTreeRoot)
 
     def __getMinUsersAux(self, node: PointsNode) -> PointsNode:
         if node is None:
@@ -474,7 +481,9 @@ class PointsTree:
         else:
             oldNode.parent.right = newNode
 
-        newNode.parent = oldNode.parent
+        # If to-be-deleted oldNode has children (newNode), then swap parents; if not, forgo this step
+        if newNode is not None:
+            newNode.parent = oldNode.parent
 
     # Node deletion
     def deleteUserAux(self, node: PointsNode, userEntry: UserEntryNode):
@@ -515,17 +524,20 @@ class PointsTree:
             nodeToFix = tempNode.left
             self.__RBOverwriteNode(tempNode, tempNode.left)
         else:
+            # print(f"Min Users: {tempNode.right.points}")
             nodeToDelete = self.getMinUsers(tempNode.right)
+            print(nodeToDelete.points)
             nodeToDeleteColour = nodeToDelete.colour
             nodeToFix = nodeToDelete.right
 
-            if nodeToDelete.parent == tempNode:
+            if nodeToDelete.parent == tempNode and nodeToFix is not None:
                 nodeToFix.parent = nodeToDelete
             else:
                 self.__RBOverwriteNode(nodeToDelete, nodeToDelete.right)
 
-                nodeToDelete.right = tempNode.right
-                nodeToDelete.right.parent = nodeToDelete
+                if tempNode.right is not None:
+                    nodeToDelete.right = tempNode.right
+                    nodeToDelete.right.parent = nodeToDelete
 
             self.__RBOverwriteNode(tempNode, nodeToDelete)
 
@@ -533,7 +545,8 @@ class PointsTree:
             nodeToDelete.left.parent = nodeToDelete
             nodeToDelete.colour = tempNode.colour
             
-        if nodeToDeleteColour == RBTreeColour.BLACK:
+        # If original deleted node's colour was black and there is a replacement node (nodeToFix) to take its spot, then fix the RB tree
+        if nodeToDeleteColour == RBTreeColour.BLACK and nodeToFix is not None:
             self.deleteRBTreeFix(nodeToFix)
 
     # Returns a dictionary structure for all ranks and their associated user data, using a modified in-order traversal on the R-B tree.
@@ -590,6 +603,8 @@ class Leaderboard():
 
         self.setUpLeaderboard()
 
+    # Query from database a custom table containing user name, user's username, and points for when Points.user_id == User.id; users can be filtered from a specific course,
+    # or everyone can just be given at once.
     def __queryData(self):
         if self.courseID is None:
             return db.session.query(User.name, User.username, Points.points).distinct().filter(                
@@ -602,6 +617,7 @@ class Leaderboard():
                 user_course.c.course_id == self.courseID
             )
 
+    # This takes a lot of time to run, due to database queries...
     def setUpLeaderboard(self):
         self.userDBQuery = self.__queryData().all()
         dbEntries: list[tuple] = self.userDBQuery
@@ -623,41 +639,56 @@ class Leaderboard():
                 raise UserDBError("Error creating leaderboard: no users exist that are taking the specified course!")
             
             raise UserDBError("Error creating leaderboard: no users are registered within the database yet!")
-        
 
-    # Query from database a custom table containing user name, user's username, and points for when Points.user_id == User.id; users can be filtered from a specific course,
-    # or everyone can just be given at once.
-
+    # This takes a lot of time to run, due to database queries...
     def updateLeaderboard(self):
         newQuery = self.__queryData()
-        queryDiff1 = newQuery.filter(~User.username.in_([user[1] for user in self.userDBQuery]))   # Checks if a user was added
-        queryDiff2 = [user for user in self.userDBQuery if user not in newQuery.all()]             # Checks if a user was removed
-        dbEntriesAdded: list[tuple] = queryDiff1.all()
-        dbEntriesRemoved: list[tuple] = queryDiff2
+        queryDiffAdded = newQuery.filter(~User.username.in_([user[1] for user in self.userDBQuery]))     # Checks if a user was added
+        queryDiffRemoved = [user for user in self.userDBQuery if user not in newQuery.all()]             # Checks if a user was removed
+        queryDiffChanged = newQuery.filter(
+            User.username.in_([user[1] for user in self.userDBQuery])
+        ).filter( 
+            ~User.points.has(Points.points.in_([user[2] for user in self.userDBQuery]))
+        )                                                                                                # Checks if a pre-existing user entry was modified (through points)
 
-        # print(dbEntries)
+        dbEntriesAdded: list[tuple] = queryDiffAdded.all()
+        dbEntriesRemoved: list[tuple] = queryDiffRemoved
+        dbEntriesChanged: list[tuple] = queryDiffChanged.all()
+        # dbEntriesChangedOld: list[tuple] = [oldEntry for oldEntry in self.userDBQuery if oldEntry[1] in [newEntry[1] for newEntry in dbEntriesChangedNew]]
 
-        if dbEntriesAdded is not None and len(dbEntriesRemoved) == 0:
-            for dbEntry in dbEntriesAdded:
-                userEntry = UserEntryNode(dbEntry[0], dbEntry[1], dbEntry[2])
-                self.userInfo.insertUser(userEntry)
-                self.rankings.insertUser(userEntry)
-        elif len(dbEntriesRemoved) == 0 and dbEntriesAdded is None:
-            for dbEntry in dbEntriesRemoved:
-                userEntry = self.userInfo.getUser(dbEntry[1])
-                self.userInfo.deleteUser(dbEntry[1])
-                self.rankings.deleteUser(userEntry)
+        # print(f"~calcRankings Debug - Added entries: {dbEntriesAdded}")
+        # print(f"~calcRankings Debug - Removed entries: {dbEntriesRemoved}")
+        # print(f"~calcRankings Debug - Changed entries (new): {dbEntriesChanged}")
+        # print(f"~calcRankings Debug - Changed entries (old): {dbEntriesChangedOld}")
 
-        else:
+        # Add old versions of changed user data so that old leaderboard entry is erased -- NOT NECESSARY, ALREADY IN REMOVED LIST (for some reason...?)
+        # dbEntriesRemoved += dbEntriesChangedOld 
+
+        # Add new versions of changed user data so that new leaderboard entry is added  
+        dbEntriesAdded += dbEntriesChanged     
+
+        # Checks if length of all lists here are 0; if so, then absolutely no change to leaderboard from last update/creation
+        if (len(dbEntriesAdded) + len(dbEntriesRemoved)) == 0:      
             print("No users in this course were added or removed in the database from the last leaderboard update.")
+        else:            
+            if len(dbEntriesRemoved) > 0:
+                for dbEntry in dbEntriesRemoved:
+                    userEntry = self.userInfo.getUser(dbEntry[1])
+                    self.userInfo.deleteUser(dbEntry[1])
+                    self.rankings.deleteUser(userEntry)
+
+            if len(dbEntriesAdded) > 0:
+                for dbEntry in dbEntriesAdded:
+                    userEntry = UserEntryNode(dbEntry[0], dbEntry[1], dbEntry[2])
+                    self.userInfo.insertUser(userEntry)
+                    self.rankings.insertUser(userEntry)
 
         self.userDBQuery = newQuery.all()
         print_tree(self.rankings)
 
-
     def getUsersByRank(self, rank: int):
-        return self.rankings.getUsersByRank(rank)
-
+        output = self.rankings.getUsersByRank(rank)
+        return [userEntry.username for userEntry in output]
 
     def getRankByUser(self, username: str):
         userEntry: UserEntryNode = self.userInfo.getUser(username)
@@ -757,6 +788,8 @@ def print_tree(tree, points="points", left="left", right="right"):
         lines = [first_line, second_line] + [a + u * " " + b for a, b in zipped_lines]
         return lines, n + m + u, max(p, q) + 2, n + u // 2
 
+    print("~calcRankings Debug - Display Rankings R-B Tree:\n")
+
     lines, *_ = display(tree.root, points, left, right)
     for line in lines:
         print(line)
@@ -791,9 +824,40 @@ def debugQuery():
     db.session.query(User).delete()
     db.session.commit()
 
+# Used for quick user and points registration within the course "course" in debugLeaderboard()
+def debugAddUserAux(uniqueNum, course, points):
+    new_user = User(
+        email=f"testboards{uniqueNum}@gmail.com", 
+        username=f"test-boards{uniqueNum}", 
+        name=f"Test{uniqueNum} Board",
+        age=19
+    )
+
+    new_user.set_password("Test-12345")
+    course.users.append(new_user)
+    db.session.add(new_user)
+    db.session.commit()
+    
+    new_user_points = Points(
+        user_id=new_user.id, 
+        points=points
+    )
+
+    new_user.points = new_user_points
+
+    db.session.add(new_user_points)
+    db.session.commit()
+
+    return new_user
+
+# Used for quick user deletion in debugLeaderboard()
+def debugDeleteUserAux(new_user):
+    db.session.query(Points).filter(Points.user_id == new_user.id).delete()
+    db.session.query(User).filter(User.id == new_user.id).delete()
+    db.session.commit()
 
 def debugLeaderboard():
-    # This is outdated (using the Leaderboard class), change in the future
+    # This will become outdated (using the Leaderboard class), change in the future
     #### DATABASE SET UP ####
     new_course = Course(
         name="Organic Chemistry",
@@ -803,68 +867,40 @@ def debugLeaderboard():
     db.session.add(new_course)
     db.session.commit()
 
-    new_user1 = User(
-        email="testboard20@gmail.com", 
-        username="test-board20", 
-        name="Test1 Board",
-        age=50
-    )
-
-    new_user2 = User(
-        email="testboards20@gmail.com", 
-        username="test-boards20", 
-        name="Test2 Board",
-        age=50
-    )
-
-    new_user1.set_password("Test-12345")
-    new_user2.set_password("Test-12345")
-
-    new_course.users.append(new_user1)
-    new_course.users.append(new_user2)
-    db.session.add(new_user1)
-    db.session.add(new_user2)
-    db.session.commit()
-    
-    new_user1_points = Points(
-        user_id=new_user1.id, 
-        points=50
-    )
-
-    new_user2_points = Points(
-        user_id=new_user2.id,
-        points=25
-    )
-
-    db.session.add(new_user1_points)
-    db.session.add(new_user2_points)
-    db.session.commit()
+    # Add in a whole bunch of users with different points
+    new_user1 = debugAddUserAux(1, new_course, 50)
+    new_user2 = debugAddUserAux(2, new_course, 25)
+    new_user3 = debugAddUserAux(3, new_course, 60)   
+    new_user4 = debugAddUserAux(4, new_course, 55)   
+    new_user5 = debugAddUserAux(5, new_course, 90)   
+    new_user6 = debugAddUserAux(6, new_course, 85)   
 
     #### CLASS TESTING ####
     testLeaderboard = Leaderboard(new_course.id)
 
-    new_user3 = User(
-        email="testboards30@gmail.com", 
-        username="test-boards30", 
-        name="Test3 Board",
-        age=90
-    )
+    # Testing deletion and additions of users from course (and/or database)
+    debugDeleteUserAux(new_user4)
+    new_user7 = debugAddUserAux(7, new_course, 62)   
+    new_user8 = debugAddUserAux(8, new_course, 52)   
+    new_user9 = debugAddUserAux(9, new_course, 24)   
+    new_user10 = debugAddUserAux(10, new_course, 90)   
 
-    new_user3.set_password("Test-12345")
-    new_course.users.append(new_user3)
-
-    db.session.add(new_user3)
+    # Testing changing existing user points
+    print(new_user3.id)
+    user3 = User.query.filter(User.id == new_user3.id).filter(User.courses.contains(new_course)).first()
+    print(user3.points.points)
+    user3.points.points = 100
     db.session.commit()
 
-    new_user3_points = Points(
-        user_id=new_user3.id, 
-        points=60
-    )
-
-    db.session.add(new_user3_points)
-    db.session.commit()
+    # This shows old existing user entry is still in leaderboard (updateLeaderboard() should remove it and update with new entry that has 100 points)
+    test = testLeaderboard.userInfo.getUser(user3.username)
+    print(user3.username, test.name, test.points)
 
     testLeaderboard.updateLeaderboard()
+
+    print(testLeaderboard.getRankByUser(new_user2.username))
+    print(testLeaderboard.getUsersByRank(1))
+    print(testLeaderboard.getUsersByRank(2))
 
     #### DATABASE TEAR DOWN ####
     db.session.query(Points).delete()
@@ -873,7 +909,7 @@ def debugLeaderboard():
     db.session.commit()
 
 
-def debug():
+def debugAuxClasses():
     # Rough debugging tests -- expand on this and convert this over to pytest format in the future
     userEntry1 = UserEntryNode("Thor Odinson", "noobmaster69", 40)
     userEntry2 = UserEntryNode("John Doe", "johndoe1", 24)
