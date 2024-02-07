@@ -1,6 +1,7 @@
 from enum import Enum
-from sqlalchemy import Enum as SQLAlchemyEnum, ForeignKey, func, CheckConstraint
+from sqlalchemy import Enum as SQLAlchemyEnum, ForeignKey
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import CheckConstraint, func, ForeignKey
 from datetime import datetime, timezone, timedelta
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin
@@ -30,7 +31,7 @@ class GradeEnum(Enum):
     NA = 'Not Available'
 
 """
-New Additiions: 
+New Additions: 
 The association tables 'user_course', 'user_module', and 'user_topic' are essential for establishing many-to-many 
 relationships between users and the new models added to our educational platform: courses, modules, and topics.
 
@@ -71,7 +72,7 @@ user_topic = db.Table(
 )
 
 '''
-New Additiions: 
+New Additions: 
 The below association tables 'teacher_course', 'teacher_module', and 'teacher_topic' establish many-to-many 
 relationships between teachers and the models added to our educational platform: courses, modules, and topics.
 By doing so, we can enable mutiple teachers to collaborate on a course if needed.
@@ -96,7 +97,7 @@ teacher_topic = db.Table(
 )
 
 '''
-New Additiions: 
+New Additions: 
 teacher_student establish a many-to-many between teachers and students. This way, we can easily manage teacher-student relationships
 and allow teachers to view all of their students progress, or for students to have a centralized way to manage/interact with their teachers.
 '''
@@ -118,7 +119,7 @@ class Teacher(UserMixin, db.Model):
     registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
     yrs_experience = db.Column(db.Integer, nullable=False)
     specialization = db.Column(db.String(50), nullable=True)
-    students = db.relationship('User', secondary=teacher_student, backref='teachers')
+    # students = db.relationship('User', secondary=teacher_student, backref='teachers')
     courses = db.relationship('Course', secondary=teacher_course, backref='teachers')
     modules = db.relationship('Module', secondary=teacher_module, backref='teachers')
     topics = db.relationship('Topic', secondary=teacher_topic, backref='teachers')
@@ -187,7 +188,7 @@ class Badges(db.Model):
     description = db.Column(db.Text, nullable=False) # description of the badge
     points_threshold = db.Column(db.Integer, nullable=False) # points required to earn a badge
     # user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False) # create relationship between user and badge earned
-    users = db.relationship('User', secondary=user_badge, backref='badges')  # establish relationship with the User table
+    # users = db.relationship('User', secondary=user_badge, backref='badges')  # establish relationship with the User table
 
 class Achievements(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -195,7 +196,7 @@ class Achievements(db.Model):
     description = db.Column(db.Text, nullable=False)
     points_threshold = db.Column(db.Integer, nullable=False) # points required to earn an achievement
     # user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False) # create relationship between user and achievement earned
-    users = db.relationship('User', secondary=user_achieve, backref='achievements') # establish relationship with the User table
+    # users = db.relationship('User', secondary=user_achieve, backref='achievements') # establish relationship with the User table
 
 
 # Quiz vs. Task
@@ -282,8 +283,8 @@ class Course(db.Model):
     name = db.Column(db.String(100), nullable=False)
     subject_type = db.Column(SQLAlchemyEnum(Subject), nullable=False)
     modules = db.relationship('Module', backref='course', lazy='dynamic')
-    users = db.relationship('User', secondary=user_course, backref='courses', lazy='dynamic')
-    teacher = db.relationship('Teacher', secondary=teacher_course, backref='courses', lazy='dynamic')
+    # users = db.relationship('User', secondary=user_course, backref='courses', lazy='dynamic')
+    # teacher = db.relationship('Teacher', secondary=teacher_course, backref='courses', lazy='dynamic')
     # ^^ Relationships defined so that each course can have many modules, and be accessed by many users
 
 class Module(db.Model):
@@ -291,8 +292,8 @@ class Module(db.Model):
     name = db.Column(db.String(100), nullable=False)
     course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
     topics = db.relationship('Topic', backref='module', lazy='dynamic')
-    users = db.relationship('User', secondary=user_module, backref='modules', lazy='dynamic')
-    teacher = db.relationship('Teacher', secondary=teacher_module, backref='modules', lazy='dynamic')
+    # users = db.relationship('User', secondary=user_module, backref='modules', lazy='dynamic')
+    # teacher = db.relationship('Teacher', secondary=teacher_module, backref='modules', lazy='dynamic')
     # ^^ Relationships defined so that each module can have many topics, and be accessed by many users
 
 class Topic(db.Model):
@@ -301,8 +302,8 @@ class Topic(db.Model):
     module_id = db.Column(db.Integer, ForeignKey('module.id'), nullable=False)
     quiz_id = db.Column(db.Integer, ForeignKey('quiz.id'), nullable=True)
     lesson_id = db.Column(db.Integer, ForeignKey('lesson.id'), nullable=True)
-    users = db.relationship('User', secondary=user_topic, backref='topics', lazy='dynamic')
-    teacher = db.relationship('Teacher', secondary=teacher_topic, backref='topics', lazy='dynamic')
+    # users = db.relationship('User', secondary=user_topic, backref='topics', lazy='dynamic')
+    # teacher = db.relationship('Teacher', secondary=teacher_topic, backref='topics', lazy='dynamic')
     # ^^^ Relationships defined so that each topic has a unique lesson and unique quiz, and can be accessed by many users.
 
 

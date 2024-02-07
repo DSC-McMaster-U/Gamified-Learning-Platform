@@ -3,6 +3,7 @@ from .models import User, db, GradeEnum, UserProgress, Points
 from flask_login import login_user
 from .utils.passwordStrength import check_password_strength
 from .utils.calculateAge import calculate_age
+from .utils.calculateRankings import debugLeaderboard
 
 # Create authentication blueprint for handling relevant routes (signup, login, logout, etc.)
 auth = Blueprint('auth', __name__)
@@ -14,6 +15,7 @@ def redirectLogin():
 @auth.route('/login')
 def login():
     logged_in = False  # Temporary logged-in value for now, changes header appearance
+    debugLeaderboard()
     return render_template('login.html', logged_in=logged_in)
 
 @auth.route('/login', methods=['POST'])

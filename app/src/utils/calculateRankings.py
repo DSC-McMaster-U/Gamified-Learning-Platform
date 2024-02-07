@@ -580,7 +580,7 @@ class PointsTree:
         self.__getAllUsersAux(rankings, node.left, leftNodeRank)
 
 
-# Might not be necessary... check design of Mithun's leaderboard database schema
+# Temporary solution until Mithun finishes his leaderboard database schema
 class Leaderboard():
     def __init__(self, courseID: int = None):
         self.rankings: PointsTree = PointsTree()
@@ -590,19 +590,21 @@ class Leaderboard():
 
         self.setUpLeaderboard()
 
-    def setUpLeaderboard(self):
+    def __queryData(self):
         if self.courseID is None:
-            self.userDBQuery = db.session.query(User.name, User.username, Points.points).distinct().filter(                
+            return db.session.query(User.name, User.username, Points.points).distinct().filter(                
                 User.id == Points.user_id
             )
         else:
-            self.userDBQuery = db.session.query(User.name, User.username, Points.points).distinct().filter(
+            return db.session.query(User.name, User.username, Points.points).distinct().filter(
                 User.id == Points.user_id
             ).filter(
                 user_course.c.course_id == self.courseID
             )
 
-        dbEntries: list[tuple] = self.userDBQuery.all()
+    def setUpLeaderboard(self):
+        self.userDBQuery = self.__queryData().all()
+        dbEntries: list[tuple] = self.userDBQuery
         # print(dbEntries)
 
         if dbEntries is not None:
@@ -614,7 +616,7 @@ class Leaderboard():
                 self.userInfo.insertUser(userEntry)
                 self.rankings.insertUser(userEntry)
 
-            # print_tree(self.rankings)
+            print_tree(self.rankings)
 
         else:
             if self.courseID is not None:
@@ -627,11 +629,34 @@ class Leaderboard():
     # or everyone can just be given at once.
 
     def updateLeaderboard(self):
-        pass
+        newQuery = self.__queryData()
+        queryDiff1 = newQuery.filter(~User.username.in_([user[1] for user in self.userDBQuery]))   # Checks if a user was added
+        queryDiff2 = [user for user in self.userDBQuery if user not in newQuery.all()]             # Checks if a user was removed
+        dbEntriesAdded: list[tuple] = queryDiff1.all()
+        dbEntriesRemoved: list[tuple] = queryDiff2
+
+        # print(dbEntries)
+
+        if dbEntriesAdded is not None and len(dbEntriesRemoved) == 0:
+            for dbEntry in dbEntriesAdded:
+                userEntry = UserEntryNode(dbEntry[0], dbEntry[1], dbEntry[2])
+                self.userInfo.insertUser(userEntry)
+                self.rankings.insertUser(userEntry)
+        elif len(dbEntriesRemoved) == 0 and dbEntriesAdded is None:
+            for dbEntry in dbEntriesRemoved:
+                userEntry = self.userInfo.getUser(dbEntry[1])
+                self.userInfo.deleteUser(dbEntry[1])
+                self.rankings.deleteUser(userEntry)
+
+        else:
+            print("No users in this course were added or removed in the database from the last leaderboard update.")
+
+        self.userDBQuery = newQuery.all()
+        print_tree(self.rankings)
 
 
-    def getUserByRank(self):
-        pass
+    def getUsersByRank(self, rank: int):
+        return self.rankings.getUsersByRank(rank)
 
 
     def getRankByUser(self, username: str):
@@ -640,6 +665,7 @@ class Leaderboard():
 
 ##########
     
+### WIP: Finish this function based off of Mithun's leaderboard database schema    
 # Set up leaderboard and sort all user entries in it, then create a database entry for the leaderboard and return the corresponding ID/primary key value
 def setUpLeaderboard(courseID: int = None) -> int:
     rankings: PointsTree = PointsTree()
@@ -736,6 +762,36 @@ def print_tree(tree, points="points", left="left", right="right"):
         print(line)
 
 
+def debugQuery():
+    new_user1 = User(
+        email="testboard20@gmail.com", 
+        username="test-board20", 
+        name="Test1 Board",
+        age=50
+    )
+
+    new_user2 = User(
+        email="testboards20@gmail.com", 
+        username="test-boards20", 
+        name="Test2 Board",
+        age=60
+    )
+
+    new_user1.set_password("Test-12345")
+    new_user2.set_password("Test-12345")
+
+    db.session.add(new_user1)
+    db.session.add(new_user2)
+    db.session.commit()
+
+
+    # testDiff = db.session.query(User.name, User.username).select_from(test2).filter(test2. .username.in_(test1))
+    # print(testDiff.all())
+
+    db.session.query(User).delete()
+    db.session.commit()
+
+
 def debugLeaderboard():
     # This is outdated (using the Leaderboard class), change in the future
     #### DATABASE SET UP ####
@@ -786,6 +842,29 @@ def debugLeaderboard():
 
     #### CLASS TESTING ####
     testLeaderboard = Leaderboard(new_course.id)
+
+    new_user3 = User(
+        email="testboards30@gmail.com", 
+        username="test-boards30", 
+        name="Test3 Board",
+        age=90
+    )
+
+    new_user3.set_password("Test-12345")
+    new_course.users.append(new_user3)
+
+    db.session.add(new_user3)
+    db.session.commit()
+
+    new_user3_points = Points(
+        user_id=new_user3.id, 
+        points=60
+    )
+
+    db.session.add(new_user3_points)
+    db.session.commit()
+
+    testLeaderboard.updateLeaderboard()
 
     #### DATABASE TEAR DOWN ####
     db.session.query(Points).delete()
