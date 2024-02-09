@@ -1,50 +1,97 @@
-# calculateRankings.py - uses certain algorithms and DS to sort and organize member points in the order to be displayed on the leaderboard
+# calculateRankings.py - uses certain algorithms and data structures to sort and organize member points in the order to be displayed on the leaderboard
 
 """
 Plan:
     - Query from database a custom table containing user name, user's username, and points for when Points.user_id == User.id; users can be filtered from a specific course,
       or everyone can just be given at once.
-    - Maybe find some way to locally store that data somehow in records?
+    - Maybe find some way to locally store that data somehow in records (also needs efficient fetch; may not require an ordered structure)?
     - Use a balanced binary (red-black) tree to sort users by points; the keys will be the points, while the values will be lists containing (references to?) people with
-      those number of points 
-    - function getPlayerFromRank(rank) ->   
-    - function compileLeaderboard()
+      those number of points.
+
+Usage of the main Leaderboard class (export just this class from the file):
+    - Leaderboard(courseID: optional int): 
+        Instantiates a new leaderboard object out of a query of all users in the database, based on their points. If an integer course ID is provided, then the query is
+        limited to users enrolled within that specific course. Once all users are obtained from the query, the leaderboard automatically calculates every user's rankings,
+        based off of their associated points in the database. For multiple users with the same points, they are all considered under the same rank number N, while the user(s)
+        with the next rank is simply placed at rank number (N + 1). 
+
+    - Leaderboard.updateData():
+        Updates the given leaderboard object with a new query of all database users, or a new one with all users within a specific course (if the leaderboard was created
+        with a course ID integer). Users added to the database will be added to the rankings, while users deleted from the database will be removed from the rankings with
+        the rankings adjusted accordingly. Users whose points data is changed (e.g. userA gains +100 points, raising their rank) will also be altered accordingly within
+        the leaderboard.
+
+        (...One possible oversight in this update function is if the user's name is somehow changed, since the queries only filter by username and points; therefore, 
+        the leaderboard won't contain updated information on that specific user's name. Support should be added within the query comparisons if such a feature is added
+        in the future.)
+    
+    - Leaderboard.getBottomRankNum() -> int:
+        Returns the rank of the user(s) with the least amount of points on the leaderboard.
+
+    - Leaderboard.getUsersByRank(rank: int) -> list[dict]:
+        Given a specific rank integer (where rank >= 1 and rank <= Leaderboard.getBottomRankNum()), returns a list containing the information of 1 or more users placed
+        at that rank. If a number outside of the above range is provided, then a UserDBError exception is thrown.
+    
+    - Leaderboard.getRankByUser(username: str) -> int:
+        Given the username of a user within the leaderboard, returns an integer corresponding to the rank of the provided user. If no user exists with the given username,
+        a UserDoesNotExistError exception is thrown.
+
+    - Leaderboard.getTopUsers() -> list[dict]:    
+        Returns a list of the user(s) ranked the highest on the leaderboard (most amount of points).
+
+    - Leaderboard.getBottomUsers() -> list[dict]:   
+        Returns a list of the user(s) ranked the lowest on the leaderboard (least amount of points).
+
+    - Leaderboard.getAllUsers() -> dict:
+        Returns an easily-convertible-to-JSON dictionary object with keys corresponding to rank numbers and values representing a list of users corresponding with 
+        each rank. The structure is as follows:
+            {
+                <rank #>: [
+                    {
+                        "name": <user's name>,
+                        "username": <user's username>,
+                        "points": <user's point count>
+                    }
+                ]
+            }
+
+    - Leaderboard.getUsersByRankRange(topRank: int, bottomRank: int) -> dict:
+        Returns a dictionary object in the same format above from Leaderboard.getAllUsers(), but instead limited to users from topRank up to bottomRank (inclusive).
+        Note that the arguments must be passed such that topRank is smaller than bottomRank, topRank & bottomRank are at least 1, and topRank & bottomRank are less than
+        or equal to the rank of the user with the least amount of points (to check, use Leaderboard.getBottomRankNum() to get this rank number).
 
 """
 
+### Imports ###
 from math import ceil
 from enum import Enum
 from app.src.models import User, user_course, Course, Points, db, Subject
-# from app.src.auth import db
-# from app.src.app import app
-from sqlalchemy import text
 
+### Custom Errors and Enum Classes ###
 class UserDBError(Exception):
     pass
 
-
 class UserDoesNotExistError(Exception):
     pass
-
 
 class RBTreeColour(Enum):
     BLACK = "black"
     RED = "red"
 
-
+### Auxiliary/minor classes used in main leaderboard ###
 # A node part of a linked list, to be stored inside UserHashTable's list
 class UserEntryNode:
     def __init__(self, name, username, points):
         self.name: str = name
         self.username: str = username  # Note: based on model, these are unique
         self.points: int = points
-        self.nodeRef: PointsTree = None
+        self.nodeRef: PointsNode = None
 
         # Node attributes
         self.next: UserEntryNode = None
 
-    def setPointsTree(self, pointsTree) -> None:
-        self.nodeRef = pointsTree
+    def setPointsTree(self, pointsNode) -> None:
+        self.nodeRef = pointsNode
 
 
 # Hash table storing user info, using separate chaining
@@ -58,6 +105,7 @@ class UserHashTable:
         )  # Current size of the hash table (1.2 * the size of initially expected elem, for room for more elem; ^ capacity once table filled with average of <loadFactor> items per items entry)
         self.items = [None] * self.capacity
 
+    # Actual hashing function used; depends on Python's built-in siphash for strings, then modulo's the number to within the range of the data list's capacity
     def __hashingFunc(self, hashStrKey: str) -> int:
         return hash(hashStrKey) % self.capacity
 
@@ -71,7 +119,7 @@ class UserHashTable:
             self.items[hashIndex] = userEntry
             self.size += 1
 
-            self.checkTableLoad()
+            self.__checkTableLoad()
         else:  # If there are other nodes within this hashIndex already:
             currentNode: UserEntryNode = self.items[hashIndex]
 
@@ -94,7 +142,7 @@ class UserHashTable:
             self.items[hashIndex] = userEntry
             self.size += 1
 
-            self.checkTableLoad()
+            self.__checkTableLoad()
 
             return None
 
@@ -133,22 +181,56 @@ class UserHashTable:
 
         raise UserDoesNotExistError("The user you're trying to get doesn't exist!")
 
-    # Implement these
-    def checkTableLoad(self):
-        pass
+    # Checks if current load factor is still smaller than set upper load factor limit
+    def __checkTableLoad(self) -> None:
+        if (self.size / self.capacity) > self.loadFactor:
+            self.__resizeTable()
 
-    def resizeTable(self):
-        pass
+    # Resizes internal list to double the size of the previous list/number of elements in previous list
+    # Note: using a new prime number here for the new size would be ideal, but methods for obtaining it would have less than ideal time complexities and/or space 
+    # complexities in practice alongside the O(n) resizing... (e.g. Sieve of Eratosthenes = O(n * log(log n))) time, and O(sqrt(N)) space for getting prime number N)
+    def __resizeTable(self) -> None:
+        # print("~UserHashTable Debug - resizing table")
+        self.capacity = self.size * 2
 
+        oldItems = self.items.copy()
+        self.items = [None] * self.capacity
+
+        for index, linkedList in enumerate(oldItems):
+            if linkedList is None:
+                continue
+
+            userEntry: UserEntryNode = linkedList
+            # print(f"linkedlist #{index}")
+
+            while userEntry is not None:
+                # print("Inserting ", userEntry.username, "...")
+                nodeCopy = UserEntryNode(userEntry.name, userEntry.username, userEntry.points)
+                self.insertUser(nodeCopy)
+                userEntry = userEntry.next
+
+    # For debug... remove in the future once leaderboard is fully integrated with other stuff
+    def printContents(self) -> None:
+        print("~~ UserHashTable Contents: ~~")
+        for index, linkedList in enumerate(self.items):
+            if linkedList is None:
+                continue
+
+            userEntry: UserEntryNode = linkedList
+            print(f"{index}: [", end="")
+
+            while userEntry is not None:
+                print(f"{userEntry.username}, ", end="")
+                userEntry = userEntry.next
+            
+            print("]")
 
 class PointsNode:
     def __init__(self, points, userEntryRef):
         # -- General attributes for binary trees (renamed in the context of the leaderboard) --
         # Node key; if tree is init with length 0, then this is just None
         self.points: int = points
-        self.userEntryRefs: list[UserEntryNode] = [
-            userEntryRef
-        ]  # Node value(s), those being back-references to UserEntryNode objects in hashmap
+        self.userEntryRefs: list[UserEntryNode] = [userEntryRef]  # Node value(s), those being back-references to UserEntryNode objects in hashmap
 
         # -- Red-black tree attributes --
         self.left: PointsNode = None
@@ -166,7 +248,8 @@ class PointsNode:
         else:
             self.userEntryRefs.append(userEntry)
 
-
+# Represents a left-leaning red black tree; acts sort of like an "outer shell" of the tree only pointing to the root node of the tree 
+# (successive nodes are accessed through other nodes)
 class PointsTree:
     def __init__(self):
         self.root: PointsNode = None
@@ -183,6 +266,7 @@ class PointsTree:
 
         return node.colour == RBTreeColour.RED
 
+    # Auxiliary functions for maintaining the R-B tree structure of the data
     def __insertRotateLeft(self, node: PointsNode) -> PointsNode:
         rightNode: PointsNode = node.right
 
@@ -224,6 +308,7 @@ class PointsTree:
         node.left.colour = RBTreeColour.BLACK
         node.right.colour = RBTreeColour.BLACK
 
+    # Given a points key, get list of all users stored in the node with that key
     def getUsersByPoints(self, points: int) -> list:
         return self.__getUsersByPointsAux(self.root, points)
 
@@ -257,7 +342,7 @@ class PointsTree:
 
         return self.__getMaxUsersAux(node.right)
     
-    # Returns a tuple of the highest-scoring users currently in DB, along with their point count (points, users)
+    # Returns a tuple of the lowest-scoring users currently in DB, along with their point count (points, users)
     def getMinUsers(self, subTreeRoot=None) -> PointsNode:
         if subTreeRoot is None:
             subTreeRoot = self.root
@@ -275,8 +360,9 @@ class PointsTree:
 
         return self.__getMinUsersAux(node.left)    
 
+    # Given a rank (correlated to the position of a node in the tree), find all users within the node whose position corresponds to that rank.
     def getUsersByRank(self, rank: int) -> list[UserEntryNode]:
-        if self.root is None or self.__treeSize(self.root) < rank:
+        if self.root is None or self.__treeSize(self.root) < rank or rank <= 0:
             raise UserDBError(
                 f"The rank <{rank}> is out of range from the number of users currently stored in the leaderboard (<{self.__treeSize(self.root)}>)!"
             )
@@ -301,7 +387,7 @@ class PointsTree:
             "There's an issue with the given rank number or the tree structure (currentNode = None when it wasn't supposed to); further debugging is probably needed."
         )
 
-    # Used in conjunction with something else to get points from username/other user data
+    # Self-explanatory from method name; used in conjunction with something else to get points from username/other user data
     def getRankByPoints(self, points: int) -> int:
         if self.root is None:
             return 0
@@ -326,6 +412,7 @@ class PointsTree:
             "No user is currently stored with the given amount of points!"
         )
 
+    # Adding a new user entry into rankings red-black tree
     def insertUser(self, userEntry: UserEntryNode) -> None:
         self.root = self.__insertUserAux(self.root, userEntry)
         self.root.colour = RBTreeColour.BLACK
@@ -365,10 +452,12 @@ class PointsTree:
         node.numNodes = self.__treeSize(node.left) + self.__treeSize(node.right) + 1
         return node
 
+    # Node deletion from the rankings red-black tree
     def deleteUser(self, userEntry: UserEntryNode):
         self.deleteUserAux(self.root, userEntry)
 
     # -- DELETE HELPER FUNCTIONS BASED OFF FROM HERE: https://www.programiz.com/dsa/deletion-from-a-red-black-tree --
+    # Aux function for deleteUser(); fixes RB tree after deleting original node and replacing with another suitable node within the tree
     def deleteRBTreeFix(self, node):
         # Keeps on looping and fixing until node reaches the root of the entire tree (and is black)
         while node != self.root and node.colour == RBTreeColour.BLACK:
@@ -470,7 +559,7 @@ class PointsTree:
 
         node.colour = RBTreeColour.BLACK
 
-
+    # Aux function to deleteUser(); overwrites original to-be-deleted node with new suitable node within the tree
     def __RBOverwriteNode(self, oldNode: PointsNode, newNode: PointsNode):
         if oldNode.parent is None:
             self.root = newNode
@@ -485,7 +574,7 @@ class PointsTree:
         if newNode is not None:
             newNode.parent = oldNode.parent
 
-    # Node deletion
+    # Aux function to deleteUser(); handles actual overwriting of old node and identifies new node to replace old node with
     def deleteUserAux(self, node: PointsNode, userEntry: UserEntryNode):
         tempNode: PointsNode = None
 
@@ -551,15 +640,16 @@ class PointsTree:
 
     # Returns a dictionary structure for all ranks and their associated user data, using a modified in-order traversal on the R-B tree.
     def getAllUsers(self):
-        rankings: dict = {}  # Format of dict is {<rank #>: [{name: <str>, username: <str>, points: <int>}]}
+        rankingsOutput: dict = {}  # Format of dict is {<rank #>: [{name: <str>, username: <str>, points: <int>}]}
 
         self.__getAllUsersAux(
-            rankings, self.root, self.__treeSize(self.root.right) + 1
+            rankingsOutput, self.root, self.__treeSize(self.root.right) + 1
         )
 
-        return rankings
+        return rankingsOutput
 
-    def __getAllUsersAux(self, rankings: dict, node: PointsNode, rank: int = 0):
+    # Aux function for getAllUsers()
+    def __getAllUsersAux(self, rankingsOutput: dict, node: PointsNode, rank: int = 0):
         if node is None:
             return
 
@@ -571,7 +661,7 @@ class PointsTree:
             if (node.right is not None)
             else rank
         )
-        self.__getAllUsersAux(rankings, node.right, rightNodeRank)
+        self.__getAllUsersAux(rankingsOutput, node.right, rightNodeRank)
 
         # "Visit" and register current node
         for userRef in node.userEntryRefs:
@@ -582,7 +672,7 @@ class PointsTree:
             }
             tempList.append(tempEntry)
 
-        rankings[rank] = tempList
+        rankingsOutput[rank] = tempList
 
         # Traverse to left subtree last
         leftNodeRank = (
@@ -590,18 +680,39 @@ class PointsTree:
             if (node.left is not None)
             else rank
         )
-        self.__getAllUsersAux(rankings, node.left, leftNodeRank)
+        self.__getAllUsersAux(rankingsOutput, node.left, leftNodeRank)
 
 
-# Temporary solution until Mithun finishes his leaderboard database schema
+"""
+This is the main class other programs will interact with for the leaderboard. Ideally, this should be a group of functions 
+interacting with the Leaderboard DB schema, instead of a large class storing data, but Mithun (who's in charge of creating that schema) hasn't gotten 
+back to me yet on how he's designing it... for now, this is a temporary solution until he finishes his tasks and uploads a PR.
+"""
 class Leaderboard():
+    """
+    A class used to store and fetch the rankings of users within the entire database or within a specified Class database entry (if passed a courseID int during instantiation).
+
+    The leaderboard is constructed into two primary parts: the rankings, and userInfo. The userInfo stores all relevant user info 
+    within a special Node class of sorts (UserEntryNode), and each of these UserEntryNodes are stored within a hash table such that the 
+    information is accessible by indexing with a user's unique username within O(1) average time. Rankings, on the other hand, is structured 
+    as a red-black tree (where PointsTree = outer "container" class pointing to root, and PointsNode = individual tree nodes storing user points 
+    as a key and 1 or more reference(s) to users/UserEntryNodes with those points). To find a user's ranking, we would need to get their 
+    relevant points info using their username, then find its relevant PointsNode in the rankings R-B tree and determine their rank based 
+    on the PointsNode's overall position in the structure.
+
+    For updating the leaderboard, there is no need to manually append any sort of user to the leaderboard; instead, just
+    change whatever relevant data within the database itself. By running Leaderboard.updateData(), the leaderboard will
+    query the db and make any necessary additions or deletions to its data. Other methods also exist to obtain users or rank numbers in
+    a variety of ways, such as filtering users by rank number, getting a user's rank given their username, getting top or bottom users in 
+    the leaderboard, and 
+    """
     def __init__(self, courseID: int = None):
         self.rankings: PointsTree = PointsTree()
         self.userInfo: UserHashTable = None
         self.userDBQuery = None
         self.courseID: int = courseID
 
-        self.setUpLeaderboard()
+        self.__setUpLeaderboard()
 
     # Query from database a custom table containing user name, user's username, and points for when Points.user_id == User.id; users can be filtered from a specific course,
     # or everyone can just be given at once.
@@ -618,7 +729,7 @@ class Leaderboard():
             )
 
     # This takes a lot of time to run, due to database queries...
-    def setUpLeaderboard(self):
+    def __setUpLeaderboard(self) -> None:
         self.userDBQuery = self.__queryData().all()
         dbEntries: list[tuple] = self.userDBQuery
         # print(dbEntries)
@@ -641,27 +752,28 @@ class Leaderboard():
             raise UserDBError("Error creating leaderboard: no users are registered within the database yet!")
 
     # This takes a lot of time to run, due to database queries...
-    def updateLeaderboard(self):
+    def updateData(self) -> None:
         newQuery = self.__queryData()
-        queryDiffAdded = newQuery.filter(~User.username.in_([user[1] for user in self.userDBQuery]))     # Checks if a user was added
-        queryDiffRemoved = [user for user in self.userDBQuery if user not in newQuery.all()]             # Checks if a user was removed
+        queryDiffAdded = newQuery.filter(~User.username.in_([user[1] for user in self.userDBQuery]))  # Checks if a user was added
+        queryDiffRemoved = [user for user in self.userDBQuery if user not in newQuery.all()]          # Checks if a user was removed
         queryDiffChanged = newQuery.filter(
-            User.username.in_([user[1] for user in self.userDBQuery])
+            User.username.in_([user[1] for user in self.userDBQuery])                                 # 1st filter: Get users that appear in both old and new queries
         ).filter( 
-            ~User.points.has(Points.points.in_([user[2] for user in self.userDBQuery]))
-        )                                                                                                # Checks if a pre-existing user entry was modified (through points)
+            ~User.points.has(Points.points.in_([user[2] for user in self.userDBQuery]))               # 2nd filter: Only keep users who have diff. # of points between old & new queries
+        )                                                                                             # End result: Checks if a pre-existing user entry was modified (through points)
 
         dbEntriesAdded: list[tuple] = queryDiffAdded.all()
         dbEntriesRemoved: list[tuple] = queryDiffRemoved
         dbEntriesChanged: list[tuple] = queryDiffChanged.all()
         # dbEntriesChangedOld: list[tuple] = [oldEntry for oldEntry in self.userDBQuery if oldEntry[1] in [newEntry[1] for newEntry in dbEntriesChangedNew]]
+        # ^^ NOT NECESSARY, ALREADY COUNTED WITHIN REMOVED LIST (for some reason...?) ^^
 
         # print(f"~calcRankings Debug - Added entries: {dbEntriesAdded}")
         # print(f"~calcRankings Debug - Removed entries: {dbEntriesRemoved}")
         # print(f"~calcRankings Debug - Changed entries (new): {dbEntriesChanged}")
         # print(f"~calcRankings Debug - Changed entries (old): {dbEntriesChangedOld}")
 
-        # Add old versions of changed user data so that old leaderboard entry is erased -- NOT NECESSARY, ALREADY IN REMOVED LIST (for some reason...?)
+        # Add old versions of changed user data so that old leaderboard entry is erased 
         # dbEntriesRemoved += dbEntriesChangedOld 
 
         # Add new versions of changed user data so that new leaderboard entry is added  
@@ -683,61 +795,90 @@ class Leaderboard():
                     self.userInfo.insertUser(userEntry)
                     self.rankings.insertUser(userEntry)
 
+        # Stores latest query for future use/comparisons
         self.userDBQuery = newQuery.all()
         print_tree(self.rankings)
 
-    def getUsersByRank(self, rank: int):
+    def getUsersByRank(self, rank: int) -> list[dict]:
         output = self.rankings.getUsersByRank(rank)
-        return [userEntry.username for userEntry in output]
+        return [{"name": userEntry.name, "username": userEntry.username, "points": userEntry.points} for userEntry in output]
 
-    def getRankByUser(self, username: str):
+    def getRankByUser(self, username: str) -> int:
         userEntry: UserEntryNode = self.userInfo.getUser(username)
         return self.rankings.getRankByPoints(userEntry.points)
+
+    def getTopUsers(self) -> list[dict]:
+        output = self.rankings.getMaxUsers()
+        return [{"name": userEntry.name, "username": userEntry.username, "points": userEntry.points} for userEntry in output]
+    
+    def getBottomUsers(self) -> list[dict]:
+        output = self.rankings.getMinUsers()
+        return [{"name": userEntry.name, "username": userEntry.username, "points": userEntry.points} for userEntry in output]
+    
+    def getAllUsers(self) -> dict:
+        return self.rankings.getAllUsers()
+    
+    def getUsersByRankRange(self, topRank: int, bottomRank: int) -> dict:
+        output = {}
+
+        if topRank > bottomRank or (topRank <= 0 or bottomRank <= 0) or (topRank > self.getBottomRankNum() or bottomRank > self.getBottomRankNum()):
+            raise UserDBError("The given range of ranks is invalid! Ensure that both arguments are positive integers, topRank is less than or equal to bottomRank, and \
+                              both ranks are less than or equal to the rank of the user with the least points.")
+        
+        for rank in range(topRank, bottomRank + 1):
+            rankUsers = self.getUsersByRank(rank)
+            output[rank] = rankUsers
+
+        return output
+
+    def getBottomRankNum(self) -> int:
+        bottomRankUsers = self.getBottomUsers()
+        return self.getRankByUser(bottomRankUsers[0]["username"])
 
 ##########
     
 ### WIP: Finish this function based off of Mithun's leaderboard database schema    
 # Set up leaderboard and sort all user entries in it, then create a database entry for the leaderboard and return the corresponding ID/primary key value
-def setUpLeaderboard(courseID: int = None) -> int:
-    rankings: PointsTree = PointsTree()
+# def setUpLeaderboard(courseID: int = None) -> int:
+#     rankings: PointsTree = PointsTree()
 
-    if courseID is None:
-        userDBQuery = db.session.query(User.name, User.username, Points.points).distinct().filter(                
-            User.id == Points.user_id
-        )
-    else:
-        userDBQuery = db.session.query(User.name, User.username, Points.points).distinct().filter(
-            User.id == Points.user_id
-        ).filter(
-            user_course.c.course_id == courseID
-        )
+#     if courseID is None:
+#         userDBQuery = db.session.query(User.name, User.username, Points.points).distinct().filter(                
+#             User.id == Points.user_id
+#         )
+#     else:
+#         userDBQuery = db.session.query(User.name, User.username, Points.points).distinct().filter(
+#             User.id == Points.user_id
+#         ).filter(
+#             user_course.c.course_id == courseID
+#         )
 
-    dbEntries: list[tuple] = userDBQuery.all()
-    # print(dbEntries)
+#     dbEntries: list[tuple] = userDBQuery.all()
+#     # print(dbEntries)
 
-    if dbEntries is not None:
-        # Create UserHashTable with necessary args and insert all database query entries inside
-        userInfo = UserHashTable(len(dbEntries), courseID)
+#     if dbEntries is not None:
+#         # Create UserHashTable with necessary args and insert all database query entries inside
+#         userInfo = UserHashTable(len(dbEntries), courseID)
 
-        for dbEntry in dbEntries:
-            userEntry = UserEntryNode(dbEntry[0], dbEntry[1], dbEntry[2])
-            userInfo.insertUser(userEntry)
-            rankings.insertUser(userEntry)
+#         for dbEntry in dbEntries:
+#             userEntry = UserEntryNode(dbEntry[0], dbEntry[1], dbEntry[2])
+#             userInfo.insertUser(userEntry)
+#             rankings.insertUser(userEntry)
 
-        print_tree(rankings)
-        test = rankings.getAllUsers()
+#         print_tree(rankings)
+#         test = rankings.getAllUsers()
 
-        # Here would be setup for the leaderboard database entry; TBD
-        return 0
+#         # <-- Here would be setup for the leaderboard database entry; TBD
+#         return 0
 
-    else:
-        if courseID is not None:
-            raise UserDBError("Error creating leaderboard: no users exist that are taking the specified course!")
+#     else:
+#         if courseID is not None:
+#             raise UserDBError("Error creating leaderboard: no users exist that are taking the specified course!")
         
-        raise UserDBError("Error creating leaderboard: no users are registered within the database yet!")
+#         raise UserDBError("Error creating leaderboard: no users are registered within the database yet!")
 
 
-##########
+##### DEBUG STUFF (maybe use some of these for future unit tests) #####
 
 # For debugging, taken from https://stackoverflow.com/questions/34012886/print-binary-tree-level-by-level-in-python; delete later
 def print_tree(tree, points="points", left="left", right="right"):
@@ -795,35 +936,6 @@ def print_tree(tree, points="points", left="left", right="right"):
         print(line)
 
 
-def debugQuery():
-    new_user1 = User(
-        email="testboard20@gmail.com", 
-        username="test-board20", 
-        name="Test1 Board",
-        age=50
-    )
-
-    new_user2 = User(
-        email="testboards20@gmail.com", 
-        username="test-boards20", 
-        name="Test2 Board",
-        age=60
-    )
-
-    new_user1.set_password("Test-12345")
-    new_user2.set_password("Test-12345")
-
-    db.session.add(new_user1)
-    db.session.add(new_user2)
-    db.session.commit()
-
-
-    # testDiff = db.session.query(User.name, User.username).select_from(test2).filter(test2. .username.in_(test1))
-    # print(testDiff.all())
-
-    db.session.query(User).delete()
-    db.session.commit()
-
 # Used for quick user and points registration within the course "course" in debugLeaderboard()
 def debugAddUserAux(uniqueNum, course, points):
     new_user = User(
@@ -856,6 +968,7 @@ def debugDeleteUserAux(new_user):
     db.session.query(User).filter(User.id == new_user.id).delete()
     db.session.commit()
 
+# Primary debug function for testing the leaderboard (PointsTree and HashMap functioning together)
 def debugLeaderboard():
     # This will become outdated (using the Leaderboard class), change in the future
     #### DATABASE SET UP ####
@@ -868,39 +981,39 @@ def debugLeaderboard():
     db.session.commit()
 
     # Add in a whole bunch of users with different points
-    new_user1 = debugAddUserAux(1, new_course, 50)
-    new_user2 = debugAddUserAux(2, new_course, 25)
-    new_user3 = debugAddUserAux(3, new_course, 60)   
-    new_user4 = debugAddUserAux(4, new_course, 55)   
-    new_user5 = debugAddUserAux(5, new_course, 90)   
-    new_user6 = debugAddUserAux(6, new_course, 85)   
+    points = [50, 25, 60, 55, 90, 85]
+    new_users = [debugAddUserAux(num, new_course, points[num]) for num in range(len(points))]
 
     #### CLASS TESTING ####
     testLeaderboard = Leaderboard(new_course.id)
 
     # Testing deletion and additions of users from course (and/or database)
-    debugDeleteUserAux(new_user4)
-    new_user7 = debugAddUserAux(7, new_course, 62)   
-    new_user8 = debugAddUserAux(8, new_course, 52)   
-    new_user9 = debugAddUserAux(9, new_course, 24)   
-    new_user10 = debugAddUserAux(10, new_course, 90)   
+    debugDeleteUserAux(new_users[3])
+    points2 = [62, 52, 24, 90]
+    new_users += [debugAddUserAux(num + len(new_users), new_course, points2[num]) for num in range(len(points2))]
 
     # Testing changing existing user points
-    print(new_user3.id)
-    user3 = User.query.filter(User.id == new_user3.id).filter(User.courses.contains(new_course)).first()
-    print(user3.points.points)
-    user3.points.points = 100
+    print(new_users[2].id)
+    user2 = User.query.filter(User.id == new_users[2].id).filter(User.courses.contains(new_course)).first()
+    print(user2.points.points)
+    user2.points.points = 100
     db.session.commit()
 
-    # This shows old existing user entry is still in leaderboard (updateLeaderboard() should remove it and update with new entry that has 100 points)
-    test = testLeaderboard.userInfo.getUser(user3.username)
-    print(user3.username, test.name, test.points)
+    # This shows old existing user entry is still in leaderboard (updateData() should remove it and update with new entry that has 100 points)
+    test = testLeaderboard.userInfo.getUser(user2.username)
+    print(user2.username, test.name, test.points)
 
-    testLeaderboard.updateLeaderboard()
+    testLeaderboard.updateData()
 
-    print(testLeaderboard.getRankByUser(new_user2.username))
-    print(testLeaderboard.getUsersByRank(1))
-    print(testLeaderboard.getUsersByRank(2))
+    print(f"Rank of user {new_users[1].username}: {testLeaderboard.getRankByUser(new_users[1].username)}")
+    print("User(s) at rank 1: ", testLeaderboard.getUsersByRank(1))
+    print("User(s) at rank 2: ", testLeaderboard.getUsersByRank(2))
+    print("User(s) at rank 3: ", testLeaderboard.getUsersByRank(3))
+    print("User(s) at rank 4: ", testLeaderboard.getUsersByRank(4))
+    print("User(s) at rank 5: ", testLeaderboard.getUsersByRank(5))
+
+    print("Entire leaderboard (as a dictionary/JSON format):\n", testLeaderboard.getAllUsers())
+    print("Leaderboard rankings from rank 1 to 5:\n", testLeaderboard.getUsersByRankRange(1, 5))
 
     #### DATABASE TEAR DOWN ####
     db.session.query(Points).delete()
@@ -908,7 +1021,26 @@ def debugLeaderboard():
     db.session.query(Course).delete()
     db.session.commit()
 
+# Primary debug function for testing hash table's resizing capabilities
+def debugHashTableResize():
+    userEntry1 = UserEntryNode("Thor Odinson", "noobmaster69", 40)
+    userEntry2 = UserEntryNode("John Doe", "johndoe1", 24)
+    userEntry3 = UserEntryNode("John Doe Jr.", "johndoe2", 30)
+    userEntry4 = UserEntryNode("John Doe Sr.", "johndoe3", 10)
+    userEntry5 = UserEntryNode("Kahl Fan", "kahliscool", 35)
+    userEntry6 = UserEntryNode("Janicki Worshipper", "janickiiscool", 30)
+    userEntry7 = UserEntryNode("Moore Maniac", "mooreislife42", 42)
+    userList = [userEntry1, userEntry2, userEntry3, userEntry4, userEntry5, userEntry6, userEntry7] 
 
+    userStorage = UserHashTable(1)
+
+    for entryNum, userEntry in enumerate(userList):
+        print(f"Inserting user #{entryNum}...")
+        userStorage.insertUser(userEntry)
+        userStorage.printContents()
+        print("Success!")
+
+# Debug function for testing general capabilities of auxiliary classes used within the leaderboard
 def debugAuxClasses():
     # Rough debugging tests -- expand on this and convert this over to pytest format in the future
     userEntry1 = UserEntryNode("Thor Odinson", "noobmaster69", 40)
@@ -987,7 +1119,6 @@ def debugAuxClasses():
 
 
 ####################
-
 if __name__ == "__main__":  
     debugLeaderboard()
 
