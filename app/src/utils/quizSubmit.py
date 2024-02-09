@@ -7,7 +7,7 @@ quiz_api = Blueprint("quiz_api", __name__)
 
 try:
     # Pulling json data from "questions.json"
-    with open("../json/questions.json", "r") as f:
+    with open("json/questions.json", "r") as f:
          data = json.load(f)
          
 except IOError:
@@ -16,7 +16,7 @@ except IOError:
 
 try:
     # Pulling json data from "responses.json"
-    with open("../json/responses.json") as f:
+    with open("json/responses.json") as f:
         listObj = json.load(f)
 
 except IOError:
