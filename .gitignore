@@ -6,3 +6,5 @@ tests/.pytest_cache
 .venv/
 instance/site.db
 instance/site.sql
+python3-virtualenv/
+.coverage
