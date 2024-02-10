@@ -18,8 +18,8 @@ Usage of the main Leaderboard class (export just this class from the file):
     - Leaderboard.updateData():
         Updates the given leaderboard object with a new query of all database users, or a new one with all users within a specific course (if the leaderboard was created
         with a course ID integer). Users added to the database will be added to the rankings, while users deleted from the database will be removed from the rankings with
-        the rankings adjusted accordingly. Users whose points data is changed (e.g. userA gains +100 points, raising their rank) will also be altered accordingly within
-        the leaderboard.
+        the rankings adjusted accordingly. Users whose points data is changed (e.g. `userA` points rise from 57 -> 83; `userB` points fall from 69 -> 42) will also be 
+        altered accordingly within the leaderboard.
 
         (...One possible oversight in this update function is if the user's name is somehow changed, since the queries only filter by username and points; therefore, 
         the leaderboard won't contain updated information on that specific user's name. Support should be added within the query comparisons if such a feature is added
