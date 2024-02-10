@@ -156,6 +156,36 @@ main a:hover::after {
     color: var(--heading-clr);
 }
 
+.role-switch {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.role-switch input[type="radio"] {
+    display: none;
+}
+
+.role-switch label {
+    position: relative;
+    padding: 10px 20px;
+    border: 2px solid #5B83EB;
+    cursor: pointer;
+    font: var(--body-font);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transition effect for smooth color change */
+}
+
+/* Hover effect for unselected labels */
+.role-switch label:hover {
+    background-color: #d1d9eb; /* Light blue shade, adjust as needed */
+}
+
+.role-switch input[type="radio"]:checked + label {
+    background-color: #5B83EB;
+    color: white;
+    font-weight: bold;
+}
+
 #register-box {
     max-width: 425px;
     width: auto;
@@ -448,3 +478,4 @@ select.show-error:focus-visible {
     margin-left: 20px;
     height: fit-content;
 }
+
