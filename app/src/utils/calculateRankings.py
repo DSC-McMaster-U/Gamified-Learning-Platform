@@ -704,7 +704,7 @@ class Leaderboard():
     change whatever relevant data within the database itself. By running Leaderboard.updateData(), the leaderboard will
     query the db and make any necessary additions or deletions to its data. Other methods also exist to obtain users or rank numbers in
     a variety of ways, such as filtering users by rank number, getting a user's rank given their username, getting top or bottom users in 
-    the leaderboard, and 
+    the leaderboard, getting users within a range of ranks, and getting all users with their ranks in the leaderboard.
     """
     def __init__(self, courseID: int = None):
         self.rankings: PointsTree = PointsTree()
