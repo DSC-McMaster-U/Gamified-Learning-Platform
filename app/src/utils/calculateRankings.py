@@ -43,7 +43,7 @@ Usage of the main Leaderboard class (export just this class from the file):
         Returns a list of the user(s) ranked the lowest on the leaderboard (least amount of points).
 
     - Leaderboard.getAllUsers() -> dict:
-        Returns an easily-convertible-to-JSON dictionary object with keys corresponding to rank numbers and values representing a list of users corresponding with 
+        Returns a dictionary with keys corresponding to rank numbers and values representing a list of users corresponding with 
         each rank. The structure is as follows:
             {
                 <rank #>: [
@@ -56,7 +56,7 @@ Usage of the main Leaderboard class (export just this class from the file):
             }
 
     - Leaderboard.getUsersByRankRange(topRank: int, bottomRank: int) -> dict:
-        Returns a dictionary object in the same format above from Leaderboard.getAllUsers(), but instead limited to users from topRank up to bottomRank (inclusive).
+        Returns a dictionary in the same format above from Leaderboard.getAllUsers(), but instead limited to users from topRank up to bottomRank (inclusive).
         Note that the arguments must be passed such that topRank is smaller than bottomRank, topRank & bottomRank are at least 1, and topRank & bottomRank are less than
         or equal to the rank of the user with the least amount of points (to check, use Leaderboard.getBottomRankNum() to get this rank number).
 
