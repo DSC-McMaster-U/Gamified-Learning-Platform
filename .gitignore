@@ -4,6 +4,7 @@ tests/__pycache__/
 tests/.pytest_cache
 .env
 .venv/
+instance/site.db
+instance/site.sql
 python3-virtualenv/
 .coverage
-instance/site.db 
