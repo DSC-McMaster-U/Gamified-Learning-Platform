@@ -55,11 +55,12 @@ def test_dashboard():
 @main.route('/leaderboard')
 @login_required
 def leaderboard():
-    # Query the top 20 users on leaderboard in a descending order based on their current xp (do we want xp to represent total
-    # xp earned, how much xp user earned towards reaching next level, or be some value that tracks their recent xp earned)
+    # Query the top 20 users on leaderboard in a descending order based on their current points (do we want to use xp
+    # from the UserProgress model to rank them, how much xp the users earned towards reaching next level, or
+    # use how much xp/points they have gained in some recent timeframe)
     # Add some feature into HTML page to view next page in leaderboard (may need to edit this route to support that)
     page = 1
     users_per_page = 20
     # Paginate the leaderboard to allow for viewing a larger user base 
-    leaderboard_users = User.query.join(UserProgress).order_by(UserProgress.xp.desc()).paginate(page=page, per_page=users_per_page, error_out=False).items
+    leaderboard_users = User.query.join(Points).order_by(Points.points.desc()).paginate(page=page, per_page=users_per_page, error_out=False).items
     return render_template('leaderboard.html', leaderboard_users=leaderboard_users)

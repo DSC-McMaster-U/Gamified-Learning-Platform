@@ -378,7 +378,7 @@ def leaderboard_api():
     users_per_page = 20 # render 20 users per page
 
     # retrieve the next users from leaderboard, set error_out to False so that the application does not return a 404 error when there are no remaining users
-    leaderboard_next_users = User.query.join(UserProgress).order_by(UserProgress.xp.desc()).paginate(page=page, per_page=users_per_page,
+    leaderboard_next_users = User.query.join(Points).order_by(Points.points.desc()).paginate(page=page, per_page=users_per_page,
                             error_out=False)
     leaderboard_users = leaderboard_next_users.items
 
@@ -386,7 +386,7 @@ def leaderboard_api():
     for user in leaderboard_users:
         user_data = {
             'name': user.name,
-            'xp': user.progress.xp
+            'points': user.points.points
         }
         users_json.append(user_data)
 

@@ -165,8 +165,8 @@ class Points(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # establish relationship between 'points' and 'user' model, indicates the points are associated w/ a specific user 
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False, unique=True)
-    points = db.Column(db.Integer, default=0)
-    # user = db.relationship('User', uselist=False, backref='points')
+    points = db.Column(db.Integer, default=0) # add index=True into points attribute to speed up points retrieval for queries?
+    user = db.relationship('User', uselist=False, backref='points') 
 
 # Helper table to join User and Badges into many-to-many relationship
 user_badge = db.Table(
