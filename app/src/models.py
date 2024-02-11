@@ -117,7 +117,7 @@ class Teacher(UserMixin, db.Model):
     email = db.Column(db.String(150), unique=True, nullable=False)
     age = db.Column(db.Integer)
     registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
-    yrs_experience = db.Column(db.Integer, nullable=False)
+    yrs_experience = db.Column(db.Integer, nullable=True)
     specialization = db.Column(db.String(50), nullable=True)
     # students = db.relationship('User', secondary=teacher_student, backref='teachers')
     courses = db.relationship('Course', secondary=teacher_course, backref='teachers')

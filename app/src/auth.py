@@ -65,6 +65,8 @@ def register():
 
     if request.method == "POST":
 
+        role = "teacher"#request.form.get("role") # get the position of the role switch at time of submission
+        #print("Role selected:", role)
         name = request.form.get("name")
         username = request.form.get("username")
         date_of_birth = request.form.get("date_of_birth")
@@ -72,7 +74,6 @@ def register():
         confirm_email = request.form.get("confirm_email")
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
-        role = request.form.get("role") # get the position of the role switch at time of submission
 
         age = calculate_age(date_of_birth)
         if role == "teacher":
@@ -120,7 +121,7 @@ def register():
                 age=age,
                 # Add any other necessary fields specific to Teacher
             )
-        else:
+        elif role == "student":
             grade = getattr(GradeEnum, request.form.get("grade"))   # Only if student, parses string into GradeEnum field and assigns proper grade
             # Create a User object
             new_user = User(
