@@ -129,6 +129,8 @@ class Teacher(UserMixin, db.Model):
     # Check if entered password is correct
     def check_password(self, password):
         return bcrypt.check_password_hash(self.hashed_password, password)
+    def get_role(self):
+        return "teacher" # new method to check type of user
 
 
 # User model
@@ -159,6 +161,9 @@ class User(UserMixin, db.Model):
     # Check if entered password is correct
     def check_password(self, password):
         return bcrypt.check_password_hash(self.hashed_password, password)
+
+    def get_role(self):
+        return "student" # new method to check type of user
 
 # Points Progress
 class Points(db.Model):
