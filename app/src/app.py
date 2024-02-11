@@ -78,6 +78,6 @@ def create_app(test_config=None):
             'total_users': total_users
         }
 
-        # return jsonify(response)
+        return jsonify(response)
 
-        return app
+        # return app
