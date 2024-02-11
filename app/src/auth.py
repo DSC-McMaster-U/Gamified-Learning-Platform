@@ -65,8 +65,8 @@ def register():
 
     if request.method == "POST":
 
-        role = "teacher"#request.form.get("role") # get the position of the role switch at time of submission
-        #print("Role selected:", role)
+        role = request.form.get("role") # get the position of the role switch at time of submission
+        print("Role selected:", role)
         name = request.form.get("name")
         username = request.form.get("username")
         date_of_birth = request.form.get("date_of_birth")
