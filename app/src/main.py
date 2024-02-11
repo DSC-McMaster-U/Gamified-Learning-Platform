@@ -17,13 +17,6 @@ def profile():
         current_user=current_user, 
         logged_in=True
     )
-
-@main.route('/teacher_redirect')
-@login_required
-def teacher_redirect():
-    return render_template(
-        'temp_teacher_redirect.html'
-    )
     
 @main.route('/lesson/<int:course_id>')
 @login_required

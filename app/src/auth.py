@@ -54,7 +54,7 @@ def login_post():
         if isinstance(account, User):
             return redirect(url_for('main.profile'))
         else:  # account is an instance of Teacher
-            return redirect(url_for('main.teacher_redirect'))
+            return render_template('temp_teacher_redirect.html')
     else:
         flash('This account is locked. Please contact support to unlock your account and reset your password.', 'login_error')
         return redirect(url_for('auth.login'))
@@ -68,7 +68,6 @@ def register():
         name = request.form.get("name")
         username = request.form.get("username")
         date_of_birth = request.form.get("date_of_birth")
-        grade = getattr(GradeEnum, request.form.get("grade"))   # Parses string into GradeEnum field and assigns proper grade
         email = request.form.get("email")
         confirm_email = request.form.get("confirm_email")
         password = request.form.get("password")
@@ -122,6 +121,7 @@ def register():
                 # Add any other necessary fields specific to Teacher
             )
         else:
+            grade = getattr(GradeEnum, request.form.get("grade"))   # Only if student, parses string into GradeEnum field and assigns proper grade
             # Create a User object
             new_user = User(
                 email=email,

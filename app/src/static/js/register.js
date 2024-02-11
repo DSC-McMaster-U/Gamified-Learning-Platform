@@ -99,12 +99,14 @@ function updateField() {
         selectedRole = this.value;
         toggleGradeField();
         updateFieldState(); // Update the state of the form based on the new role
+        console.log(selectedRole)
     });
     // Event listener for when the role is changed to 'teacher'
     document.getElementById("teacher").addEventListener("change", function() {
         selectedRole = this.value;
         toggleGradeField();
         updateFieldState(); // Update the state of the form based on the new role
+        console.log(selectedRole)
     });
 
     inputFields.forEach((inputField) => {
@@ -227,8 +229,10 @@ function toggleGradeField() {
     const gradeField = document.getElementById("form-grade");
     if (selectedRole === "teacher") {
         gradeField.style.display = "none";
+        gradeField.removeAttribute("required"); // Remove the 'required' attribute for teacher role
     } else {
         gradeField.style.display = "block";
+        gradeField.setAttribute("required", ""); // Set the 'required' attribute for student role
     }
 }
 
