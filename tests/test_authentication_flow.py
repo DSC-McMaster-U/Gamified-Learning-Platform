@@ -25,14 +25,18 @@ def client_tempdb():
 
         # this will execute after the tests are completed to delete the temporary database
         db.session.remove()
+        db.session.close()
+        db.drop_all()    
+
+        # ISSUE: pytest seems to throw an exception here on Windows, due to how the OS handles temp files; in the future, try to look for workarounds regarding this problem.
         os.close(db_fd)
         os.unlink(db_fname)
 
 def test_workflow(client_tempdb):
     client, db_handle = client_tempdb # Get the client and temporary database created in the fixture
 
-    response = client.post('/register', data={'email': 'johndoe@gmail.com', 'username': 'johndoe', 'password': 'John@123',
-                                              'confirm_password': 'John@123', 'name': 'John Doe', 'grade': ''}, follow_redirects=True)
+    response = client.post('/register', data={'email': 'johndoe@gmail.com', 'confirm_email': 'johndoe@gmail.com', 'username': 'johndoe', 'password': 'John@123',
+                                              'confirm_password': 'John@123', 'name': 'John Doe', 'grade': 'FOURTH', 'date_of_birth': '2000-01-01',}, follow_redirects=True)
     
     # assertion to check that the registration post request is successful (unsuccesful registration may still return 200 status code, however it will not return correct flash message)
     assert response.status_code == 200
