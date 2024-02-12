@@ -34,7 +34,7 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
-        return render_template('dashboard.html')
+        return render_template('index.html')
     
     @login_manager.user_loader
     def load_user(user_id):
