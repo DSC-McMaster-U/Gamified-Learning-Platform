@@ -121,7 +121,7 @@ def register():
                 age=age,
                 # Add any other necessary fields specific to Teacher
             )
-        elif role == "student":
+        else:
             grade = getattr(GradeEnum, request.form.get("grade"))   # Only if student, parses string into GradeEnum field and assigns proper grade
             # Create a User object
             new_user = User(
