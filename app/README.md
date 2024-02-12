@@ -52,7 +52,7 @@ Install all dependencies that are required for the project by running:
 Once your environment is set up and the dependencies are installed, you can run the application:
 
    ```bash
-   python3 app/run_app.py
+   flask --app run_app.py run
    ```
 
 ### Terminating the Virtual Environment 
