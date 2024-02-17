@@ -9,3 +9,5 @@ instance/site.db
 instance/site.sql
 python3-virtualenv/
 .coverage
+app/src/instance/
+app/instance/
