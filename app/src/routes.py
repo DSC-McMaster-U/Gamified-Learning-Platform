@@ -157,19 +157,24 @@ def change_user_points():
 
     match (request.method):
         case "POST":
-            # Functionality for modifying user points info in the database
-            points_obj = current_user.points       # Points.query.filter_by(user_id=current_user.id).first()
+            points_to_add: int = request.form.get("num_points", type=int, default=100)
+            points_obj = current_user.points
 
-            if points_obj == None:
-                points_obj = Points(points=points, user=current_user)
-                current_user.points = points_obj         # Not sure if this is necessary
+            if points_obj is None:
+                # Create a new Points object if one doesn't exist
+                points_obj = Points(points=points_to_add, user=current_user)
                 db.session.add(points_obj)
             else:
-                points_obj.points = points
+                # Add to the existing points if the Points object exists
+                points_obj.points += points_to_add
 
             db.session.commit()
 
-            return "Successfully registered current user's points!", 201
+            return jsonify({
+                "message": "Successfully updated current user's points!",
+                "total_points": points_obj.points
+            }), 200
+
         case "GET":
             # Functionality for receiving a user's points info
             points = current_user.points
