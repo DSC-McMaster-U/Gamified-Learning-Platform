@@ -143,7 +143,7 @@ class User(UserMixin, db.Model):
     registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
     favorite_subject = db.Column(db.String(50), nullable=True)
     failed_signin_attempts = db.Column(db.Integer, default=0)
-    points = db.relationship('Points', uselist=False, backref='user') # establish one-to-one relationship between 'points' and 'user' model
+    points = db.relationship('Points', uselist=False, backref='user_points') # establish one-to-one relationship between 'points' and 'user' model
     progress = db.relationship('UserProgress', back_populates='user', uselist=False)
     streak = db.Column(db.Integer, default=0)
     teachers = db.relationship('Teacher', secondary=teacher_student, backref='students')
@@ -164,9 +164,13 @@ class User(UserMixin, db.Model):
 class Points(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # establish relationship between 'points' and 'user' model, indicates the points are associated w/ a specific user 
-    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False, unique=True)
-    points = db.Column(db.Integer, default=0)
-    # user = db.relationship('User', uselist=False, backref='points')
+    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
+    points = db.Column(db.Integer, default=0) # add index=True into points attribute to speed up points retrieval for queries?
+    user = db.relationship('User', uselist=False, backref='user_points') 
+    
+    @classmethod
+    def get_leaderboard(cls):
+        return cls.query.order_by(cls.points.desc()).all()
 
 # Helper table to join User and Badges into many-to-many relationship
 user_badge = db.Table(
