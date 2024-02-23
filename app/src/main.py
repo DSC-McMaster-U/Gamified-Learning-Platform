@@ -27,7 +27,19 @@ def lesson_page(course_id):
     #       through course structure + lesson content and sends two dictionaries in a particular 
     #       format over to front-end, where it can be processed to generate an appropriate tab 
     #       structure and panel contents.
-    return render_template('lesson.html', current_user=current_user, logged_in=True)
+
+    modules = Module.query.filter_by(course_id=course_id).all()
+
+    topics = {}
+    for module in modules:
+        topics[module.id] = Topic.query.filter_by(module_id=module.id).all()
+
+    lessons = {}
+    for module_topics in topics.values():
+        for topic in module_topics:
+            lessons[topic.id] = Lesson.query.filter_by(topic_id=topic.id).all()
+
+    return render_template('lesson.html', current_user=current_user, logged_in=True, course=course, modules=modules, topics=topics, lessons=lessons)
 
 @main.route('/quiz/<int:quiz_id>', methods=['GET'])
 @login_required
