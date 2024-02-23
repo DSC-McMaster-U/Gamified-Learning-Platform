@@ -34,12 +34,15 @@ def lesson_page(course_id):
     for module in modules:
         topics[module.id] = Topic.query.filter_by(module_id=module.id).all()
 
+    # Send in number of topics for a course to display on lessons page, easier to compute here than accessing dict values with Jinja2
+    number_topics = sum(len(module_topics) for module_topics in topics.values())
+
     lessons = {}
     for module_topics in topics.values():
         for topic in module_topics:
             lessons[topic.id] = Lesson.query.filter_by(topic_id=topic.id).all()
 
-    return render_template('lesson.html', current_user=current_user, logged_in=True, course=course, modules=modules, topics=topics, lessons=lessons)
+    return render_template('lesson.html', current_user=current_user, logged_in=True, course=course, modules=modules, topics=topics, number_topics=number_topics, lessons=lessons)
 
 @main.route('/quiz/<int:quiz_id>', methods=['GET'])
 @login_required
