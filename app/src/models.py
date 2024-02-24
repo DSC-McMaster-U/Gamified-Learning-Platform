@@ -356,6 +356,8 @@ class Lesson(Activity):
     summary = db.Column(db.Text, nullable=False)   # lesson summary
     learning_objective = db.Column(db.Text, nullable=False)
     lesson_content = db.Column(db.Text, nullable=False)
+    video_filename = db.Column(db.String(255))
+    thumbnail_filename = db.Column(db.String(255))
     users = db.relationship('User', secondary=user_lesson, backref='lessons')
     teacher = db.relationship('Teacher', secondary=teacher_lesson, backref='lessons')
     topic_id = db.Column(db.Integer, ForeignKey('topic.id'), nullable=True)

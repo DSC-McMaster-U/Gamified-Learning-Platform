@@ -23,27 +23,31 @@
                 </button>
             </div>
 
+            {% for module in modules %} 
             <li class="tabs-unit tabs-dropdown">
                 <button class="tabs-unit-btn">
-                    <div class="tab-subtitle">MODULE 1</div>
-                    <div class="tab-title">Factors & Multiples</div>
+                    <div class="tab-subtitle">MODULE {{ loop.index }}</div>
+                    <div class="tab-title">{{ module.name }}</div>
                 </button>
 
                 <ul class="tabs-topic-menu">
+                    {% for topic in topics[module.id] %}
                     <li class="tabs-topic tabs-dropdown">
                         <button class="tabs-topic-btn">
-                            <div class="tab-subtitle">TOPIC 1</div>
-                            <div class="tab-title">Factors & Multiples</div>
+                            <div class="tab-subtitle">TOPIC {{ loop.index }}</div>
+                            <div class="tab-title">{{ topic.name }}</div>
                         </button>
 
                         <ul class="tabs-activity-menu">
+                            {% for lesson in lessons[topic.id] %}
                             <li class="tabs-activity tab-lesson">
-                                <a href="#panel-1">
+                                <a href="#panel-{{ module.id }}-{{ topic.id }}-{{ lesson.id }}">
                                     <button class="tabs-activity-btn">
                                         <div class="tab-title">Lesson</div>
                                     </button>
                                 </a>
                             </li>
+                            {% endfor %}
 
                             <li class="tabs-activity tab-quiz">
                                 <a href="">
@@ -54,109 +58,10 @@
                             </li>
                         </ul>
                     </li>
-
-                    <li class="tabs-topic tabs-dropdown">
-                        <button class="tabs-topic-btn">
-                            <div class="tab-subtitle">TOPIC 2</div>
-                            <div class="tab-title">Prime & Composite Numbers</div>
-                        </button>
-
-                        <ul class="tabs-activity-menu">
-                            <li class="tabs-activity tab-lesson">
-                                <a href="#panel-2">
-                                    <button class="tabs-activity-btn">
-                                        <div class="tab-title">Lesson</div>
-                                    </button>
-                                </a>
-                            </li>
-
-                            <li class="tabs-activity tab-quiz">
-                                <a href="">
-                                    <button class="tabs-activity-btn">
-                                        <div class="tab-title">Quiz</div>
-                                    </button>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="tabs-topic tabs-dropdown">
-                        <button class="tabs-topic-btn">
-                            <div class="tab-subtitle">TOPIC 3</div>
-                            <div class="tab-title">Prime Factorization</div>
-                        </button>
-
-                        <ul class="tabs-activity-menu">
-                            <li class="tabs-activity tab-lesson">
-                                <a href="#panel-3">
-                                    <button class="tabs-activity-btn">
-                                        <div class="tab-title">Lesson</div>
-                                    </button>
-                                </a>
-                            </li>
-
-                            <li class="tabs-activity tab-quiz">
-                                <a href="">
-                                    <button class="tabs-activity-btn">
-                                        <div class="tab-title">Quiz</div>
-                                    </button>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
+                    {% endfor %}
                 </ul>
             </li>
-
-            <li class="tabs-unit tabs-dropdown">
-                <button class="tabs-unit-btn">
-                    <div class="tab-subtitle">MODULE 2</div>
-                    <div class="tab-title">Patterns</div>
-                </button>
-            </li>
-
-            <li class="tabs-unit tabs-dropdown">
-                <button class="tabs-unit-btn">
-                    <div class="tab-subtitle">MODULE 3</div>
-                    <div class="tab-title">Ratios and Rates</div>
-                </button>
-            </li>
-
-            <li class="tabs-unit tabs-dropdown">
-                <button class="tabs-unit-btn">
-                    <div class="tab-subtitle">MODULE 4</div>
-                    <div class="tab-title">Percentages</div>
-                </button>
-            </li>
-
-            <li class="tabs-unit tabs-dropdown">
-                <button class="tabs-unit-btn">
-                    <div class="tab-subtitle">MODULE 5</div>
-                    <div class="tab-title">Exponents Intro & Order of Operations</div>
-                </button>
-            </li>
-
-            <li class="tabs-unit tabs-dropdown">
-                <button class="tabs-unit-btn">
-                    <div class="tab-subtitle">MODULE 6</div>
-                    <div class="tab-title">Variables & Expressions</div>
-                </button>
-            </li>
-
-            <li class="tabs-unit tabs-dropdown">
-                <button class="tabs-unit-btn">
-                    <div class="tab-subtitle">MODULE 7</div>
-                    <div class="tab-title">Equations & Inequalities</div>
-                </button>
-            </li>
-
-            <li class="tabs-unit tabs-dropdown">
-                <button class="tabs-unit-btn">
-                    <div class="tab-subtitle">MODULE 8</div>
-                    <div class="tab-title">Proportional Relationships</div>
-                </button>
-            </li>
-
+            {% endfor %}
         </ul>
     </div>
 
@@ -167,7 +72,10 @@
                    currently, the below structure contains sample placeholder modules and lessons -->
 
         <!-- Note: each panel ID corresponds to the anchor href link of the clicked tab that opens the panel -->
-        <div class="panel" id="panel-1" panel-type="video">
+        {% for module in modules %}
+        {% for topic in topics[module.id] %}
+        {% for lesson in lessons[topic.id] %}
+        <div class="panel" id="panel-{{ module.id }}-{{ topic.id }}-{{ lesson.id }}" panel-type="video">
             <div class="lesson-heading">
                 <h3>Factors & Multiples - Lesson</h3>
             </div>
@@ -176,10 +84,9 @@
                 <div class="lesson-obj">
                     <h4>Learning Objectives</h4>
                     <ul>
-                        <li>Understand and Identify Factors</li>
-                        <li>Apply factorization in real world contexts</li>
-                        <li>Utilize factors to Simplify Fractions</li>
-                        <li>Explore and apply prime factorization</li>
+                        {% for objective in lesson.learning_objective.split(';') %}
+                        <li>{{ objective }}</li>
+                        {% endfor %}
                     </ul>
                 </div>
 
@@ -188,7 +95,7 @@
                     <!-- Current video folder format (placeholder): "video-[course ID - 4 digits]-[moduleID - 2 digits]-[topicID - 2 digits]" -->
 
                     <div class="video-wrapper">
-                        <video id="video-0000-01-01" playsinline crossorigin data-poster="">
+                        <video id="video-{{ course.id }}-{{ module.id }}-{{ topic.id }}" playsinline crossorigin data-poster="">
                             <!-- Note: video path and thumbnail are added dynamically through JS, based on the numbers in the video ID 
                                            corresponding to the appropriate folder name in "static/vendor/lesson-videos/". -->
                             <source src="" type="video/mp4" />
