@@ -94,7 +94,8 @@
                     <!-- Current video folder format (placeholder): "video-[course ID - 4 digits]-[moduleID - 2 digits]-[topicID - 2 digits]" -->
 
                     <div class="video-wrapper">
-                        <video id="video-{{ course.id }}-{{ module.id }}-{{ topic.id }}" playsinline crossorigin data-poster="">
+                        <video id="video-{{ course.id }}-{{ module.id }}-{{ topic.id }}" playsinline crossorigin data-video-filename="{{ lesson.video_filename }}" 
+                        data-thumbnail-filename="{{ lesson.thumbnail_filename }}" data-poster="">
                             <!-- Note: video path and thumbnail are added dynamically through JS, based on the numbers in the video ID 
                                            corresponding to the appropriate folder name in "static/vendor/lesson-videos/". -->
                             <source src="" type="video/mp4" />
