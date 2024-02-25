@@ -1,33 +1,75 @@
-{% extends "base.html" %} {% block title %}Register - Gamified Learning Platform{% endblock %} {%
-block styling %}
-<!-- Local Stylesheets -->
-<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}" />
-{% endblock %} {% block content %}
+{% extends "base.html" %} 
+{% block title %}Register - Gamified Learning Platform{% endblock %} 
+{% block styling %}
+    <!-- Local Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/authPage.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/registerNew.css') }}" />
+{% endblock %} 
+
+{% block content %}
 <main>
-    <div id="heading">
-        <h1>Registration</h1>
+    <!-- Background fixed circles -->
+    <div class="bg-circle" id="top-left-bg">
+        <div class="circle-outline-outer" id="top-left-outer">
+            <div class="circle-outline-inner" id="top-left-inner"></div>
+        </div>
     </div>
 
-    <div id="register-box" class="container">
-        <form id="register-form" action="/register" method="post">
+    <div class="bg-circle" id="top-right-bg">           
+        <div class="circle-wave-outer" id="top-right-2-outer">
+            <div class="circle-wave-inner" id="top-right-2-inner"></div>
+        </div>
+
+        <div class="circle-normal" id="top-right-1"></div>
+    </div>
+    
+    <div class="bg-circle" id="bottom-left-bg">
+        <div class="circle-wave-outer" id="bottom-left-1-outer">
+            <div class="circle-wave-inner" id="bottom-left-1-inner"></div>
+        </div>
+
+        <div class="circle-outline-outer" id="bottom-left-2-outer">
+            <div class="circle-outline-inner" id="bottom-left-2-inner"></div>
+        </div>
+    </div>
+    
+    <div class="bg-circle" id="bottom-right-bg">
+        <div class="circle-wave-outer" id="bottom-right-outer">
+            <div class="circle-wave-inner" id="bottom-right-inner"></div>
+        </div>
+    </div>
+
+    <div id="register-box" class="auth-box">
+
+        <div id="heading" class="auth-heading">
+            <img src="../static/vendor/images/login/gdsc-logo.png" alt="">
+            <h1>Register Your Account</h1>
+            <h3>Fill in the following to create an account.</h3>
+        </div>
+
+        <form id="register-form" class="auth-form" action="/register" method="post">
             <!-- If any errors occur, then they will be sent to this invisible div and interpreted by JS to insert relevant error msg HTML code/classes -->
             <div id="error-msg">
-                {% with errors = get_flashed_messages(category_filter=["register_error"]) %} {% if
-                errors %} {% for error in errors %} {{ error }} {% endfor %} {% endif %} {% endwith
-                %}
+                {% with errors = get_flashed_messages(category_filter=["register_error"]) %} 
+                    {% if errors %} 
+                        {% for error in errors %} 
+                            {{ error }} 
+                        {% endfor %} 
+                    {% endif %} 
+                {% endwith %}
             </div>
 
             <input
-                class="register-form-text body-text"
+                class="auth-form-text body-text"
                 type="text"
                 name="name"
                 id="form-name"
                 placeholder="Name"
             />
-            <div class="register-error" id="err-name"></div>
+            <div class="auth-error" id="err-name"></div>
 
             <input
-                class="register-form-text body-text"
+                class="auth-form-text body-text"
                 type="text"
                 name="username"
                 id="form-username"
@@ -36,7 +78,7 @@ block styling %}
             <div class="register-error" id="err-username"></div>
 
             <input
-                class="register-form-text register-form-date"
+                class="auth-form-text register-form-date"
                 type="text"
                 name="date_of_birth"
                 id="form-dob"
@@ -66,55 +108,56 @@ block styling %}
             </select>
 
             <input
-                class="register-form-text body-text"
+                class="auth-form-text body-text"
                 type="text"
                 name="email"
                 id="form-email"
                 placeholder="Email Address"
             />
-            <div class="register-error" id="err-email"></div>
+            <div class="auth-error" id="err-email"></div>
 
             <input
-                class="register-form-text body-text"
+                class="auth-form-text body-text"
                 type="text"
                 name="confirm_email"
                 id="form-confirm-email"
                 placeholder="Confirm Email"
             />
-            <div class="register-error" id="err-confirm-email"></div>
+            <div class="auth-error" id="err-confirm-email"></div>
 
             <input
-                class="register-form-text"
+                class="auth-form-text"
                 type="password"
                 name="password"
                 id="form-pwd"
                 placeholder="Password"
             />
-            <div class="register-error" id="err-pass"></div>
+            <div class="auth-error" id="err-pass"></div>
 
             <input
-                class="register-form-text"
+                class="auth-form-text"
                 type="password"
                 name="confirm_password"
                 id="form-confirm-pwd"
                 placeholder="Confirm Password"
             />
-            <div class="register-error" id="err-confirm-pass"></div>
+            <div class="auth-error" id="err-confirm-pass"></div>
 
-            <button class="register-form-btn body-text" id="register-submit" type="submit">
+            <button class="auth-btn" id="register-submit" type="submit">
                 Sign up
             </button>
         </form>
     </div>
 
-    <div id="redirect-login">
-        <a href="/login.html">Back to login</a>
+    <div id="redirect-login" class="auth-redirect">
+        <span>
+            Already have an account? <a href="/login">Login here</a>
+        </span>
     </div>
 
-    <div id="redirect-login">
-        <a href="/user_profile.html">Need help?</a>
-    </div>
 </main>
-{% endblock %} {% block scripts %}
+{% endblock %} 
+
+{% block scripts %}
 <script src="../static/js/register.js"></script>
 {% endblock %}

@@ -1,0 +1,18 @@
+/* register.css - contains styling for the register page specifically, barring base elements */
+
+/**
+ * ========
+ * General Styling
+ * ========
+**/
+main {
+    /* min-height: ; */
+}
+
+#register-box {
+    margin-top: 8vh;
+}
+
+#register-form {
+    min-height: calc(275px * 0.85);
+}

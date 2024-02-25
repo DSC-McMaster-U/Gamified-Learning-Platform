@@ -135,7 +135,7 @@
         </div>
 
         <!-- Footer -->
-
+        {% if show_footer %} {# Toggle whether to show footer or not #}
         <hr class="footer-break" />
 
         <footer id="footer" class="container">
@@ -181,6 +181,8 @@
                 <li class="col"><a href="privacy.html">Privacy Policy</a></li>
             </ul>
         </footer>
+
+        {% endif %}
 
         <!-- Insert local scripts here, if necessary -->
         {% block scripts %}{% endblock %}

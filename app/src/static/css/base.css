@@ -24,7 +24,7 @@
 }
 
 @font-face {
-    font-family: "ProductSans";
+    font-family: "ProductSansBold";
     src: url("../vendor/fonts/ProductSans/Product\ Sans\ Bold\ Italic.ttf");
     font-style: italic;
     font-weight: bold;
@@ -34,6 +34,22 @@
 @font-face {
     font-family: "JejuGothic";
     src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
+}
+
+/* Nanum Gothic (fallback font) */
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Regular.ttf");
+}
+
+@font-face {
+    font-family: "NanumGothicBold";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Bold.ttf");
+}
+
+@font-face {
+    font-family: "NanumGothicBolder";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-ExtraBold.ttf");
 }
 
 /**
