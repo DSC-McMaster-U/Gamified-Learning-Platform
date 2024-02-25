@@ -75,21 +75,20 @@
         {% for module in modules %}
         {% for topic in topics[module.id] %}
         {% for lesson in lessons[topic.id] %}
-        <div class="panel" id="panel-{{ module.id }}-{{ topic.id }}-{{ lesson.id }}" panel-type="video">
+        <div class="panel" id="panel-{{ module.id }}-{{ topic.id }}-{{ lesson.id }}" panel-type="{{ 'video' if lesson.video_filename else 'text' }}">
             <div class="lesson-heading">
-                <h3>Factors & Multiples - Lesson</h3>
+                <h3>{{ lesson.title }} - Lesson</h3>
             </div>
 
             <div class="panel-wrapper">
                 <div class="lesson-obj">
                     <h4>Learning Objectives</h4>
                     <ul>
-                        {% for objective in lesson.learning_objective.split(';') %}
-                        <li>{{ objective }}</li>
-                        {% endfor %}
+                        {{ lesson.learning_objective | safe }}
                     </ul>
                 </div>
-
+                
+                {% if lesson.video_filename %}
                 <div class="lesson-video">
                     <h4>Video Lesson</h4>
                     <!-- Current video folder format (placeholder): "video-[course ID - 4 digits]-[moduleID - 2 digits]-[topicID - 2 digits]" -->
@@ -102,99 +101,29 @@
                         </video>
                     </div>
                 </div>
+                {% endif %}
 
-                <div class="lesson-textbook">
-                    <h4>Textbook Work</h4>
-
-                    <div class="textbook-link">
-                        <span>Grade10_PreAlgebra_10thEdition.pdf</span>
-                        <!-- NOTE: will have to write an algorithm to automatically set href link to "a" anchors
-                                   for every lesson, based on the current course -->
-                        <a class="textbook-download" href="../static/vendor/textbooks/0000/sample.pdf" download="">DOWNLOAD</a>
-                    </div>
-
-                    <div class="textbook-pages">
-                        <ul>
-                            <li>Chapter 3 - Read Pages 44 to 66</li>
-                            <li>Complete Exercises 1-10</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="lesson-practice">
-                    <h4>Practice and Familiarize</h4>
-                    <div class="lesson-practice-body">
-                        Spaced repetition learning here, maybe through some mini interactable 
-                        question module here (for no marks, just practice)?
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="panel" id="panel-2" panel-type="text">
-            <div class="lesson-heading">
-                <h3>Prime & Composite Numbers - Lesson</h3>
-            </div>
-
-            <div class="panel-wrapper">
-                <div class="lesson-obj">
-                    <h4>Learning Objectives</h4>
-                    <ul>
-                        <li>Understand and Identify Factors</li>
-                        <li>Apply factorization in real world contexts</li>
-                        <li>Utilize factors to Simplify Fractions</li>
-                        <li>Explore and apply prime factorization</li>
-                    </ul>
-                </div>
-
+                {% if lesson.lesson_content %}
                 <div class="lesson-text">
                     <h4>Lesson Content</h4>
                     <div class="lesson-text-body"> <!-- Good 'ol lorem ipsum placeholder text :D -->
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lobortis maximus ex, sit amet 
-                            eleifend ante. Nam nec urna faucibus, sagittis leo eget, consequat tortor. Morbi sagittis congue 
-                            augue, vitae ornare tortor. Proin in turpis sit amet metus pulvinar pulvinar. Sed justo purus, 
-                            efficitur nec dolor in, iaculis rutrum augue. In eget vulputate tellus. Pellentesque vitae faucibus 
-                            augue, sit amet rhoncus turpis. Aliquam risus sem, sollicitudin vitae posuere eu, ultricies in purus. 
-                            Sed dictum viverra facilisis. Maecenas facilisis nisl leo, commodo blandit dui finibus vel.
-                        </p>
-
-                        <p>
-                            Sed varius felis eget tellus pulvinar sodales. Quisque ullamcorper enim et lectus pretium, vitae
-                            maximus ante scelerisque. Nulla ex elit, dignissim elementum rhoncus nec, efficitur eget sem. 
-                            Sed maximus vulputate tortor, in cursus dui rutrum nec. Nulla rutrum turpis vel lorem congue, 
-                            nec aliquam nunc pretium. Fusce at arcu eget neque volutpat tincidunt non vitae nibh. Cras fringilla 
-                            eros quis sapien viverra, quis scelerisque augue dictum. Sed dapibus hendrerit turpis. Sed rutrum 
-                            sed risus et gravida. Curabitur sodales id dolor vel interdum.
-                        </p>
-
-                        <p>
-                            Vestibulum scelerisque mattis consequat. In eget urna tellus. Morbi velit nunc, hendrerit vel lorem 
-                            quis, tincidunt gravida neque. Pellentesque egestas enim nec lacus tempor, sed bibendum felis lobortis. 
-                            Aenean vestibulum vel leo in semper. Integer gravida luctus ornare. Nullam magna tellus, sagittis sed 
-                            dapibus sed, congue quis turpis. Quisque id enim in arcu faucibus scelerisque. Suspendisse odio massa, 
-                            imperdiet et urna a, aliquam aliquet neque. Phasellus suscipit ex quis libero finibus, porta efficitur 
-                            augue gravida. Etiam ac pretium urna. Pellentesque posuere hendrerit turpis sed suscipit. Suspendisse 
-                            ultrices, augue in tristique ultricies, ligula diam facilisis justo, eget consequat mauris ipsum sit 
-                            amet nunc. Etiam non nisl justo. Donec dignissim ullamcorper maximus. Fusce rhoncus volutpat augue.  
-                        </p>
+                        {{ lesson.lesson_content | safe }}
                     </div>
                 </div>
+                {% endif %}
 
                 <div class="lesson-textbook">
                     <h4>Textbook Work</h4>
-
                     <div class="textbook-link">
-                        <span>Grade10_PreAlgebra_10thEdition.pdf</span>
+                        <span>{{ lesson.textbook_name }}</span>
                         <!-- NOTE: will have to write an algorithm to automatically set href link to "a" anchors
                                    for every lesson, based on the current course -->
-                        <a class="textbook-download" href="../static/vendor/textbooks/0000/sample.pdf" download="">DOWNLOAD</a>
+                        <a class="textbook-download" href="../static/vendor/textbooks/{{ course.id }}/{{ lesson.textbook_name }}" download="">DOWNLOAD</a>
                     </div>
 
                     <div class="textbook-pages">
                         <ul>
-                            <li>Chapter 3 - Read Pages 44 to 66</li>
-                            <li>Complete Exercises 1-10</li>
+                            {{ lesson.textbook_pages | safe }}
                         </ul>
                     </div>
                 </div>
@@ -202,68 +131,14 @@
                 <div class="lesson-practice">
                     <h4>Practice and Familiarize</h4>
                     <div class="lesson-practice-body">
-                        Spaced repetition learning here, maybe through some mini interactable 
-                        psuedo-randomized question module (for no marks, just practice)?
+                        {{ lesson.practice_content | safe }}
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="panel" id="panel-3" panel-type="video">
-            <div class="lesson-heading">
-                <h3>Factors & Multiples - Lesson</h3>
-            </div>
-
-            <div class="panel-wrapper">
-                <div class="lesson-obj">
-                    <h4>Learning Objectives</h4>
-                    <ul>
-                        <li>Understand and Identify Factors</li>
-                        <li>Apply factorization in real world contexts</li>
-                        <li>Utilize factors to Simplify Fractions</li>
-                        <li>Explore and apply prime factorization</li>
-                    </ul>
-                </div>
-
-                <div class="lesson-video">
-                    <h4>Video Lesson</h4>
-                    <!-- Current video folder format (placeholder): "video-[course ID - 4 digits]-[moduleID - 2 digits]-[topicID - 2 digits]" -->
-
-                    <div class="video-wrapper">
-                        <video id="video-0000-01-03" playsinline crossorigin data-poster="">
-                            <!-- Note: video path and thumbnail are added dynamically through JS, based on the numbers in the video ID 
-                                           corresponding to the appropriate folder name in "static/vendor/lesson-videos/". -->
-                            <source src="" type="video/mp4" />
-                        </video>
-                    </div>
-                </div>
-
-                <div class="lesson-textbook">
-                    <h4>Textbook Work</h4>
-
-                    <div class="textbook-link">
-                        <span>Grade10_PreAlgebra_10thEdition.pdf</span>
-                        <!-- NOTE: will have to write an algorithm to automatically set href link to "a" anchors
-                                   for every lesson, based on the current course -->
-                        <a class="textbook-download" href="../static/vendor/textbooks/0000/sample.pdf" download="">DOWNLOAD</a>
-                    </div>
-
-                    <div class="textbook-pages">
-                        <ul>
-                            <li>Chapter 3 - Read Pages 44 to 66</li>
-                            <li>Complete Exercises 1-10</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="lesson-practice">
-                    <h4>Practice and Familiarize</h4>
-                    <div class="lesson-practice-body">
-                        Spaced repetition learning here, maybe through some mini interactable 
-                        psuedo-randomized question module (for no marks, just practice)?
-                    </div>
-                </div>
-            </div>
+        {% endfor %}
+        {% endfor %}
+        {% endfor %}
     </div>
 </main>
 {% endblock %}

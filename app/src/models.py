@@ -351,6 +351,7 @@ class Activity(db.Model):
 # Lesson
 class Lesson(Activity):
     id = db.Column(db.Integer, db.ForeignKey('activity.id'), primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
     level = db.Column(db.Integer, nullable=False)  # how difficult is the lesson (easy=1, medium=2, hard=3)
     active = db.Column(db.Boolean, nullable=False) # determine whether the lesson is submitted or not
     summary = db.Column(db.Text, nullable=False)   # lesson summary
@@ -358,6 +359,9 @@ class Lesson(Activity):
     lesson_content = db.Column(db.Text, nullable=False)
     video_filename = db.Column(db.String(255))
     thumbnail_filename = db.Column(db.String(255))
+    textbook_name = db.Column(db.String(255))
+    textbook_pages = db.Column(db.Text)
+    practice_content = db.Column(db.Text)
     users = db.relationship('User', secondary=user_lesson, backref='lessons')
     teacher = db.relationship('Teacher', secondary=teacher_lesson, backref='lessons')
     topic_id = db.Column(db.Integer, ForeignKey('topic.id'), nullable=True)
