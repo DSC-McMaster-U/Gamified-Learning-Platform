@@ -1,6 +1,8 @@
 // DOM elements
 const inputDoB = document.getElementById("form-dob");
-const inputFields = document.querySelectorAll("form input, #form-grade");
+const inputFields = Array.from(document.querySelectorAll("form input, #form-grade"))
+    .filter((inputField) => !(inputField.parentElement.classList.contains("role-switch")));
+const roleSwitch = document.querySelectorAll("form .role-switch input");
 const selectField = document.getElementById("form-grade");
 const inputSubmit = document.getElementById("register-submit");
 const formRegister = document.getElementById("register-form");

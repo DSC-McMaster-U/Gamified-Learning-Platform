@@ -80,19 +80,19 @@ By doing so, we can enable mutiple teachers to collaborate on a course if needed
 
 teacher_course = db.Table(
     'teacher_course',
-    db.Column('teacher_id', db.Integer, ForeignKey('teacher.tid'), primary_key=True),
+    db.Column('teacher_id', db.Integer, ForeignKey('teacher.id'), primary_key=True),
     db.Column('course_id', db.Integer, ForeignKey('course.id'), primary_key=True)
 )
 
 teacher_module = db.Table(
     'teacher_module',
-    db.Column('teacher_id', db.Integer, ForeignKey('teacher.tid'), primary_key=True),
+    db.Column('teacher_id', db.Integer, ForeignKey('teacher.id'), primary_key=True),
     db.Column('module_id', db.Integer, ForeignKey('module.id'), primary_key=True)
 )
 
 teacher_topic = db.Table(
     'teacher_topic',
-    db.Column('teacher_id', db.Integer, ForeignKey('teacher.tid'), primary_key=True),
+    db.Column('teacher_id', db.Integer, ForeignKey('teacher.id'), primary_key=True),
     db.Column('topic_id', db.Integer, ForeignKey('topic.id'), primary_key=True)
 )
 
@@ -104,13 +104,13 @@ and allow teachers to view all of their students progress, or for students to ha
 
 teacher_student = db.Table(
     'teacher_student',
-    db.Column('teacher_id', db.Integer, ForeignKey('teacher.tid'), primary_key=True),
+    db.Column('teacher_id', db.Integer, ForeignKey('teacher.id'), primary_key=True),
     db.Column('student_id', db.Integer, ForeignKey('user.id'), primary_key=True)
 )
 
 
 class Teacher(UserMixin, db.Model):
-    tid = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     username = db.Column(db.String(40), unique=True, nullable=False)
     hashed_password = db.Column(db.String(150), nullable=False)
@@ -119,6 +119,7 @@ class Teacher(UserMixin, db.Model):
     registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
     yrs_experience = db.Column(db.Integer, nullable=True)
     specialization = db.Column(db.String(50), nullable=True)
+    failed_signin_attempts = db.Column(db.Integer, default=0)
     # students = db.relationship('User', secondary=teacher_student, backref='teachers')
     courses = db.relationship('Course', secondary=teacher_course, backref='teachers')
     modules = db.relationship('Module', secondary=teacher_module, backref='teachers')
@@ -259,13 +260,13 @@ By doing so, we can track and enable mutiple teachers to collaborate on an activ
 
 teacher_quiz = db.Table(
     'teacher_quiz',
-    db.Column('teacher_id', db.Integer, ForeignKey('teacher.tid'), primary_key=True),
+    db.Column('teacher_id', db.Integer, ForeignKey('teacher.id'), primary_key=True),
     db.Column('quiz_id', db.Integer, ForeignKey('quiz.id'), primary_key=True)
 )
 
 teacher_lesson = db.Table(
     'teacher_lesson',
-    db.Column('teacher_id', db.Integer, ForeignKey('teacher.tid'), primary_key=True),
+    db.Column('teacher_id', db.Integer, ForeignKey('teacher.id'), primary_key=True),
     db.Column('lesson_id', db.Integer, ForeignKey('lesson.id'), primary_key=True)
 )
 

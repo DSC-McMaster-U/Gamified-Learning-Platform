@@ -28,7 +28,14 @@ def login_post():
     teacher = Teacher.query.filter_by(email=email).first()
 
     # Determine if the email belongs to a Teacher or a User
-    account = teacher if teacher else user
+    if teacher and not user:
+        account = teacher
+    elif user and not teacher:
+        account = user
+    else:
+        flash('The email address is associated with multiple roles. Please contact support.', 'login_error')
+        return redirect(url_for('auth.login'))
+        
 
     # If no account is found or the password is incorrect, redirect back to the login page
     if not account or not account.check_password(password):
@@ -66,7 +73,6 @@ def register():
     if request.method == "POST":
 
         role = request.form.get("role") # get the position of the role switch at time of submission
-        print("Role selected:", role)
         name = request.form.get("name")
         username = request.form.get("username")
         date_of_birth = request.form.get("date_of_birth")
@@ -74,14 +80,12 @@ def register():
         confirm_email = request.form.get("confirm_email")
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
+        yrs_experience = 0
 
         age = calculate_age(date_of_birth)
-        if role == "teacher":
-            user_email = Teacher.query.filter_by(email=email).first()
-            user_name = Teacher.query.filter_by(username=username).first()
-        else:
-            user_email = User.query.filter_by(email=email).first()
-            user_name = User.query.filter_by(username=username).first()
+
+        user_email = User.query.filter_by(email=email).first() or Teacher.query.filter_by(email=email).first()
+        user_name = User.query.filter_by(username=username).first() or Teacher.query.filter_by(username=username).first()
 
         if len(name) == 0:
             flash("You must provide your name.", "register_error")
@@ -119,6 +123,7 @@ def register():
                 username=username,
                 name=name,
                 age=age,
+                yrs_experience=yrs_experience
                 # Add any other necessary fields specific to Teacher
             )
         else:
