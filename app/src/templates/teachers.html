@@ -1,0 +1,320 @@
+<!-- With the introduction of a new Teacher role, we need to add some functionality specific to teachers. 
+Design and create a teacher dashboard which displays relevant information (list of courses they are instructing, 
+list of students they are instructing, class progress, etc.) 
+-- >
+
+{% extends "base.html" %} 
+{% block title %}Dashboard{% endblock %} 
+
+{% block styling %}
+<!-- Local stylesheets -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/teacher.css') }}" />
+{% endblock %} 
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(initializeGoogleCharts);
+    </script>
+</head>
+
+<main>
+    <div id="heading">
+        <h1>Welcome to your Teacher Dashboard, {{ current_user.username }}! </h1>
+    </div>
+
+    <div id="dashboard-container">
+        <div id="cards-container">
+            <div class="card" id="card1">
+                <div class="card-body1" id="cardBody1">
+                        <h4>Courses Instructing</h4>
+                        <div id="left-side-content">
+                        <div id="unit-progress">
+                            <p id="unit-number">CALCULUS I</p>
+                        </div>
+                        </div>
+                        <button id="see-course">See Course</button>
+                        <button id="see-course">Edit Course</button>
+                        <div class="dropdown">
+                            <button id="dropbtn">Switch Course</button>
+                                <div id="dropdown-content">
+                                    <a href="#" data-unit="CALCULUS I">CALCULUS I</a>
+                                    <a href="#" data-unit="PHYSICS">PHYSICS</a>
+                                    <a href="#" data-unit="COMPUTER SCIENCE">COMP SCI</a>
+                                </div>
+                        </div>
+                        
+                            
+                </div>
+            </div>
+            
+            <div class="card" id="card2">
+                <div class="card-body2" id="cardBody2">
+                    <div id="classlist-card-header">
+                        <h4>Classlist</h4>
+                       
+                    </div>
+                    <ul id="classlist">
+                        <li class="classlist-entry">
+                            <span class="classlist-rank">1</span>
+                            <span class="classlist-name">James Smith</span>
+                            <span class="classlist-points">100 XP</span>
+                            <a href="#" id="imageButton"><img class="message-symbol" src="..\static\vendor\images\teacher\message_symbol.png" alt="" title="Message Student"></img></a>
+                        </li>
+                        <li class="classlist-entry">
+                            <span class="classlist-rank">2</span>
+                            <span class="classlist-name">John Smith</span>
+                            <span class="classlist-points">90 XP</span>
+                            <a href="#" id="imageButton"><img class="message-symbol" src="..\static\vendor\images\teacher\message_symbol.png" alt="" title="Message Student"></img></a>
+                        </li>
+                        <li class="classlist-entry">
+                            <span class="classlist-rank">3</span>
+                            <span class="classlist-name">Jane Smith</span>
+                            <span class="classlist-points">80 XP</span>
+                            <a href="#" id="imageButton"><img class="message-symbol" src="..\static\vendor\images\teacher\message_symbol.png" alt="" title="Message Student"></img></a>
+                        </li>
+                        <li class="classlist-entry">
+                            <span class="classlist-rank">4</span>
+                            <span class="classlist-name">Kevin Smith</span>
+                            <span class="classlist-points">70 XP</span>
+                            <a href="#" id="imageButton"><img class="message-symbol" src="..\static\vendor\images\teacher\message_symbol.png" alt="" title="Message Student"></img></a>
+                        </li>
+                        <li class="classlist-entry">
+                            <span class="classlist-rank">5</span>
+                            <span class="classlist-name">Mike Smith</span>
+                            <span class="classlist-points">60 XP</span>
+                            <a href="#" id="imageButton"><img class="message-symbol" src="..\static\vendor\images\teacher\message_symbol.png" alt="" title="Message Student"></img></a>
+                        </li>
+                    </ul>
+                    <button id="view-classlist">View All</button>
+                </div>
+            </div>
+    
+            <div class="card" id="cardBody">
+                <div class="card-body3" id="cardBody3">
+                    <div id="progress-card-header">
+                        <h4>Class Progress</h4>
+                    </div>
+                    <div class="carousel-container">
+                        <div id="class-length-chart"></div>
+                        <div id="active-chart"></div>
+                        <div id="grade-chart"></div>
+                        <div id="lesson-chart"></div>
+                        <div id="quiz-chart"></div>
+                    </div>
+                    
+                </div>        
+            </div>
+            
+            <div class="card" id="cardBody">
+                <div class="card-body4" id="cardBody4">
+                    <div id="settings-header">
+                        <h4>Settings</h4>
+                    </div>
+                    <div id="settings-content">
+                        <div class="settings-section">
+                            <h6>Notifications</h6>
+                            <div class="options-box">
+                                <div class="switch-container">
+                                    <h7>Email Notifications</h7>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+            
+                                <div class="switch-container">
+                                    <h7>SMS Notifications</h7>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-section">
+                            <h6>Students</h6>
+                                <div class="options-box">
+                                    <div class="switch-container">
+                                        <h7>Notify me when a student joins</h7>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                
+                                    <div class="switch-container">
+                                        <h7>Notify me when a student drops a course<h7>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="switch-container">
+                                        <h7>Notify me when a student sends a message<h7>
+                                        <label class="switch">                                        
+                                            <input type="checkbox" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <button id="view-more">View More</button>
+                    </div>
+                </div>
+            </div>
+</main>
+
+<!-- Toggle which class to view -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var dropdownLinks = document.querySelectorAll("#dropdown-content a");
+        var unitNumberElement = document.getElementById("unit-number");
+
+        dropdownLinks.forEach(function (link) {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                var selectedCourse = link.dataset.unit;
+                unitNumberElement.textContent = selectedCourse;
+            });
+        });
+    });
+
+</script>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Slick Carousel CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+
+<!-- Include Slick Carousel JS -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        google.charts.setOnLoadCallback(initializeGoogleCharts);
+
+        $('.carousel-container').slick({
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            prevArrow: '<button type="button" class="slick-custom-arrow slick-prev"> < </button>',
+            nextArrow: '<button type="button" class="slick-custom-arrow slick-next"> > </button>'
+        });
+
+        function initializeGoogleCharts() {
+            drawClassLengthChart();
+            drawActiveChart();
+            drawGradeChart();
+            drawLessonChart();
+            drawQuizChart();
+        }
+
+        function drawClassLengthChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Time', 'Number of Weeks'],
+                ['Weeks Finished', 6],
+                ['Weeks Left', 5]
+            ]);
+
+            var options = {
+                title: 'Course Progress'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('class-length-chart'));
+
+            chart.draw(data, options);
+        }
+
+        function drawActiveChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Active', 'Number of Students'],
+                ['Logged On Today', 15],
+                ['Logged On in the past 3 days', 8],
+                ['Logged On in the past Week', 3],
+                ['Inactive for 1 month+', 5]
+            ]);
+
+            var options = {
+                title: 'Last Login'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('active-chart'));
+
+            chart.draw(data, options);
+        }
+
+        function drawGradeChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Grade', 'Number of Students'],
+                ['<50%', 3],
+                ['50%-60%', 7],
+                ['60%-70%', 10],
+                ['70%-80%', 15],
+                ['80%-100%', 13]
+            ]);
+
+            var options = {
+                title: 'Class Grades'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('grade-chart'));
+
+            chart.draw(data, options);
+        }
+
+        function drawLessonChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Lesson Progress', 'Number of Students'],
+                ['Have not started', 10],
+                ['Finished Lesson 1', 13],
+                ['Finished Lesson 2', 17],
+                ['Finished Lesson 3', 15],
+                ['Finished Lesson 4', 2]
+            ]);
+
+            var options = {
+                title: 'Lesson Progress'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('lesson-chart'));
+
+            chart.draw(data, options);
+        }
+
+        function drawQuizChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Quiz Progress', 'Number of Students'],
+                ['Have not started', 10],
+                ['Finished Quiz 1', 15],
+                ['Finished Quiz 2', 9],
+                ['Finished Quiz 3', 6],
+                ['Finished Quiz 4', 0]
+            ]);
+
+            var options = {
+                title: 'Quiz Progress'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('quiz-chart'));
+
+            chart.draw(data, options);
+        }
+    });
+</script>
+
+ 
+{% endblock %}
+ 
