@@ -401,5 +401,3 @@ def leaderboard_api():
         'has_next': leaderboard_next_users.has_next,
         'next_page': page + 1 if leaderboard_next_users.has_next else None
     })
-
-

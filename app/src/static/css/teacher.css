@@ -56,6 +56,12 @@
 
     --error-txt-clr: rgba(222, 48, 48, 255);
 
+    --pie-chart-color-1: rgba(91, 132, 235, 0.7);
+    --pie-chart-color-2: rgba(17, 120, 254, 0.974);
+    --pie-chart-color-3: rgba(185, 141, 246, 0.974);
+    --pie-chart-color-4: rgba(86, 205, 110, 0.974);
+    --pie-chart-color-5: rgba(237, 132, 132, 0.922);
+
     /* Font Families/Presets */
     --body-font-family: "JejuGothic", "NanumGothic";
     --heading-font-family: "JejuGothic", "NanumGothic";
@@ -152,69 +158,6 @@ main a:hover::after {
     background-color: var(--textbox-bg-clr);
 }
 
-.points {
-    display: inline-flex;
-    align-items: center;
-}
-
-#points-logo-img {
-    height: 25px;
-    width: auto;
-    margin-right: 5px;
-}
-
-.number-points {
-    font: var(--body-font);
-    color: var(--heading-clr);
-}
-
-#user-level {
-    display: inline-flex;
-    flex-direction: column;
-    margin-left: 100px;
-    padding-top: 10px;
-}
-
-#level-progress-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-#user-level label {
-    font: var(--body-font);
-    color: var(--textbox-txt-clr);
-    margin-right: 20px;
-    white-space: nowrap;
-    flex-shrink: 0; 
-}
-
-#progress-bar {
-    width: 400px;
-    height: 15px;
-    color: var(--heading-clr);
-    border: none;
-    border-radius: 10px;
-}
-
-progress::-webkit-progress-bar {
-    background-color: var(--checkbox-clr);
-    border-radius: 10px;
-}
-
-progress::-webkit-progress-value {
-    background-color: var(--heading-clr);
-    transition: width 0.25s ease-in-out;
-    border-radius: 10px;
-}
-
-#remaining-xp {
-    font: var(--body-font);
-    color: var(--textbox-txt-clr);
-    margin-top: 10px;
-    margin-left: 150px;
-}
 
 #cards-container {
     display: grid;
@@ -228,8 +171,18 @@ progress::-webkit-progress-value {
     background-color: var(--box-clr);
     border-radius: 8px;
     box-shadow: var(--form-item-shadow);
+    padding-bottom: 20px;
+    height: auto;
+    max-height: 500px;
 }
 
+@media screen and (min-width: 768px) {
+    .card {
+        max-height: 400px; /* Adjust the maximum height for larger screens */
+    }
+}
+
+/* Courses Instructing */
 .card-body1 {
     display: flex;
     flex-direction: column;
@@ -240,82 +193,101 @@ progress::-webkit-progress-value {
     padding-bottom: 15px;
 }
 
-#left-side-content {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
+.card1-context {
+    padding: 20px;
 }
 
 .card-body1 h4 {
     color: var(--heading-clr);
 }
 
-#unit-progress {
-    margin-top: 10px;
-}
 
-#unit-number {
-    font: var(--heading-font);
-    color: var(--textbox-txt-clr);
-}
-
-#current-lesson {
-    font-family: var(--heading-font-family);
-    font-size: 24px;
-    color: var(--textbox-txt-clr);
-}
-
-#circular-progress-bar {
-    margin-left: 200px;
-    width: 190px;
-    height: 190px;
-    border-radius: 50%;
-    background: conic-gradient(
-        var(--heading-clr) 0deg,
-        var(--heading-clr) calc(50 * 3.6deg),
-        #ddddff calc(50 * 3.6deg),
-        #ddddff 360deg
-    );
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#inner-circle {
-    position: absolute;
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    background-color: var(--textbox-bg-clr);
-}
-
-#percentage {
-    position: relative;
-    font: var(--body-font);
-    color: var(--textbox-txt-clr);
-}
-
-#continue-lesson {
+#see-course{
     width: 125px;
-    height: 40px;
+    height: 45px;
     font: var(--body-font);
     color: var(--btn-txt-clr);
-    background-color: var(--btn-bg-clr);
+    background-color: var(--btn-bg-hover-clr);
+    box-shadow: var(--btn-shadow-2);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--btn-transition-1);
+    margin-bottom: 10px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+#dropbtn {
+    width: 125px;
+    height: 45px;
+    font: var(--body-font);
+    color: var(--btn-txt-clr);
+    background-color: var(--btn-bg-hover-clr);
+    box-shadow: var(--btn-shadow-2);
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: var(--btn-transition-1);
 }
 
+
+/* Dropdown content (hidden by default) */
+#dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--btn-disabled-border);
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  /* Links inside the dropdown */
+#dropdown-content a {
+    display: block;
+    width: 125px;
+    height: 40px;
+    font: var(--body-font);
+    font-size: 1em;
+    color: var(--btn-txt-clr);
+    background-color: #9ab6e0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--btn-transition-1);
+    margin-bottom: 0px;
+    display: block;
+    text-align: center;
+    line-height: 40px; /* Align text vertically in the button */
+    z-index: 2;
+    text-decoration: none;
+  }
+
+  /* Change color on hover */
+#dropdown-content a:hover {
+    background-color: var(--btn-bg-hover-clr);
+  }
+
+  /* Show the dropdown menu on hover */
+.dropdown:hover #dropdown-content {
+    display: block;
+  }
+
+
 #continue-lesson:hover {
     background-color: var(--btn-bg-hover-clr);
     box-shadow: var(--btn-shadow-2);
 }
 
-.card-body2 {
+
+/* Classlist */
+#card-body2 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-around;
     padding-left: 25px;
     padding-right: 25px;
     padding-top: 15px;
@@ -324,252 +296,275 @@ progress::-webkit-progress-value {
 
 .card-body2 h4 {
     color: var(--heading-clr);
-}
-
-#challenge-card-header {
     display: flex;
-    align-items: center;
-}
-
-#challenge-icon-img {
-    height: 25px;
-    width: auto;
-    margin-left: 10px;
-    margin-bottom: 8px;
-}
-
-.card-caption {
-    font: var(--body-font);
-    color: var(--textbox-txt-clr);
-}
-
-#challenge-button {
-    width: 300px;
-    display: block;
-    font: var(--body-font);
-    color: var(--btn-txt-clr);
-    background-color: var(--btn-bg-clr);
-    text-align: center;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: var(--btn-transition-1);
-}
-
-#challenge-button:hover {
-    background-color: var(--btn-bg-hover-clr);
-    box-shadow: var(--btn-shadow-2);
-}
-
-.button-content {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding: 10px;
-}
-
-#challenge-question {
-    font-family: var(--body-font-family);
-    font-size: 22px;
-    color: var(--btn-txt-clr);
-    margin-top: 8px;
-    margin-bottom: 15px;
-}
-
-#continue-quizzes-button {
-    width: 300px;
-    margin-top: 15px;
-    display: block;
-    font: var(--body-font);
-    color: var(--btn-txt-clr);
-    background-color: var(--btn-bg-clr);
-    text-align: center;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: var(--btn-transition-1);
-}
-
-#continue-quizzes-button:hover {
-    background-color: var(--btn-bg-hover-clr);
-    box-shadow: var(--btn-shadow-2);
-}
-
-.button-content-left-align {
-    display: flex;
-    align-items: start;
-    flex-direction: column;
-    padding: 10px;
-}
-
-#quiz-information {
-    display: inline-flex;
-    align-items: center;
-    margin-top: 10px;
-}
-
-#quiz-difficulty {
-    margin-right: 35px;
-}
-
-.card-body3 {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    padding-left: 25px;
-    padding-right: 25px;
     padding-top: 15px;
-    padding-bottom: 15px;
+    align-items: center;
+    justify-content: center;
 }
 
-.card-body3 h4 {
-    color: var(--heading-clr);
-}
 
-#leaderboard-card-header {
+
+#view-classlist {
+    width: 100px;
+    height: 45px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    font: var(--body-font);
+    color: var(--btn-txt-clr);
+    background-color: var(--btn-bg-clr);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--btn-transition-1);
+    margin: 0 auto;
+}
+
+#view-classlist:hover {
+    background-color: var(--btn-bg-hover-clr);
+    box-shadow: var(--btn-shadow-2);
+
+}
+
+
+.classlist-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 10px;
 }
 
-#view-leaderboard {
-    width: 100px;
-    height: 30px;
-    margin-left: 250px;
-    font: var(--body-font);
-    color: var(--btn-txt-clr);
-    background-color: var(--btn-bg-clr);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: var(--btn-transition-1);
-}
-
-#view-leaderboard:hover {
-    background-color: var(--btn-bg-hover-clr);
-    box-shadow: var(--btn-shadow-2);
-}
-
-#leaderboard-list {
-    list-style: none;
+#classlist-list {
     padding: 0;
     margin: 0;
+    margin-left: 10px;
     width: 100%;
+    justify-content: space-between;
 }
 
-.leaderboard-entry {
+.classlist-entry {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     margin-bottom: 10px;
 }
 
-.leaderboard-rank {
+.classlist-rank {
     font: var(--body-font);
     color: var(--textbox-txt-clr);
-    width: 50px;
+    width: 30px;
+    margin-left: 10px;
 }
 
-.leaderboard-name {
+.classlist-name {
     font: var(--body-font);
     color: var(--textbox-txt-clr);
     flex-grow: 1;
-    margin-left: 70px;
+    margin-left: 2vw;
 }
 
-.leaderboard-points {
+.classlist-points {
     font: var(--body-font);
     color: var(--body-clr);
     white-space: nowrap;
+    margin-right: 20px;
 }
 
-#streak-tracker {
-    display: flex;
-    flex-direction: column;
-    width: 100%; 
-    padding: 10px;
-    margin-top: 20px;
-    background-color: #cbc3e3;
-}
-
-#tracker-title {
-    font: var(--body-font);
-    color: var(--textbox-txt-clr);
-    margin-bottom: 10px;
-}
-
-.month-labels {
-    display: flex;
-    justify-content: space-between; 
-    text-align: center;
-    font: var(--body-sub-font);
-    color: var(--textbox-txt-clr);
-    width: 92.5%;
-    margin-bottom: 5px;
-}
-
-.days-grid {
-    display: grid;
-    grid-template-columns: repeat(53, 1fr); 
-    gap: 2px; 
-    width: 100%;
-}
-
-.week {
-    display: grid;
-    grid-template-rows: repeat(7, 1fr); 
-    grid-row-gap: 2px;
-}
-
-.day {
-    width: 20px; 
-    height: 20px; 
-    background-color: var(--textbox-bg-clr);
-    border-radius: 4px;
-    margin-bottom: 2px; 
-}
-
-.day.active {
-    background-color: #32cd32; 
-}
-
-#activity-legend {
-    display: flex;
-    align-items: center;
-    margin-top: 8px;
-    justify-content: space-around;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-}
-
-.legend-color {
+.message-symbol {
+    margin-left: 10px;
+    margin-right: 2vw;
     width: 20px;
     height: 20px;
+    position: relative;
+}
+
+/* Class Progress */
+
+.card-body3{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.card-body3 h4 {
+    color: var(--heading-clr);
+    padding-top: 15px;
+    background-color: white;
+}
+
+.carousel-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width:100%;
+}
+
+
+#class-length-chart,
+#active-chart,
+#grade-chart,
+#lesson-chart,
+#quiz-chart {
+    width: 40vw;
+    height: 40vw;
+}
+
+@media screen and (min-width: 768px) {
+    #class-length-chart, #active-chart,
+    #grade-chart,
+    #lesson-chart,
+    #quiz-chart {
+        max-height: 20vw; /* Adjust the maximum height for larger screens */
+    }
+}
+
+/* Style for custom arrows */
+.slick-custom-arrow {
+    font-size: 30px; 
+    position: absolute;
+    top: 50%;
+    color: rgb(0, 0, 0); /* Arrow color */
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    cursor: pointer;
+    outline: none;
+    display: felx;
+    align-items: center;
+}
+
+.slick-prev {
+    left: 1.5vw; 
+    z-index: 1000; 
+}
+
+.slick-next {
+    right: 1.5vw; 
+    z-index: 1000;
+}
+
+
+/* Settings */
+.card-body4 {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    padding-top: 20px;
+}
+
+.card-body4 h4 {
+    color: var(--heading-clr);
+    padding-top: 15px;
+    background-color: white;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.h7 {
+    margin-left: 10px;
+    align-self: flex-start;
+    display: inline-block;
+    font-size: 1.7vw;
+    margin-right: 20px;
+}
+
+.settings-section {
+    margin-top: 20px;
+}
+
+.switch-container {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 30px;
+}
+
+.switch {
+    display: flex;
+    align-items: flex-end; /* Align the switch to the right */
+    margin-right: 10px;
+    width: 40px;
+    height: 20px;
+    position: relative; /* Adjusted position to make it relative */
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    order: 1;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 10px;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+#view-more {
+    width: 100px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: var(--body-font);
+    color: var(--btn-txt-clr);
+    background-color: var(--btn-bg-clr);
+    border: none;
     border-radius: 4px;
-    margin-right: 5px;
+    cursor: pointer;
+    transition: var(--btn-transition-1);
+    margin: 0 auto;
+    margin-top: 20px;
 }
 
-#activity-label {
-    font: var(--body-sub-font);
-    color: var(--textbox-txt-clr);
-    margin-right: 8px;
+#view-more:hover {
+    background-color: var(--btn-bg-hover-clr);
+    box-shadow: var(--btn-shadow-2);
+
 }
-
-#current-streak {
-    font: var(--body-sub-font);
-    color: var(--textbox-txt-clr);
-}
-
-#longest-streak {
-    font: var(--body-sub-font);
-    color: var(--textbox-txt-clr);
-}
-
-
-
-
 
