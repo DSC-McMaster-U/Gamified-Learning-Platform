@@ -143,7 +143,7 @@ class User(UserMixin, db.Model):
     registration_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=-5))))
     favorite_subject = db.Column(db.String(50), nullable=True)
     failed_signin_attempts = db.Column(db.Integer, default=0)
-    points = db.relationship('Points', uselist=False, backref='user_points') # establish one-to-one relationship between 'points' and 'user' model
+    points = db.relationship('Points', uselist=False, backref='user') # establish one-to-one relationship between 'points' and 'user' model
     progress = db.relationship('UserProgress', back_populates='user', uselist=False)
     streak = db.Column(db.Integer, default=0)
     teachers = db.relationship('Teacher', secondary=teacher_student, backref='students')
@@ -166,7 +166,7 @@ class Points(db.Model):
     # establish relationship between 'points' and 'user' model, indicates the points are associated w/ a specific user 
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
     points = db.Column(db.Integer, default=0) # add index=True into points attribute to speed up points retrieval for queries?
-    user = db.relationship('User', uselist=False, backref='user_points') 
+    # user = db.relationship('User', uselist=False, backref='user_points') 
     
     @classmethod
     def get_leaderboard(cls):
@@ -351,12 +351,11 @@ class Activity(db.Model):
 # Lesson
 class Lesson(Activity):
     id = db.Column(db.Integer, db.ForeignKey('activity.id'), primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    level = db.Column(db.Integer, nullable=False)  # how difficult is the lesson (easy=1, medium=2, hard=3)
-    active = db.Column(db.Boolean, nullable=False) # determine whether the lesson is submitted or not
-    summary = db.Column(db.Text, nullable=False)   # lesson summary
+    # level = db.Column(db.Integer, nullable=False)  # how difficult is the lesson (easy=1, medium=2, hard=3)
+    # active = db.Column(db.Boolean, nullable=False) # determine whether the lesson is submitted or not
+    # summary = db.Column(db.Text, nullable=False)   # lesson summary
     learning_objective = db.Column(db.Text, nullable=False)
-    lesson_content = db.Column(db.Text, nullable=False)
+    lesson_content = db.Column(db.Text)
     video_filename = db.Column(db.String(255))
     thumbnail_filename = db.Column(db.String(255))
     textbook_name = db.Column(db.String(255))

@@ -7,14 +7,9 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/lesson.css') }}">
 {% endblock %}
 
-<!-- Note: Replace placeholder button text with Jinja blocks in the future -->
 {% block content %}
 <main>
     <div id="lesson-tabs" class="tabs-wrapper">
-
-        <!-- TODO: Implement Jinja to generate a tab structure like below based off the course entry relationships;
-                   currently, the below structure contains sample placeholder modules and lessons -->
-
         <ul class="tabs-unit-menu">
             <div class="tabs-module">
                 <button class="tabs-module-btn">
@@ -68,9 +63,6 @@
     <!-- Possible idea: make this document a jinja template including only the tab HTML above, 
                         then load whatever quiz/lesson here from another template? -->
     <div id="lesson-panels" class="lesson-wrapper">
-        <!-- TODO: Implement Jinja to generate panels like below based off the lesson entry contents;
-                   currently, the below structure contains sample placeholder modules and lessons -->
-
         <!-- Note: each panel ID corresponds to the anchor href link of the clicked tab that opens the panel -->
         {% for module in modules %}
         {% for topic in topics[module.id] %}

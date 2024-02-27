@@ -80,7 +80,7 @@
                             <a href="/dashboard">
                                 <li id="main-dashboard" class="main-link navbar-item">Dashboard</li>
                             </a>
-                            <a href="/lesson/0">  <!-- Temporary link here for now -->
+                            <a href="{% if current_user.courses %}/lesson/{{ current_user.courses[0].id }}{% else %}/lesson/0{% endif %}">
                                 <li id="main-lessons" class="main-link navbar-item">Lessons</li>
                             </a>
                             <a href="">
