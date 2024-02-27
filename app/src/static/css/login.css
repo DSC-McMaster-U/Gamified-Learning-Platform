@@ -45,7 +45,8 @@
     margin-left: calc(8px * 0.85);
 
     font: var(--body-general-font);
-    font-weight: 400;
+    font-family: "NanumGothic";
+    font-weight: 700;
     color: var(--body-clr);
 }
 
