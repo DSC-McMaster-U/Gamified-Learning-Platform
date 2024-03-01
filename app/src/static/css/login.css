@@ -8,6 +8,10 @@
     min-height: calc(275px * 0.85);
 }
 
+#login-heading {
+    margin-bottom: calc(58px * 0.85);
+}
+
 /* -- Login Extras Styling -- */ 
 #login-extras {
     display: flex;

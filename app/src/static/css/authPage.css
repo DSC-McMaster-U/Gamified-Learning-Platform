@@ -44,10 +44,13 @@
 
     /* Borders */
     --form-border: 1px solid var(--border-clr);
-    --textbox-border: 1.5px solid var(--border-clr);
+    --textbox-border: 1px solid var(--border-clr);
     --textbox-input-border: 2px solid var(--primary-clr);
     --textbox-error-border: 3px solid red;
     --checkbox-border: 2px solid #595959;
+
+    --textbox-shadow: 0px 0px 0px 0.5px rgba(0, 0, 0, 0.25);
+    
 
     /* Transitions */
     --link-transition: all 0.2s ease;
@@ -268,7 +271,6 @@ main a {
     flex-direction: column;
     width: 100%;
     height: calc(120px * 0.85);
-    margin-bottom: calc(58px * 0.85);
 }
 
 .auth-heading img {
@@ -322,6 +324,7 @@ main a {
     font-size: calc(19px * 0.85);
     /* line-height: calc(20px * 0.85); */
     border: var(--textbox-border);
+    box-shadow: var(--textbox-shadow);
 }
 
 .auth-form-text:focus-visible {

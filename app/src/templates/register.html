@@ -41,7 +41,7 @@
 
     <div id="register-box" class="auth-box">
 
-        <div id="heading" class="auth-heading">
+        <div id="register-heading" class="auth-heading">
             <img src="../static/vendor/images/login/gdsc-logo.png" alt="">
             <h1>Register Your Account</h1>
             <h3>Fill in the following to create an account.</h3>
@@ -59,6 +59,14 @@
                 {% endwith %}
             </div>
 
+            <!-- Temporary, delete later when merging with Angad's code -->
+            <div class="role-switch">
+                <input type="radio" id="student" name="role" value="student" checked>
+                <label for="student">I'm a Student</label>
+                <input type="radio" id="teacher" name="role" value="teacher">
+                <label for="teacher">I'm a Teacher</label>
+            </div>    
+            <!-- End temp -->
             <input
                 class="auth-form-text body-text"
                 type="text"
@@ -75,10 +83,10 @@
                 id="form-username"
                 placeholder="Username"
             />
-            <div class="register-error" id="err-username"></div>
+            <div class="auth-error" id="err-username"></div>
 
             <input
-                class="auth-form-text register-form-date"
+                class="auth-form-text auth-form-date"
                 type="text"
                 name="date_of_birth"
                 id="form-dob"
@@ -86,7 +94,7 @@
             />
             <!-- <input class="register-form-text body-text" type="text" name="grade" id="form-grade" placeholder="Grade"> -->
 
-            <select class="register-form-select body-text" name="grade" id="form-grade" required>
+            <select class="auth-form-select auth-form-text body-text" name="grade" id="form-grade" required>
                 <option value="" id="select-placeholder" disabled selected hidden>Grade</option>
                 <option value="FIRST">1st Grade</option>
                 <option value="SECOND">2nd Grade</option>

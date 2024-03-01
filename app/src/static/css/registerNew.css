@@ -16,3 +16,103 @@ main {
 #register-form {
     min-height: calc(275px * 0.85);
 }
+
+#register-heading {
+    margin-bottom: calc(52px * 0.85);
+}
+
+/* Register Dropdown */
+.auth-form-select {
+    width: 100%;  
+    height: calc(52px * 0.85); 
+    border: none;
+    padding-left: 12px;  
+    padding-top: 2.5px;    
+    margin-top: calc(25px * 0.85);
+    margin-bottom: calc(25px * 0.85);
+    /* vertical-align: middle; */
+
+    color: var(--textbox-clr);
+    font: var(--body-general-font);
+    font-size: calc(19px * 0.85);
+    border: var(--textbox-border);
+    border-radius: 10px;
+
+    appearance: none;
+    background-image: url("../vendor/images/login/select-arrow.png");
+    background-repeat: no-repeat;
+    background-position: right 12px top 14px;
+    background-size: 16px;
+}
+
+/* .auth-form-select:focus-visible {
+    background: ;
+} */
+
+.auth-form-select option {
+    font-size: 16px;
+    color: var(--textbox-txt-clr);
+}
+
+.auth-form-select:invalid {
+    vertical-align: middle;
+    color: var(--textbox-clr);
+    font: var(--body-general-font);
+    font-size: calc(19px * 0.85);
+}
+.auth-form-date::-webkit-calendar-picker-indicator {
+    margin-right: 9px;
+
+    /* Imitates "rgba(222, 221, 221, 0.30)" color through filters */
+    filter: invert(40%) sepia(0%) saturate(1954%) hue-rotate(192deg) brightness(97%) contrast(92%);
+}
+
+/* -- ROLE-SWITCHING LABELS */
+.role-switch {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: calc(35.5px * 0.85);
+    margin-top: 0;
+    width: 100%;
+    height: calc(55.5px * 0.85);
+
+    border: 1px solid #AFAFAF;
+    box-shadow: var(--textbox-shadow);
+    border-radius: 999px;
+}
+
+.role-switch input[type="radio"] {
+    display: none;
+}
+
+.role-switch label {
+    padding-top: calc(14px * 0.85);
+    width: 49.5%;
+    height: calc(55.5px * 0.85 * 0.92);
+    margin-top: calc(55.5px * 0.85 * 0.01);
+    margin-bottom: 0.05%;
+    /* border: 1px solid #5B83EB; */
+    text-align: center;
+    border-radius: 999px;
+    cursor: pointer;
+
+    font: var(--btn-font);
+    font-size: calc(18px * 0.85);
+    color: var(--body-clr);
+    line-height: calc(22px * 0.85);
+    align-items: center;
+    text-align: center;
+    letter-spacing: 1px;
+
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transition effect for smooth color change */
+}
+
+/* Hover effect for unselected labels */
+.role-switch label:hover {
+    background-color: #d1d9eb; /* Light blue shade, adjust as needed */
+}
+
+.role-switch input[type="radio"]:checked + label {
+    background-color: var(--primary-clr);
+    color: var(--box-clr);
+}
