@@ -12,6 +12,10 @@
     margin-bottom: calc(58px * 0.85);
 }
 
+#redirect-register {
+    padding-bottom: 10vh;
+}
+
 /* -- Login Extras Styling -- */ 
 #login-extras {
     display: flex;

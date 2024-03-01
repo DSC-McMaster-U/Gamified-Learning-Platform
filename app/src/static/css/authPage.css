@@ -49,7 +49,7 @@
     --textbox-error-border: 3px solid red;
     --checkbox-border: 2px solid #595959;
 
-    --textbox-shadow: 0px 0px 0px 0.5px rgba(0, 0, 0, 0.25);
+    --textbox-shadow: 0px 0px 0px 0.5px var(--border-clr);
     
 
     /* Transitions */
