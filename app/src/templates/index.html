@@ -1,14 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+{% extends "base.html" %}
+{% block title %}Home - Gamified Learning Platform{% endblock %}
+{% block styling %}
+    <!-- Local Stylesheets -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
-    <div class="hello-world">
-        Hello World!
-    </div>
-</body>
-</html>
+{% endblock %}
+
+{% block content %}
+<main>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Welcome to our Gamified Learning Platform</h1>
+            </div>
+        </div>
+    </body>
+</main>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Insert local scripts here, if necessary -->
+{% endblock %}
