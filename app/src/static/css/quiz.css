@@ -1,47 +1,31 @@
 /**
  * ========
- * Imported Fonts
- * ========
-**/
-
-/* Jeju Gothic (original font in design) */
-@font-face {
-    font-family: "JejuGothic";
-    src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
-}
-
-/* Nanum Gothic (fallback font) */
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Regular.ttf");
-}
-
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Bold.ttf");
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-ExtraBold.ttf");
-    font-weight: bolder;
-}
-
-/**
- * ========
  * Variables
  * ========
 **/
 
 :root {
-    /* Main Colours */
-    --box-clr: rgba(222, 221, 221, 0.3);
+    /* Main/Recurring Colours */
+    --box-clr: #ffffff;
+    --bg-clr: #f8f8f8;
+    --border-clr: #afafaf;
+    --primary-clr: #5b83eb;
+    --disabled-clr: rgba(91, 131, 235, 0.3);
+
+    /* --box-clr: rgba(222, 221, 221, 0.3);
     --heading-clr: #5b83eb;
     --body-clr: rgba(0, 0, 0, 0.4);
-    --body-hover-clr: rgba(0, 0, 0, 0.5);
+    --body-hover-clr: rgba(0, 0, 0, 0.5); */
 
-    --textbox-txt-clr: #000000;
+    /* Text-related Colours */
+    --heading-clr: rgba(89, 89, 89, 1);
+    --subheading-clr: rgba(89, 89, 89, 0.6);
+    --body-clr: rgba(0, 0, 0, 0.5);
+    --textbox-placehold-clr: rgba(0, 0, 0, 0.4);
+    --textbox-clr: rgba(89, 89, 89, 1);
+    --error-txt-clr: rgba(222, 48, 48, 255);
+
+    /* --textbox-txt-clr: #000000;
     --textbox-pl-clr: rgba(0, 0, 0, 0.6);
     --textbox-bg-clr: #ffffff;
 
@@ -54,28 +38,35 @@
     --link-clr: rgb(99, 138, 236);
     --link-hover-clr: rgba(91, 131, 235, 0.8);
 
-    --error-txt-clr: rgba(222, 48, 48, 255);
+    --error-txt-clr: rgba(222, 48, 48, 255); */
 
     /* Font Families/Presets */
-    --body-font-family: "JejuGothic", "NanumGothic";
-    --heading-font-family: "JejuGothic", "NanumGothic";
-    --error-font-family: "NanumGothic";
+    --body-font-family: "NanumGothic";
+    --heading-font-family: "ProductSans";
 
-    --heading-font: normal 400 26px / normal var(--heading-font-family);
-    --body-font: normal 400 18px / normal var(--body-font-family);
-    --link-font: normal 00 15.4px / normal var(--body-font-family);
-    --body-sub-font: normal 400 15px / normal var(--body-font-family);
-    --error-font: normal 400 12px / normal var(--error-font-family);
+    --heading-font: normal 700 calc(30px * 0.85)/36px var(--heading-font-family);      /* 30px */
+    --subheading-font: normal 400 calc(20px * 0.85)/20px var(--body-font-family);      /* 20px */
+    --btn-font: normal 700 calc(22px * 0.85)/27px var(--heading-font-family);          /* 22px */
+    --body-general-font: normal 400 calc(18px * 0.85)/18px var(--body-font-family);
+    /* --error-font: normal 400 12px/normal var(--body-font-family); */
 
     /* Borders & Shadows */
-    --form-item-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
+    --form-border: 1px solid var(--border-clr);
+    --textbox-border: 1px solid var(--border-clr);
+    --textbox-input-border: 2px solid var(--primary-clr);
+    /* --textbox-error-border: 3px solid red; */
+    /* --checkbox-border: 2px solid #595959; */
+
+    /* --textbox-shadow: 0px 0px 0px 0.5px var(--border-clr); */
+
+    /* --form-item-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
         0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
     --btn-shadow-1: 0px 4px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.225) inset;
     --btn-shadow-2: 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
 
     --btn-disabled-border: 0.01px rgb(159, 159, 159) solid;
     --input-border: 0.5px black solid;
-    --error-border: 0.4px red solid;
+    --error-border: 0.4px red solid; */
 
     /* Transitions */
     --link-transition: all 0.2s ease;

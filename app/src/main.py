@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
+from functools import reduce
 from .models import *
 
 main = Blueprint('main', __name__)
@@ -33,15 +34,95 @@ def lesson_page(course_id):
 @main.route('/quiz/<int:quiz_id>', methods=['GET'])
 @login_required
 def quiz_page(quiz_id):
-    quiz = Quiz.query.get(quiz_id)
+    quiz : Quiz = Quiz.query.get(quiz_id)
 
-    # Temporary workaround since there are no quizzes right now, just to prevent an error
-    if not quiz:
-        questions = None
+    # Workaround if there are no quizzes or related questions right now, just to prevent an error
+    if not quiz or not questions:
+        # Delete any temp sample tests similar to the one that will be created below
+        deleteQuizzes = Quiz.query.filter_by(title="Test Activity - Debug2").all()
+
+        for deleteQuiz in deleteQuizzes:
+            deleteQuizQs = QuizQuestion.query.filter_by(quiz_id = deleteQuiz.id).all()
+            deleteQuizAns2D = [
+                QuizAnswer.query.filter_by(quiz_id = deleteQuiz.id, quiz_question_id = deleteQuizQ.id).all() for deleteQuizQ in deleteQuizQs
+            ]
+            deleteQuizAns = list(reduce(lambda x, y : x + y, deleteQuizAns2D, []))   # Flatten the 2D answers list above into 1D
+
+            for deleteEntity in (deleteQuizQs + deleteQuizAns):
+                db.session.delete(deleteEntity)
+            
+            db.session.delete(deleteQuiz)
+
+        db.session.commit()
+        # print(Quiz.query.filter_by(title="Test Activity - Debug2").all())  <-- should be empty
+
+        # Temporary for now...? Add a sample quiz w/ 2 Q's, 4 answers each as a placeholder in case of errors/invalid quiz ID query
+        sampleQuiz = Quiz(
+            title="Test Activity - Debug2",
+            subject_type=Subject.COMPSCI,
+            # id=sampleActivity.id,
+            active=False,
+            level=1,
+            score=0
+        )
+
+        db.session.add(sampleQuiz)
+        db.session.commit()
+        quiz: Quiz = Quiz.query.filter_by(title="Test Activity - Debug2").first()
+
+        sampleQ1 = QuizQuestion(
+            quiz_id=quiz.id,
+            question_content="Test question #1:"
+        )
+
+        sampleQ2 = QuizQuestion(
+            quiz_id=quiz.id,
+            question_content="Test question #2:"
+        )
+
+        db.session.add_all([sampleQ1, sampleQ2])
+        db.session.commit()
+        questions = {
+            qNum: question for qNum, question in enumerate(QuizQuestion.query.filter_by(quiz_id = quiz.id).order_by().all())
+        }
+        # print(questions)
+
+        sampleQ1Ans = [
+            QuizAnswer(
+                quiz_id=quiz.id,
+                quiz_question_id=questions[0].id,
+                correct = True if ansNum == 4 else False,
+                answer_content=f"Answer #1-{ansNum}"
+            ) for ansNum in range(1, 5)
+        ]
+
+        sampleQ2Ans = [
+            QuizAnswer(
+                quiz_id=quiz.id,
+                quiz_question_id=questions[1].id,
+                correct = True if ansNum == 2 else False,
+                answer_content=f"Answer #2-{ansNum}"
+            ) for ansNum in range(1, 5)
+        ]
+
+        db.session.add_all(sampleQ1Ans)
+        db.session.add_all(sampleQ2Ans)
+        db.session.commit()
+
+        answers = {
+            quizQ[0]: QuizAnswer.query.filter_by(quiz_id = quiz.id, quiz_question_id = quizQ[1].id).all() for quizQ in list(questions.items())
+        }
     else:
-        questions = [(i + 1, question) for i, question in enumerate(quiz.questions)]
+        questions = {
+            qNum: question for qNum, question in enumerate(QuizQuestion.query.filter_by(quiz_id = quiz.id).order_by().all())
+        }
+        answers = {
+            quizQ[0]: QuizAnswer.query.filter_by(quiz_id = quiz.id, quiz_question_id = quizQ[1].id).all() for quizQ in list(questions.items())
+        }
 
-    return render_template('quiz.html', current_user=current_user, logged_in=True, show_footer=True, quiz=quiz, questions=questions)
+    # print(questions)
+    # print(answers)
+    return render_template('quiz.html', current_user=current_user, logged_in=True, show_footer=True, quiz=quiz, questions=questions, answers=answers)
 
 @main.route('/dashboard')
 @login_required

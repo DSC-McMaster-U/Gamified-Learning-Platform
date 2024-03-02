@@ -18,26 +18,28 @@
         <div id="quiz-questions">
             <form id="quiz-form">
                 <!-- Temporary workaround since there are no quizzes. DO NOT MODIFY THE IF STATEMENT -->
-                {% if quiz and quiz.questions %} {% for question_num, question in questions %}
+                {% if quiz and questions %} 
+                {% for question_num, question in questions.items() %}
                 <div class="question-block">
-                    <p class="question">{{ question_num }}. {{ question.question_content }}</p>
-
-                    {% for option in question.options %}
-                    <label>
-                        <input
-                            type="radio"
-                            value="{{ option }}"
-                            name="question_{{ question.id }}"
-                            onclick="updateCount()"
-                        />
-                        {{ option }}
-                    </label>
-                    {% endfor %}
+                    <p class="question">{{ question_num + 1 }}. {{ question.question_content }}</p>
+                    <div class="question-options">
+                        {% for option in answers[question_num] %}
+                        <label>
+                            <input
+                                type="radio"
+                                value="q{{ question_num }}option{{ answers[question_num].index(option) }}"
+                                name="question_{{ question.id }}"
+                                onclick="updateCount()"
+                            />
+                            {{ option.answer_content }}
+                        </label>
+                        {% endfor %}
+                    </div>
                 </div>
                 {% endfor %} {% else %}
                 <!-- Else condition, this is temporary -->
                 {% endif %}
-                <!-- Sample questions to test formatting -->
+                <!-- Sample questions to test formatting
                 <div class="question-block">
                     <p class="question">1. Test question</p>
                     <div class="question-options">
@@ -117,7 +119,7 @@
                             Q2 Option 4
                         </label>
                     </div>
-                </div>
+                </div> -->
 
                 <button disabled id="submit-quiz" type="submit">Submit</button>
             </form>
