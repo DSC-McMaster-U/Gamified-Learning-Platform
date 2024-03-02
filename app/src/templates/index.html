@@ -7,17 +7,24 @@
 
 {% block content %}
 <main>
-    </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <h1>Welcome to our Gamified Learning Platform</h1>
+    <div id="section1">
+        <div id="title-flex-container">
+            <img src="../static/vendor/images/homepage/gdsc-left.png" alt="Image 1" class="title-image">
+            <div id="title-description-container">
+                <h1 id="title">Welcome to Our Gamified Learning Platform</h1>
+                <p id="description">The McMaster GDSC team has developed a dynamic Gamified Learning Platform, offering students an interactive space to effortlessly learn and absorb new content</p>
             </div>
+            <img src="../static/vendor/images/homepage/gdsc-right.png" alt="Image 2" class="title-image">
         </div>
-    </body>
+    </div>
+    <div id="section2">
+    </div>
 </main>
+
+
 {% endblock %}
 
 {% block scripts %}
     <!-- Insert local scripts here, if necessary -->
+    <script src="../static/js/home.js"></script>
 {% endblock %}
