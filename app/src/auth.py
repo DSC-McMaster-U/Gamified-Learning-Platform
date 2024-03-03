@@ -32,7 +32,7 @@ def login_post():
         account = teacher
     elif user and not teacher:
         account = user
-    else:
+    elif user and teacher:
         flash('The email address is associated with multiple roles. Please contact support.', 'login_error')
         return redirect(url_for('auth.login'))
         
