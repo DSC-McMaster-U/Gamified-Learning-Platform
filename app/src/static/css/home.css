@@ -129,8 +129,8 @@ main a:hover::after {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 #section1::before {
@@ -192,6 +192,7 @@ main a:hover::after {
     align-items: center; 
     justify-content: center; 
     padding: 30px;
+    padding-bottom: 10px;
     background: rgb(229, 229, 229);
 }
 
@@ -205,7 +206,7 @@ main a:hover::after {
 }
 
 .feature-card {
-    width: 310px;
+    width: 21vw;
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     border-radius: 15px;
@@ -219,7 +220,7 @@ main a:hover::after {
 }
 
 .feature-icon {
-    width: 95px;
+    width: 105px;
     height: auto;
     margin-bottom: 10px;
 }
@@ -227,13 +228,15 @@ main a:hover::after {
 .feature-title {
     margin: 10px 0;
     font: var(--heading-font);
-    font-size: 1.5em;
+    font-size: 1.4em;
 }
 
 .feature-description {
+    padding-top: 10px;
     opacity: 0; 
     transition: opacity 0.5s ease-in-out;
     text-align: left;
+    font-size: 18px;
 }
 
 #toggleFeatures {
@@ -243,6 +246,7 @@ main a:hover::after {
     cursor: pointer;
     border-radius: 10px;
     border-color: #0000006b;
+    background-color: #e3e3e3;
     font: var(--error-font);
     font-size: 14px;
     transition: background-color 0.3s; 
@@ -268,35 +272,38 @@ main a:hover::after {
     align-items: center;
     justify-content: center;
     padding-top: 50px;
-    padding-bottom: 20px;
     background: linear-gradient(to bottom, rgb(229, 229, 229) 0%, #ffffff 100%);
 }
 
 #get-started-text {
     font: var(--heading-font);
-    font-size: 45px;
+    font-size: 30px;
     margin-bottom: 5px;
     text-align: center;
-    color: var(--heading-clr)
+    color: var(--heading-clr);
+    opacity: 70%;
+    text-decoration: underline;
+    text-underline-offset: 7px;
 }
 
 #register-button {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: none;
     background-color: transparent;
-    border: none; 
     cursor: pointer;
     transition: transform 0.2s;
 }
 
 .register-icon {
+    margin-top: 10px;
     width: 200px; /* Adjust size as needed */
     height: auto; /* Maintains aspect ratio */
 }
 
 #register-button:hover .register-icon {
-    animation: spin 3s linear infinite;
+    animation: spin 3s ease-in-out infinite;
 }
 
 @keyframes spin {
