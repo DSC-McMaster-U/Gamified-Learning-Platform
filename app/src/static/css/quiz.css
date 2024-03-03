@@ -25,7 +25,7 @@
     --label-font-family: "JejuGothic";
 
     --heading-font: normal 700 calc(30px * 0.9)/36px var(--heading-font-family);      /* 30px */
-    --subheading-font: normal 700 17px/20px var(--subheading-font-family);      /* 20px */
+    --subheading-font: normal 700 17.5px/20px var(--subheading-font-family);      /* 20px */
     --btn-font: normal 700 calc(22px * 0.85)/27px var(--heading-font-family);          /* 22px */
     --body-general-font: normal 400 calc(18px * 0.85)/18px var(--body-font-family);
     --label-font: normal 400 18px/20px var(--label-font-family);
@@ -151,7 +151,7 @@ main {
 .count-box {
     color: var(--body-clr-2);
     font: var(--body-general-font);
-    font-family: "NanumGothicBold";
+    font-family: "ProductSans";
     font-size: 17px;
     margin: 0;
     height: 35px;
