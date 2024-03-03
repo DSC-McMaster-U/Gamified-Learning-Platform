@@ -4,34 +4,40 @@
 {% endblock %} {% block content %}
 <main>
     <div id="heading">
-        <h1>Quiz: {{ quiz.title }}</h1>
+        <h1>Quiz - {{ quiz.title }}</h1>
     </div>
 
     <div id="quiz-container">
         <div id="quiz-heading">
-            <div id="progress-container">
-                <p class="count-box" id="selectedCount">Questions Remaining: 0</p>
-                <progress value="0" max="100" id="progress-bar" />
-            </div>
-            <h2 id="questions-title">Questions</h2>
+            <h2 id="questions-title" class="quiz-subheading">Your Progress</h2>            
+            <p class="count-box" id="selectedCount">Questions Remaining: 0</p>
+            <progress value="0" max="100" id="progress-bar" />
         </div>
         <div id="quiz-questions">
             <form id="quiz-form">
                 <!-- Temporary workaround since there are no quizzes. DO NOT MODIFY THE IF STATEMENT -->
                 {% if quiz and questions %} 
                     {% for question_num, question in questions.items() %}
-                    <div class="question-block">
-                        <p class="question">{{ question_num + 1 }}. {{ question.question_content }}</p>
+                    <div class="question-block {% if question_num == 0 %}show-question{% endif %}">
+                        <h2 class="question quiz-subheading">Question #{{ question_num + 1 }}</h2>
+                        <p class="question-content">{{ question.question_content }}</p>
+
+                        <h2 class="answer quiz-subheading">Your Answer</h2>
                         <div class="question-options">
                             {% for option in answers[question_num] %}
-                            <label>
-                                <input
-                                    type="radio"
-                                    value="q{{ question_num }}option{{ answers[question_num].index(option) }}"
-                                    name="question_{{ question.id }}"
-                                    onclick="updateCount()"
-                                />
-                                {{ option.answer_content }}
+                            <input
+                                type="radio"
+                                value="q{{ question_num }}option{{ answers[question_num].index(option) }}"
+                                name="question_{{ question.id }}"
+                                id="q{{ question_num }}-{{ answers[question_num].index(option) }}"
+                                class="option-{{ answers[question_num].index(option) }}"
+                                onclick="updateCount()"
+                            />
+                            <label 
+                                for="q{{ question_num }}-{{ answers[question_num].index(option) }}"
+                                class="label-{{ answers[question_num].index(option) }}"
+                            >
+                                <div>{{ option.answer_content }}</div>
                             </label>
                             {% endfor %}
                         </div>
@@ -81,7 +87,21 @@
                 </div>
                 {% endif %}
                 
-                <button disabled id="submit-quiz" type="submit">Submit</button>
+                <div id="quiz-buttons">
+                    <div id="switch-question">
+                        <div id="prev-question">
+                            <img src="../static/vendor/images/base/left-arrow.png" alt="Previous Question Arrow">
+                            Previous Question
+                        </div>
+                        <div id="next-question" class="clickable">
+                            Next Question
+                            <img src="../static/vendor/images/base/right-arrow.png" alt="Next Question Arrow">
+                        </div>
+                    </div>
+    
+                    <button disabled id="submit-quiz" type="submit">Submit</button>
+                </div>
+
             </form>
         </div>
     </div>
@@ -89,6 +109,12 @@
 {% endblock %} {% block scripts %}
 <script>
     let totalCount;
+    let currentQuestion = 0;
+
+    const questions = document.querySelectorAll(".question-block");
+    const nextQBtn = document.getElementById("next-question");
+    const prevQBtn = document.getElementById("prev-question");
+
     document.addEventListener("DOMContentLoaded", () => {
         totalCount = document.getElementsByClassName("question").length;
         document.getElementById("selectedCount").textContent = `Questions Remaining: ${totalCount}`;
@@ -112,5 +138,49 @@
             submitButton.classList.add("clickable");
         }
     }
+
+    function nextQuestion() {
+        if (nextQBtn.classList.contains("clickable")) {
+            currentQuestion = (currentQuestion < questions.length - 1) ? currentQuestion + 1 : questions.length - 1;
+            questions[currentQuestion - 1].classList.remove("show-question");
+            questions[currentQuestion].classList.add("show-question");
+            // alert("Incremented Qs");
+
+            prevQBtn.classList.add("clickable");
+
+            if (currentQuestion === questions.length - 1) {
+                nextQBtn.classList.remove("clickable");
+            }
+        }
+    }
+
+    function prevQuestion() {
+        if (prevQBtn.classList.contains("clickable")) {
+            currentQuestion = (currentQuestion > 0) ? currentQuestion - 1 : 0;
+            questions[currentQuestion + 1].classList.remove("show-question");
+            questions[currentQuestion].classList.add("show-question");
+            // alert("Decremented Qs");
+
+            nextQBtn.classList.add("clickable");
+
+            if (currentQuestion === 0) {
+                prevQBtn.classList.remove("clickable");
+            }
+        }
+    }
+
+    function main() {
+        if (questions.length === 1) {
+            nextQBtn.classList.remove("clickable");
+        }
+
+        nextQBtn.addEventListener("click", nextQuestion);
+        nextQBtn.addEventListener("click", nextQuestion);
+        prevQBtn.addEventListener("click", prevQuestion);
+        prevQBtn.addEventListener("click", prevQuestion);
+    }
+
+    main()
+
 </script>
 {% endblock %}

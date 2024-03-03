@@ -72,7 +72,7 @@ def quiz_page(quiz_id):
 
         sampleQ1 = QuizQuestion(
             quiz_id=quiz.id,
-            question_content="Test question #1:"
+            question_content="This is a sample question for you to answer. What is the answer?"
         )
 
         sampleQ2 = QuizQuestion(
