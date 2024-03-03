@@ -39,7 +39,7 @@ def quiz_page(quiz_id):
     # Workaround if there are no quizzes or related questions right now, just to prevent an error
     if not quiz or not questions:
         # Delete any temp sample tests similar to the one that will be created below
-        deleteQuizzes = Quiz.query.filter_by(title="Test Activity - Debug2").all()
+        deleteQuizzes = Quiz.query.filter_by(title="Test Activity Debug 2").all()
 
         for deleteQuiz in deleteQuizzes:
             deleteQuizQs = QuizQuestion.query.filter_by(quiz_id = deleteQuiz.id).all()
@@ -54,11 +54,11 @@ def quiz_page(quiz_id):
             db.session.delete(deleteQuiz)
 
         db.session.commit()
-        # print(Quiz.query.filter_by(title="Test Activity - Debug2").all())  <-- should be empty
+        # print(Quiz.query.filter_by(title="Test Activity Debug 2").all())  <-- should be empty
 
         # Temporary for now...? Add a sample quiz w/ 2 Q's, 4 answers each as a placeholder in case of errors/invalid quiz ID query
         sampleQuiz = Quiz(
-            title="Test Activity - Debug2",
+            title="Test Activity Debug 2",
             subject_type=Subject.COMPSCI,
             # id=sampleActivity.id,
             active=False,
@@ -68,7 +68,7 @@ def quiz_page(quiz_id):
 
         db.session.add(sampleQuiz)
         db.session.commit()
-        quiz: Quiz = Quiz.query.filter_by(title="Test Activity - Debug2").first()
+        quiz: Quiz = Quiz.query.filter_by(title="Test Activity Debug 2").first()
 
         sampleQ1 = QuizQuestion(
             quiz_id=quiz.id,
