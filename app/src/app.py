@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from .models import db, User, Points
@@ -34,9 +34,13 @@ def create_app(test_config=None):
     
     db.init_app(app)
 
-    @app.route('/')
+    @app.route('/home')
     def home():
         return render_template('home.html')
+
+    @app.route('/')
+    def index():
+        return redirect(url_for('home'))
     
     @login_manager.user_loader
     def load_user(user_id):

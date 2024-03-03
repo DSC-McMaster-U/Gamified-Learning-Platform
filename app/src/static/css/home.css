@@ -206,9 +206,9 @@ main a:hover::after {
 }
 
 .feature-card {
-    width: 21vw;
+    width: 20vw;
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), 0 2px 5px rgba(0, 0, 0, 0.2);
     border-radius: 15px;
     background: linear-gradient(to bottom, var(--btn-bg-clr) 0%, #d4d4d4 100%);
     text-align: center;
@@ -281,7 +281,7 @@ main a:hover::after {
     margin-bottom: 5px;
     text-align: center;
     color: var(--heading-clr);
-    opacity: 70%;
+    opacity: 80%;
     text-decoration: underline;
     text-underline-offset: 7px;
 }
@@ -300,10 +300,13 @@ main a:hover::after {
     margin-top: 10px;
     width: 200px; /* Adjust size as needed */
     height: auto; /* Maintains aspect ratio */
+    opacity: 70%;
+    transition: opacity 0.2s ease-in-out; 
 }
 
 #register-button:hover .register-icon {
     animation: spin 3s ease-in-out infinite;
+    opacity: 95%;
 }
 
 @keyframes spin {
