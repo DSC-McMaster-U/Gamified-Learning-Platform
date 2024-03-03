@@ -125,7 +125,7 @@ main a:hover::after {
 
 #section1 {
     height: 350px;
-    position: relative; /* This allows the pseudo-element to be positioned absolutely within the parent */
+    position: relative; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -147,7 +147,7 @@ main a:hover::after {
     z-index: -1; /* Ensure the background is behind the content */
 }
 
-/* Ensure the container and the images/text within are not affected by the opacity */
+
 #title-flex-container, #title-description-container, .title-image, #title, #description {
     position: relative; /* This ensures that these elements are rendered above the pseudo-element */
     z-index: 1;
@@ -177,11 +177,133 @@ main a:hover::after {
 }
 
 .title-image {
-    width: 18vw; /* Dynamically adjusts to viewport width */
-    height: auto; /* Maintain aspect ratio */
+    width: 18vw;
+    height: auto;
 }
 
 #title-description-container {
     flex-grow: 1;
     padding: 0 1vw; /* Dynamic padding based on viewport width */
+}
+
+#features {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 30px;
+    background: rgb(229, 229, 229);
+}
+
+#feature-card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap; 
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.feature-card {
+    width: 310px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    background: linear-gradient(to bottom, var(--btn-bg-clr) 0%, #d4d4d4 100%);
+    text-align: center;
+    margin-left: 14px;
+    margin-right: 14px;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Add max-height transition */
+    max-height: 190px; /* Initial max-height */
+    overflow: hidden;
+}
+
+.feature-icon {
+    width: 95px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.feature-title {
+    margin: 10px 0;
+    font: var(--heading-font);
+    font-size: 1.5em;
+}
+
+.feature-description {
+    opacity: 0; 
+    transition: opacity 0.5s ease-in-out;
+    text-align: left;
+}
+
+#toggleFeatures {
+    width: 30%;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    border-color: #0000006b;
+    font: var(--error-font);
+    font-size: 14px;
+    transition: background-color 0.3s; 
+    box-shadow: 1px 3px 1px 0px rgba(0, 0, 0, 0.135);
+}
+
+#toggleFeatures:hover {
+    background-color: var(--btn-bg-disabled-clr);
+}
+
+.show-description .feature-description {
+    display: block;
+    opacity: 1; /* Make description fully visible */
+}
+
+.show-description {
+    max-height: 500px;
+}
+
+#section3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background: linear-gradient(to bottom, rgb(229, 229, 229) 0%, #ffffff 100%);
+}
+
+#get-started-text {
+    font: var(--heading-font);
+    font-size: 45px;
+    margin-bottom: 5px;
+    text-align: center;
+    color: var(--heading-clr)
+}
+
+#register-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none; 
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.register-icon {
+    width: 200px; /* Adjust size as needed */
+    height: auto; /* Maintains aspect ratio */
+}
+
+#register-button:hover .register-icon {
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

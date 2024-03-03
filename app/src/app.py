@@ -35,8 +35,8 @@ def create_app(test_config=None):
     db.init_app(app)
 
     @app.route('/')
-    def index():
-        return render_template('index.html')
+    def home():
+        return render_template('home.html')
     
     @login_manager.user_loader
     def load_user(user_id):
