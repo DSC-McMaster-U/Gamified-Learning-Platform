@@ -109,10 +109,6 @@ input.auth-form-text.auth-form-date {
     padding-top: calc(14px * 0.85);
     width: 50%;
     height: 100%;
-    /* height: 44.82px;
-    margin-top: calc(55.5px * 0.85 * 0.01); */
-    /* margin-bottom: 0.05%; */
-    /* border: 1px solid #5B83EB; */
     text-align: center;
     border-radius: 999px;
     cursor: pointer;

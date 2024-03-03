@@ -288,6 +288,7 @@ progress::-webkit-progress-bar {
 
     background-color: #FFFFFF;
     border: 1.5px solid #AFAFAF;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
 
     transition: all 0.3s ease, outline 0.05s ease; /* Transition effect for smooth color change */
@@ -366,21 +367,25 @@ progress::-webkit-progress-bar {
 .question-options input[type="radio"]:checked + label.label-0 {
     background-color: rgba(20, 121, 42, 0.2);
     outline: 3px solid #14792A;
+    box-shadow: 3px 3px 0px 2px #14792A;
 }
 
 .question-options input[type="radio"]:checked + label.label-1 {
     background-color: rgba(255, 6, 21, 0.2);
     outline: 3px solid #C6000C;
+    box-shadow: 3px 3px 0px 2px #C6000C;
 }
 
 .question-options input[type="radio"]:checked + label.label-2 {
     background-color: rgba(24, 102, 253, 0.2);
     outline: 3px solid #5B83EB;
+    box-shadow: 3px 3px 0px 2px #5B83EB;
 }
 
 .question-options input[type="radio"]:checked + label.label-3 {
     background-color: rgba(251, 188, 4, 0.2);
     outline: 3px solid #CC9800;
+    box-shadow: 3px 3px 0px 2px #CC9800;
 }
 
 /* -- Buttons -- */
