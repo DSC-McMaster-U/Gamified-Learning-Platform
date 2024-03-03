@@ -315,6 +315,7 @@ main a {
     height: calc(52px * 0.85); 
     border: none;
     padding-left: calc(15px * 0.85);   
+    padding-right: calc(15px * 0.85);   
     padding-top: 2.5px;    
     /* vertical-align: middle; */
 
@@ -354,7 +355,7 @@ main a {
     border: none;
     outline: none;
     letter-spacing: 0.6px;
-    transition: var(--link-transition);
+    transition: var(--link-transition); 
 }
 
 /* Added to button when all fields are filled */
@@ -363,6 +364,14 @@ main a {
     background-color: var(--primary-clr);
     border: none;
     outline: none;
+}
+
+.auth-btn.clickable:hover {
+    background-color: #4a75e1;
+}
+
+.auth-btn.clickable:active {
+    background-color: #183fa1;
 }
 
 /* Work on custom checkbox later */

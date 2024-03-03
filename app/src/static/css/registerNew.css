@@ -25,6 +25,24 @@ main {
     padding-bottom: 74px;
 }
 
+.register-form-group {
+    display: flex;
+    flex-direction: row;
+    gap: calc(25px * 0.85);
+    width: 100%;
+    height: calc(52px * 0.85);
+    margin-bottom: calc(25px * 0.85);
+}
+
+.register-form-group input, .register-form-group select {
+    max-width: calc(210px * 0.85); 
+    width: 100%;
+}
+
+input.auth-form-text.auth-form-date {
+    padding-right: calc(13px * 0.85); 
+}
+
 /* Register Dropdown */
 .auth-form-select {
     width: 100%;  
@@ -32,8 +50,8 @@ main {
     border: none;
     padding-left: 12px;  
     padding-top: 2.5px;    
-    margin-top: calc(25px * 0.85);
-    margin-bottom: calc(25px * 0.85);
+    /* margin-top: calc(25px * 0.85); */
+    /* margin-bottom: calc(25px * 0.85); */
     /* vertical-align: middle; */
 
     color: var(--textbox-clr);
@@ -65,8 +83,6 @@ main {
     font-size: calc(19px * 0.85);
 }
 .auth-form-date::-webkit-calendar-picker-indicator {
-    margin-right: 9px;
-
     /* Imitates "rgba(222, 221, 221, 0.30)" color through filters */
     filter: invert(40%) sepia(0%) saturate(1954%) hue-rotate(192deg) brightness(97%) contrast(92%);
 }
@@ -104,7 +120,7 @@ main {
     font: var(--btn-font);
     font-size: calc(18px * 0.85);
     color: var(--body-clr);
-    line-height: calc(22px * 0.85);
+    line-height: calc(24px * 0.85);
     align-items: center;
     text-align: center;
     letter-spacing: 1px;
@@ -114,7 +130,7 @@ main {
 
 /* Hover effect for unselected labels */
 .role-switch label:hover {
-    background-color: #d1d9eb; /* Light blue shade, adjust as needed */
+    background-color: rgba(209, 217, 235, 0.6); /* Light blue shade, adjust as needed */
 }
 
 .role-switch input[type="radio"]:checked + label {

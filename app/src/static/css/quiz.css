@@ -58,6 +58,10 @@ html body {
     font: var(--body-font);
 }
 
+main {
+    transform: scale(0.95);   /* Too lazy to change all the values below... */
+}
+
 /* main a {
     position: relative;
 }
@@ -101,7 +105,7 @@ main a:hover::after {
     box-shadow: 0px 1px 8px 1px rgba(0, 0, 0, 0.25);
     border-radius: 0px 0px 9px 9px; 
 
-    margin-top: 70px;
+    margin-top: 49px;
     margin-bottom: 20px;
     margin-left: auto;
     margin-right: auto;
@@ -472,7 +476,7 @@ progress::-webkit-progress-bar {
 #switch-question + button.clickable {
     background-color: var(--primary-clr);
     cursor: pointer;
-    transition: var(--btn-transition-1);
+    transition: all 0.2s ease;
 }
 
 #switch-question + button.clickable:hover {

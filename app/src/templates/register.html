@@ -43,8 +43,8 @@
 
         <div id="register-heading" class="auth-heading">
             <img src="../static/vendor/images/login/gdsc-logo.png" alt="">
-            <h1>Register Your Account</h1>
-            <h3>Fill in the following to create an account.</h3>
+            <h1>Register an Account</h1>
+            <h3>Fill in the following fields to sign up.</h3>
         </div>
 
         <form id="register-form" class="auth-form" action="/register" method="post">
@@ -67,53 +67,63 @@
                 <label for="teacher">I'm a Teacher</label>
             </div>    
             <!-- End temp -->
-            <input
-                class="auth-form-text body-text"
-                type="text"
-                name="name"
-                id="form-name"
-                placeholder="Name"
-            />
-            <div class="auth-error" id="err-name"></div>
 
-            <input
-                class="auth-form-text body-text"
-                type="text"
-                name="username"
-                id="form-username"
-                placeholder="Username"
-            />
-            <div class="auth-error" id="err-username"></div>
+            <!-- Extra divs added to wrap first four inputs -->
+            <div class="register-form-group">
+                <div>
+                    <input
+                        class="auth-form-text body-text"
+                        type="text"
+                        name="name"
+                        id="form-name"
+                        placeholder="Name"
+                    />
+                    <div class="auth-error" id="err-name"></div>
+                </div>
 
-            <input
-                class="auth-form-text auth-form-date"
-                type="text"
-                name="date_of_birth"
-                id="form-dob"
-                placeholder="Date of Birth"
-            />
-            <!-- <input class="register-form-text body-text" type="text" name="grade" id="form-grade" placeholder="Grade"> -->
+                <div>
+                    <input
+                        class="auth-form-text body-text"
+                        type="text"
+                        name="username"
+                        id="form-username"
+                        placeholder="Username"
+                    />
+                    <div class="auth-error" id="err-username"></div>
+                </div>
+            </div>
 
-            <select class="auth-form-select auth-form-text body-text" name="grade" id="form-grade" required>
-                <option value="" id="select-placeholder" disabled selected hidden>Grade</option>
-                <option value="FIRST">1st Grade</option>
-                <option value="SECOND">2nd Grade</option>
-                <option value="THIRD">3rd Grade</option>
-                <option value="FOURTH">4th Grade</option>
-                <option value="FIFTH">5th Grade</option>
-                <option value="SIXTH">6th Grade</option>
-                <option value="SEVENTH">7th Grade</option>
-                <option value="EIGHTH">8th Grade</option>
-                <option value="NINTH">9th Grade</option>
-                <option value="TENTH">10th Grade</option>
-                <option value="ELEVENTH">11th Grade</option>
-                <option value="TWELFTH">12th Grade</option>
-                <option value="FRESHMAN">University Freshman</option>
-                <option value="SOPHOMORE">University Sophomore</option>
-                <option value="JUNIOR">University Junior</option>
-                <option value="SENIOR">University Senior</option>
-                <option value="NA">Other</option>
-            </select>
+            <div class="register-form-group">
+                <input
+                    class="auth-form-text auth-form-date"
+                    type="text"
+                    name="date_of_birth"
+                    id="form-dob"
+                    placeholder="Date of Birth"
+                />
+                <!-- <input class="register-form-text body-text" type="text" name="grade" id="form-grade" placeholder="Grade"> -->
+
+                <select class="auth-form-select auth-form-text body-text" name="grade" id="form-grade" required>
+                    <option value="" id="select-placeholder" disabled selected hidden>Grade</option>
+                    <option value="FIRST">1st Grade</option>
+                    <option value="SECOND">2nd Grade</option>
+                    <option value="THIRD">3rd Grade</option>
+                    <option value="FOURTH">4th Grade</option>
+                    <option value="FIFTH">5th Grade</option>
+                    <option value="SIXTH">6th Grade</option>
+                    <option value="SEVENTH">7th Grade</option>
+                    <option value="EIGHTH">8th Grade</option>
+                    <option value="NINTH">9th Grade</option>
+                    <option value="TENTH">10th Grade</option>
+                    <option value="ELEVENTH">11th Grade</option>
+                    <option value="TWELFTH">12th Grade</option>
+                    <option value="FRESHMAN">University Freshman</option>
+                    <option value="SOPHOMORE">University Sophomore</option>
+                    <option value="JUNIOR">University Junior</option>
+                    <option value="SENIOR">University Senior</option>
+                    <option value="NA">Other</option>
+                </select>
+            </div>
 
             <input
                 class="auth-form-text body-text"
