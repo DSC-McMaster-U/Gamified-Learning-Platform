@@ -50,3 +50,4 @@ Database: Google Cloud SQL
 - Week 9-10: Develop leaderboard and reward system
 - Week 11-12: Implement any stretch goals (if possible)
 - Week 13-14: Extensive testing, bug fixes and deployment
+- Week 15
