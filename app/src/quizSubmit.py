@@ -1,54 +1,35 @@
+import os
 import json
-from flask import Flask, render_template
+from flask import Blueprint, render_template, current_app
 
-score = 0
+quiz = Blueprint('quiz', __name__)
 
-try:
-    # Pulling json data from "questions.json"
-    with open("json/questions.json", "r") as f:
-        data = json.load(f)
-except IOError:
-    print("questions.json file not found")
-    exit()
+@quiz.route('/quizResults')
+def quiz_results():
+    score = 0
 
-# Created for loop to iterate for all the questions defined in "questions.json"
-for i in range(data["module"]["num_questions"]):
-    # Initialized response variable with dummy data (Should hold user's selection)
-    response = "0.018"
-    # Pulling expected value from "questions.json" file
-    correct_resp = str(data["module"]["questions"][i]["correct_answer"])
+    # Get the directory of the current file
+    current_directory = os.path.dirname(os.path.abspath(__file__))
 
+    # Navigate to the root directory by going up two levels
+    root_directory = os.path.abspath(os.path.join(current_directory, '..', '..'))
+    questions_file_path = os.path.join(root_directory, 'json', 'questions.json')
+
+
+    print("Root directory:", root_directory)
+    
     try:
-        # Appending user response to "response.json"
-        with open("json/responses.json") as f:
-            listObj = json.load(f)
-        listObj.append({
-            "module":str(data["module"]["number"]),
-            "number": str(data["module"]["questions"][i]["number"]),
-            "question": str(data["module"]["questions"][i]["question"]),
-            "answers": str(data["module"]["questions"][i]["answers"]),
-            "user_answer": response
-        })
-        with open("json/responses.json", 'w') as f:
-            json.dump(listObj, f, indent = 4, separators=(',',': '))
+        # Pulling json data from "questions.json"
+        with open(questions_file_path, "r") as f:
+            data = json.load(f)
     except IOError:
-        print("responses.json file not found")
+        print("questions.json file not found")
         exit()
 
-    if (response == correct_resp):
-        # Implement logic for the case where user enters the correct response
-        score += 1
-    else:
-        # Implement logic for the case where user enters the wrong response
+    # Created for loop to iterate for all the questions defined in "questions.json"
+    for i in range(data["module"]["num_questions"]):
+        # Implemented logic to calculate score and other relevant operations
         pass
 
-app = Flask(__name__)
-
-@app.route('/quizResults')
-def quiz_results():
-    # Can use this to pass any variables from the JSON file to HTML page for results
-    return render_template('quizResults.html', score=score, numQs = data["module"]["num_questions"])
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
+    # Render the HTML template with the calculated score
+    return render_template('quizResults.html', score=score, num_questions=data["module"]["num_questions"])
