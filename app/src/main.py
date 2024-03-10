@@ -171,13 +171,41 @@ def leaderboard_page():
     user_points = Points.query.filter_by(user_id=current_user.id).first()
     if user_points:
         user_ranking = Points.query.filter(Points.points > user_points.points).count() + 1
-
-    
-    
     
     return render_template(
         'leaderboard.html', 
         leaderboard_data=leaderboard_data, 
         user_ranking=user_ranking,
+        **loggedInUser
+    )
+
+@main.route('/teacher')
+@login_required
+def teacher_page():
+    '''
+    teachers = Teacher.query.filter_by(tid=current_user.username).first()
+
+
+    if not teachers:
+        teachers = None;
+
+    courses_instructing = teachers.courses
+    students_instructing = teachers.students
+    modules = teachers.modules
+    topics = teachers.topics
+
+    return render_template(
+        'teachers.html', 
+        current_user=current_user, 
+        courses_instructing=courses_instructing, 
+        students_instructing=students_instructing,  
+        module=modules, 
+        topic=topics, 
+        logged_in=True)
+        '''
+    loggedInUser = returnLoggedInData()
+    
+    return render_template(
+        'teachers.html', 
         **loggedInUser
     )

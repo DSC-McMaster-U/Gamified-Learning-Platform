@@ -15,10 +15,9 @@ load_dotenv()
 def create_app(test_config=None):
 
     app = Flask(__name__)
-
     # Configure and initalize database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-    app.secret_key = os.getenv('SECRET_KEY')
+    app.secret_key = os.getenv('SECRET_KEY') or 'SECRET_KEY'
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(main_blueprint)
     app.register_blueprint(routes_blueprint)
