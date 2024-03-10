@@ -51,21 +51,21 @@ def create_app(test_config=None):
     PER_PAGE = 10
 
     def sort_leaderboard():
-        page = request.args.get('page', 1, type=int)
-        per_page = request.args.get('per_page', PER_PAGE, type=int)
-
-        # Use SQLAlchemy's paginate() method to fetch users for the current page
-        users_pagination = User.query.order_by(desc(User.score)).paginate(page, per_page, False)
-        leaderboard_data = users_pagination.items  # Get users for the current page
-        total_users = users_pagination.total  # Total number of users
-
-        return leaderboard_data, total_users
+        # Implement your sorting logic here
+        # For example, assuming User model has a 'score' field
+        return User.query.order_by(User.score.desc()).all()
 
     @app.route('/leaderboard', methods=['GET'])
     def leaderboard():
-        leaderboard_data, total_users = sort_leaderboard()
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('per_page', PER_PAGE, type=int)
+
+        leaderboard_data = sort_leaderboard()
+        total_users = len(leaderboard_data)
+
+        start_index = (page - 1) * per_page
+        end_index = start_index + per_page
+        paginated_data = leaderboard_data[start_index:end_index]
 
         # Construct JSON response
         response = {
@@ -82,6 +82,5 @@ def create_app(test_config=None):
         }
 
         return jsonify(response)
-
 
         # return app

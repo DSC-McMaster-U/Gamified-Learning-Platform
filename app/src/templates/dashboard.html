@@ -119,12 +119,7 @@
                 <div class="card-body3">
                     <div id="leaderboard-card-header">
                         <h4>Weekly Leaderboard</h4>
-                        <!-- <a href="{{ leaderboard_url }}" id="leaderboard-link">
-                            
-                        </a> -->
-                        <!-- put the button line inside the <a> tag above after we set up the dashboard route to send in 
-                            the leaderboard info -->
-                        <button id="view-leaderboard">VIEW ALL</button>
+                        <button id="view-leaderboard" onclick="window.location.href='/leaderboard'">VIEW ALL</button>
                     </div>
                     <ul id="leaderboard-list">
                         {% for i, user in enumerate(leaderboard_data[:5]) %}
