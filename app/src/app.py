@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from .models import db, User, Points
@@ -8,6 +8,7 @@ from .routes import routes as routes_blueprint
 from .lesson_api import api as api_blueprint
 from .utils.quizSubmit import quiz_api as quiz_blueprint
 from dotenv import load_dotenv
+from sqlalchemy import desc
 import os
 
 load_dotenv()
@@ -15,9 +16,10 @@ load_dotenv()
 def create_app(test_config=None):
 
     app = Flask(__name__)
-    # Configure and initalize database
+
+    # Configure and initialize database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-    app.secret_key = os.getenv('SECRET_KEY') or 'SECRET_KEY'
+    app.secret_key = os.getenv('SECRET_KEY')
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(main_blueprint)
     app.register_blueprint(routes_blueprint)
@@ -44,5 +46,42 @@ def create_app(test_config=None):
 
     with app.app_context():
         db.create_all()
+        
+    # Pagination configuration
+    PER_PAGE = 10
 
-    return app
+    def sort_leaderboard():
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', PER_PAGE, type=int)
+
+        # Use SQLAlchemy's paginate() method to fetch users for the current page
+        users_pagination = User.query.order_by(desc(User.score)).paginate(page, per_page, False)
+        leaderboard_data = users_pagination.items  # Get users for the current page
+        total_users = users_pagination.total  # Total number of users
+
+        return leaderboard_data, total_users
+
+    @app.route('/leaderboard', methods=['GET'])
+    def leaderboard():
+        leaderboard_data, total_users = sort_leaderboard()
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', PER_PAGE, type=int)
+
+        # Construct JSON response
+        response = {
+            'leaderboard_data': [
+                {
+                    'rank': (page - 1) * per_page + i + 1,
+                    'username': user.username,
+                    'points': user.points
+                } for i, user in enumerate(leaderboard_data)
+            ],
+            'page': page,
+            'per_page': per_page,
+            'total_users': total_users
+        }
+
+        return jsonify(response)
+
+
+        # return app

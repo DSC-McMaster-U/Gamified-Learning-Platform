@@ -127,34 +127,17 @@
                         <button id="view-leaderboard">VIEW ALL</button>
                     </div>
                     <ul id="leaderboard-list">
+                        {% for i, user in enumerate(leaderboard_data[:5]) %}
                         <li class="leaderboard-entry">
-                            <span class="leaderboard-rank">1</span>
-                            <span class="leaderboard-name">James Smith</span>
-                            <span class="leaderboard-points">100 XP</span>
+                            <span class="leaderboard-rank">{{ i + 1 }}</span>
+                            <span class="leaderboard-name">{{ user.username }}</span>
+                            <span class="leaderboard-points">{{ user.points.points }} XP</span>
                         </li>
-                        <li class="leaderboard-entry">
-                            <span class="leaderboard-rank">2</span>
-                            <span class="leaderboard-name">John Smith</span>
-                            <span class="leaderboard-points">90 XP</span>
-                        </li>
-                        <li class="leaderboard-entry">
-                            <span class="leaderboard-rank">3</span>
-                            <span class="leaderboard-name">Jane Smith</span>
-                            <span class="leaderboard-points">80 XP</span>
-                        </li>
-                        <li class="leaderboard-entry">
-                            <span class="leaderboard-rank">4</span>
-                            <span class="leaderboard-name">Kevin Smith</span>
-                            <span class="leaderboard-points">70 XP</span>
-                        </li>
-                        <li class="leaderboard-entry">
-                            <span class="leaderboard-rank">5</span>
-                            <span class="leaderboard-name">Mike Smith</span>
-                            <span class="leaderboard-points">60 XP</span>
-                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
+            
         </div>
 
         <!-- May need to take different approach for streak tracker, a bit complicated because we need to make sure month labels align with the
