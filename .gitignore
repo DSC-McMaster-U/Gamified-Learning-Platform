@@ -1,7 +1,13 @@
 app/__pycache__/
 app/src/__pycache__/
+app/src/utils/__pycache__/
 tests/__pycache__/
 tests/.pytest_cache
 .env
 .venv/
-instance/site.db 
+instance/site.db
+instance/site.sql
+python3-virtualenv/
+.coverage
+app/src/instance/
+app/instance/
