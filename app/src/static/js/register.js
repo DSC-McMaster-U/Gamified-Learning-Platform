@@ -17,6 +17,7 @@ const errorMapping = {
     "This username already exists." : "err-username",
     "You must provide a username." : "err-username",
     "This email already exists." : "err-email",
+    "You must provide a valid email address." : "err-email",
     "The emails do not match!" : "err-confirm-email",
     "You must provide a password." : "err-pass",
     "Password is not strong enough." : "err-pass",

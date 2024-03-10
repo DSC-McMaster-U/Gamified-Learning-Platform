@@ -32,6 +32,7 @@
     font: var(--body-general-font);
     font-weight: 700;
     text-decoration-line: underline;
+    text-align: right;
 
     color: var(--primary-clr);
 }
@@ -65,4 +66,10 @@
 
 #err-pass.show-error {  
     margin-bottom: calc(25px * 0.85);
+}
+
+@media screen and (max-width: 700px) {
+    #login-box {
+        margin-top: 10vh;
+    }
 }

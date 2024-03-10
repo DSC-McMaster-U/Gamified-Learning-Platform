@@ -5,35 +5,55 @@ from .models import *
 
 main = Blueprint('main', __name__)
 
+# Call this function to get a dict of common user data that should always be sent to the front-end
+def returnLoggedInData() -> dict:
+    # Assuming that registration is implemented correctly and user should only be one of two roles, we check for
+    # which role table they exist within
+    studentCheck = User.query.filter_by(email=current_user.email).first()
+    teacherCheck = Teacher.query.filter_by(email=current_user.email).first()
+    
+    output = {
+        "name": current_user.name, 
+        "username": current_user.username,
+        "email": current_user.email,
+        "age": current_user.age,
+        "grade": current_user.grade.value,
+        "current_user": current_user, 
+        "role": "Teacher" if teacherCheck and not studentCheck else "Student",
+        "logged_in": True
+    }
+
+    return output
+
 @main.route('/profile')
 @login_required
 def profile():
+    # Receives a dict of user info variables, which will be unpacked as separate args to Jinja
+    loggedInUser: dict = returnLoggedInData()
+
     return render_template(
         'user_profile.html', 
-        name=current_user.name, 
-        username=current_user.username,
-        email=current_user.email,
-        age=current_user.age,
-        grade=current_user.grade.value,
-        current_user=current_user, 
-        logged_in=True,
-        show_footer=True
+        show_footer=True,
+        **loggedInUser    # Unpack all dict key-value pairs here
     )
     
 @main.route('/lesson/<int:course_id>')
 @login_required
 def lesson_page(course_id):
+    loggedInUser: dict = returnLoggedInData()
     course = Course.query.get(course_id)
 
     # TODO: set up a conditional (like below in quiz_page) and an algorithm that parses 
     #       through course structure + lesson content and sends two dictionaries in a particular 
     #       format over to front-end, where it can be processed to generate an appropriate tab 
     #       structure and panel contents.
-    return render_template('lesson.html', current_user=current_user, logged_in=True, show_footer=True)
+    return render_template('lesson.html', show_footer=True, **loggedInUser)
 
 @main.route('/quiz/<int:quiz_id>', methods=['GET'])
 @login_required
 def quiz_page(quiz_id):
+    loggedInUser = returnLoggedInData()
+
     quiz : Quiz = Quiz.query.get(quiz_id)
 
     # Workaround if there are no quizzes or related questions right now, just to prevent an error
@@ -122,22 +142,29 @@ def quiz_page(quiz_id):
 
     # print(questions)
     # print(answers)
-    return render_template('quiz.html', current_user=current_user, logged_in=True, show_footer=True, quiz=quiz, questions=questions, answers=answers)
+    return render_template('quiz.html', show_footer=True, quiz=quiz, questions=questions, answers=answers, **loggedInUser)
 
 @main.route('/dashboard')
 @login_required
 def dashboard_page():
+    loggedInUser = returnLoggedInData()
+
     user_progress = current_user.progress
     user_points = current_user.points
-    return render_template('dashboard.html', current_user=current_user, logged_in=True, show_footer=True, user_progress=user_progress)
+    return render_template('dashboard.html', show_footer=True, user_progress=user_progress, **loggedInUser)
 
 @main.route('/test/dashboard')
 def test_dashboard():
-    return render_template('dashboard.html')
+    loggedInUser = returnLoggedInData()
+
+    return render_template('dashboard.html', **loggedInUser)
 
 @main.route('/leaderboard')
 @login_required
 def leaderboard_page():
+    loggedInUser = returnLoggedInData()
+
+
     leaderboard_data = Points.get_leaderboard()
     user_ranking = None
     
@@ -150,9 +177,7 @@ def leaderboard_page():
     
     return render_template(
         'leaderboard.html', 
-        name=current_user.name, 
-        username=current_user.username,
         leaderboard_data=leaderboard_data, 
         user_ranking=user_ranking,
-        logged_in=True
+        **loggedInUser
     )

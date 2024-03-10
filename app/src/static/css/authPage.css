@@ -269,6 +269,7 @@ main a {
     display: flex;
     align-items: center;
     flex-direction: column;
+    text-align: center;
     width: 100%;
     height: calc(120px * 0.85);
 }
@@ -440,6 +441,7 @@ input.show-error:focus-visible {
 .auth-redirect {
     display: flex;
     align-items: center;
+    text-align: center;
     justify-content: center; 
     margin-top: calc(45px * 0.85);
     padding-bottom: calc(45px * 0.85);
@@ -459,3 +461,25 @@ input.show-error:focus-visible {
     font-weight: 700;
 }
 
+/**
+ * ========
+ * Media Query Stuff
+ * ========
+**/
+
+@media screen and (max-width: 1000px) {
+    .bg-circle {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .auth-box {
+        transform: scale(0.8);
+    }
+
+    .auth-redirect {
+        transform: scale(0.8);
+        margin-top: -15px;
+    }
+}
