@@ -157,19 +157,24 @@ def change_user_points():
 
     match (request.method):
         case "POST":
-            # Functionality for modifying user points info in the database
-            points_obj = current_user.points       # Points.query.filter_by(user_id=current_user.id).first()
+            points_to_add: int = request.form.get("num_points", type=int, default=100)
+            points_obj = current_user.points
 
-            if points_obj == None:
-                points_obj = Points(points=points, user=current_user)
-                current_user.points = points_obj         # Not sure if this is necessary
+            if points_obj is None:
+                # Create a new Points object if one doesn't exist
+                points_obj = Points(points=points_to_add, user=current_user)
                 db.session.add(points_obj)
             else:
-                points_obj.points = points
+                # Add to the existing points if the Points object exists
+                points_obj.points += points_to_add
 
             db.session.commit()
 
-            return "Successfully registered current user's points!", 201
+            return jsonify({
+                "message": "Successfully updated current user's points!",
+                "total_points": points_obj.points
+            }), 200
+
         case "GET":
             # Functionality for receiving a user's points info
             points = current_user.points
@@ -369,3 +374,30 @@ def modify_user_lesson():
         
         case _:
             return "400: Bad request", 400
+        
+@routes.route('/api/leaderboard', methods=['GET'])
+@login_required
+def leaderboard_api():
+    # Return JSON response to dynamically view more users on leaderboard page
+    page = request.args.get('page', 1, type=int)
+    users_per_page = 20 # render 20 users per page
+
+    # retrieve the next users from leaderboard, set error_out to False so that the application does not return a 404 error when there are no remaining users
+    leaderboard_next_users = User.query.join(Points).order_by(Points.points.desc()).paginate(page=page, per_page=users_per_page,
+                            error_out=False)
+    leaderboard_users = leaderboard_next_users.items
+
+    users_json = []
+    for user in leaderboard_users:
+        user_data = {
+            'name': user.name,
+            'points': user.points.points
+        }
+        users_json.append(user_data)
+
+    # check if there is another page of users when sending the JSON response
+    return jsonify({
+        'leaderboard': users_json,
+        'has_next': leaderboard_next_users.has_next,
+        'next_page': page + 1 if leaderboard_next_users.has_next else None
+    })

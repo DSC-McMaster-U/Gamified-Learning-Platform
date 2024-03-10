@@ -122,16 +122,17 @@
                         <button id="view-leaderboard" onclick="window.location.href='/leaderboard'">VIEW ALL</button>
                     </div>
                     <ul id="leaderboard-list">
-                        {% for user in leaderboard_data %}
+                        {% for i, user in enumerate(leaderboard_data[:5]) %}
                         <li class="leaderboard-entry">
-                            <span class="leaderboard-rank">{{ loop.index }}</span>
+                            <span class="leaderboard-rank">{{ i + 1 }}</span>
                             <span class="leaderboard-name">{{ user.username }}</span>
-                            <span class="leaderboard-points">{{ user.points }} XP</span>
+                            <span class="leaderboard-points">{{ user.points.points }} XP</span>
                         </li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
+            
         </div>
 
         <!-- May need to take different approach for streak tracker, a bit complicated because we need to make sure month labels align with the

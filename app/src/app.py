@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from .models import db, User
+from .models import db, User, Points
 from .auth import auth as auth_blueprint
 from .main import main as main_blueprint
 from .routes import routes as routes_blueprint
 from .lesson_api import api as api_blueprint
+from .utils.quizSubmit import quiz_api as quiz_blueprint
 from dotenv import load_dotenv
+from sqlalchemy import desc
 import os
 
 load_dotenv()
@@ -22,6 +24,7 @@ def create_app(test_config=None):
     app.register_blueprint(main_blueprint)
     app.register_blueprint(routes_blueprint)
     app.register_blueprint(api_blueprint)
+    app.register_blueprint(quiz_blueprint)
     
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -68,10 +71,10 @@ def create_app(test_config=None):
         response = {
             'leaderboard_data': [
                 {
-                    'rank': i + 1,
+                    'rank': (page - 1) * per_page + i + 1,
                     'username': user.username,
                     'points': user.points
-                } for i, user in enumerate(paginated_data)
+                } for i, user in enumerate(leaderboard_data)
             ],
             'page': page,
             'per_page': per_page,
