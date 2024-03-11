@@ -105,3 +105,8 @@ def teacher_page():
         grade=current_user.grade.value,
         current_user=current_user, 
         logged_in=True)
+    
+@main.route('/contact')
+@login_required
+def contact_page():
+    return render_template('contact.html', current_user=current_user, logged_in=True)

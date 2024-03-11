@@ -1,0 +1,103 @@
+@import "base.css";
+
+/*
+Specific Element Styling
+*/
+
+:root {
+    /* Font Families/Presets */
+    --body-font-family: "JejuGothic", "NanumGothic";
+    --body-font: normal 400 18px / normal var(--body-font-family);
+
+    --faq-color: #7396ee;
+    --btn-txt-clr: #f5f5f5;
+    --btn-bg-clr: rgba(91, 132, 235, 0.7);
+
+    --btn-transition: all 0.7s ease;
+}
+
+main {
+    font-family: var(--body-font-family);
+}
+
+#heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+#contact-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#contact-heading {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 75%;
+    font-weight: 500;
+}
+
+#email-button-section {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#email-button {
+    width: 125px;
+    height: 40px;
+    font: var(--body-font);
+    color: var(--btn-txt-clr);
+    background-color: var(--btn-bg-clr);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--btn-transition);
+    margin-bottom: 40px;
+}
+
+#faq-section {
+    margin-top: 10px;
+    width: 100%;
+}
+
+#faq-questions {
+    margin: 0 3vw;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+#faq-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.faq-item {
+    margin-bottom: 20px;
+    text-align: center;
+    width: 30%;
+    margin: 0 2vw;
+}
+
+.question {
+    font-weight: bold;
+}
+
+.answer {
+    margin-top: 10px;
+    font-size: 14px;
+    padding: 10px 6px;
+    background-color: var(--faq-color);
+    border-radius: 5px;
+}
