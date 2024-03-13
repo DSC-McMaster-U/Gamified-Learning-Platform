@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from .models import db, User, Points
+from .models import db, User, Points, Teacher
 from .auth import auth as auth_blueprint
 from .main import main as main_blueprint
 from .routes import routes as routes_blueprint
@@ -39,8 +39,11 @@ def create_app(test_config=None):
     
     @login_manager.user_loader
     def load_user(user_id):
-        # retrieve the given user from database, user id is the primary key so it will query the correct user
-        return User.query.get(int(user_id))
+        # Check both User and Teacher tables for the user_id
+        user = User.query.get(int(user_id))
+        teacher = Teacher.query.get(int(user_id))
+        # Return the user or teacher, whichever is found
+        return user if user else teacher
 
     with app.app_context():
         db.create_all()

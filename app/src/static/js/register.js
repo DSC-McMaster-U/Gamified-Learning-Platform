@@ -1,6 +1,8 @@
 // DOM elements
 const inputDoB = document.getElementById("form-dob");
-const inputFields = document.querySelectorAll("form input, #form-grade");
+const inputFields = Array.from(document.querySelectorAll("form input, #form-grade"))
+    .filter((inputField) => !(inputField.parentElement.classList.contains("role-switch")));
+const roleSwitch = document.querySelectorAll("form .role-switch input");
 const selectField = document.getElementById("form-grade");
 const inputSubmit = document.getElementById("register-submit");
 const formRegister = document.getElementById("register-form");
@@ -11,6 +13,7 @@ const dateToday = new Date();     // Latest date = today
 let yearEarliest = dateToday.getFullYear() - 101;
 let monthEarliest = dateToday.getMonth();
 let dayEarliest, dateEarliest;
+let selectedRole = document.querySelector('input[name="role"]:checked').value; // Stores position of role switch
 
 const errorMapping = {
     "You must provide your name." : "err-name",
@@ -92,6 +95,23 @@ function renderError() {
 function updateField() {
     // Text field and form submit button interactions (error messages/button disabling); 
     // primarily occurs whenever a field receives a value/input
+
+    // Event listener for when the role is changed to 'student'
+    // This will re-evaluate the form submission criteria
+    document.getElementById("student").addEventListener("change", function() {
+        selectedRole = this.value;
+        toggleGradeField();
+        updateFieldState(); // Update the state of the form based on the new role
+        console.log(selectedRole)
+    });
+    // Event listener for when the role is changed to 'teacher'
+    document.getElementById("teacher").addEventListener("change", function() {
+        selectedRole = this.value;
+        toggleGradeField();
+        updateFieldState(); // Update the state of the form based on the new role
+        console.log(selectedRole)
+    });
+
     inputFields.forEach((inputField) => {
         if (inputField.classList.contains("register-form-date")) {
             ;["blur", "change"].forEach((event) => {
@@ -120,6 +140,12 @@ function updateField() {
     // });
 }
 
+function updateFieldState() {
+    inputFields.forEach((inputField) => {
+        updateFieldAux(inputField); // Seperate function to check each field to update the form submission status (was causing errors with new roles)
+    });
+}
+
 function updateFieldAux(inputField) {
     let errorField = inputField.nextElementSibling;
         
@@ -127,13 +153,22 @@ function updateFieldAux(inputField) {
     inputField.classList.remove("show-error");
     errorField.classList.remove("show-error");
 
-    // Checks to see if this and all other text fields are empty (or bloated 
-    // with whitespace); if not, then enables the form submit button
-    let fieldsContent = Array.from(inputFields, (inputField) => !["", null].includes(inputField.value.trim()));
-    // fieldsContent = fieldsContent.concat([!["", null].includes(selectField.value)]);
-
+    // Check if the grade field is required based on the selected role
+    let isGradeRequired = selectedRole === "student";
+    
+    // Check if all required fields are non-empty.
+    // If the selected role is 'teacher', the grade field is not considered necessary.
+    let fieldsContent = Array.from(inputFields).map(field => {
+        if (field.id === "form-grade") {
+            return isGradeRequired ? field.value.trim() !== "" : true;
+        }
+        return field.value.trim() !== ""; // Check if the field is non-empty
+    });
+    
     console.log(fieldsContent)
 
+    // Enable form submission if all required fields are filled.
+    // If the selected role is 'teacher', the grade field can be ignored.
     if (fieldsContent.every((fieldState) => fieldState)) {
         inputSubmit.classList.add("clickable");
         inputSubmit.disabled = false;
@@ -165,6 +200,14 @@ function retainFieldInfo() {
                     savedFields[index].value = storedData[category];
                 }
             });
+
+            // Restore the selected role (student or teacher) if it's saved
+            if (storedData.selectedRole) {
+                document.getElementById(storedData.selectedRole).checked = true;
+                selectedRole = storedData.selectedRole;
+                toggleGradeField(); // Ensure correct display of the grade field based on the restored role
+            }
+            
         }
 
         sessionStorage.removeItem("signUpInfo");
@@ -178,8 +221,22 @@ function retainFieldInfo() {
             obj[objKeys[index]] = htmlNode.value; 
         });
 
+        // Save the selected role (student/teacher)
+        obj.selectedRole = selectedRole;
+        
         sessionStorage.setItem("signUpInfo", JSON.stringify(obj));
     });
+}
+
+function toggleGradeField() {
+    const gradeField = document.getElementById("form-grade");
+    if (selectedRole === "teacher") {
+        gradeField.style.display = "none";
+        gradeField.removeAttribute("required"); // Remove the 'required' attribute for teacher role
+    } else {
+        gradeField.style.display = "block";
+        gradeField.setAttribute("required", ""); // Set the 'required' attribute for student role
+    }
 }
 
 function main() {
