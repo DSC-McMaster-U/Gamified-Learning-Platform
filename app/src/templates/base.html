@@ -232,69 +232,76 @@
 
         <!-- Insert local scripts here, if necessary -->
         <script>
-            const profileDropdown = document.querySelector(".auth-dropdown");
             const profileMenu = document.querySelector(".auth-menu-container");
-            const dropdownArrow = profileDropdown.querySelector(".dropdown-arrow");
-            const profileIcon = profileDropdown.querySelector(".dropdown-img");
             const userEmail = document.querySelector(".auth-menu-subtitle");
 
-            let profileColour;
+            let profileDropdown = document.querySelector(".auth-dropdown");
 
-            // Toggle menu
-            profileDropdown.addEventListener("click", () => {
-                if (window.innerWidth >= 992 && !profileDropdown.classList.contains("auth-menu-show") || 
-                    (window.innerWidth < 992 && profileDropdown.classList.contains("auth-menu-show")) ) {
-                    dropdownArrow.style.transform = "scaleY(-1)";
-                } else {
-                    dropdownArrow.style.transform = "scaleY(1)";
-                }
+            if (profileDropdown != null) {
+                let dropdownArrow = profileDropdown.querySelector(".dropdown-arrow");
+                let profileIcon = profileDropdown.querySelector(".dropdown-img");
 
-                profileDropdown.classList.toggle("auth-menu-show");
-                profileMenu.classList.toggle("auth-menu-show");
-            });
+                let profileColour;
 
-            // If open, closes profile dropdown menu when clicking outside of it or the dropdown btn
-            window.addEventListener('click', (e) => {
-                if (!profileDropdown.contains(e.target) && (!profileMenu.contains(e.target))){
-                    if (window.innerWidth >= 992) {
+                // Toggle menu
+                profileDropdown.addEventListener("click", () => {
+                    if (window.innerWidth >= 992 && !profileDropdown.classList.contains("auth-menu-show") || 
+                        (window.innerWidth < 992 && profileDropdown.classList.contains("auth-menu-show")) ) {
+                        dropdownArrow.style.transform = "scaleY(-1)";
+                    } else {
+                        dropdownArrow.style.transform = "scaleY(1)";
+                    }
+
+                    profileDropdown.classList.toggle("auth-menu-show");
+                    profileMenu.classList.toggle("auth-menu-show");
+                });
+
+                // If open, closes profile dropdown menu when clicking outside of it or the dropdown btn
+                window.addEventListener('click', (e) => {
+                    if (!profileDropdown.contains(e.target) && (!profileMenu.contains(e.target))){
+                        if (window.innerWidth >= 992) {
+                            dropdownArrow.style.transform = "scaleY(1)";
+                        } else {
+                            dropdownArrow.style.transform = "scaleY(-1)";
+                        }
+
+                        profileDropdown.classList.remove("auth-menu-show");
+                        profileMenu.classList.remove("auth-menu-show");
+                    } 
+                });
+
+                window.addEventListener("resize", () => {
+                    if (window.innerWidth >= 992 && !profileDropdown.classList.contains("auth-menu-show")) {
                         dropdownArrow.style.transform = "scaleY(1)";
                     } else {
                         dropdownArrow.style.transform = "scaleY(-1)";
                     }
+                });
 
-                    profileDropdown.classList.remove("auth-menu-show");
-                    profileMenu.classList.remove("auth-menu-show");
-                } 
-            });
+                /**
+                 * When the user first logs in, picks a random colour to display for their profile pic for this 
+                 * entire session between pages + subsequent sessions (that being if they log out and immediately back in).
+                 * However, if the user (userA) logs out, another user logs in (userB) and out, then userA signs in again, 
+                 * their colour won't be the same as their first session. The only feasible way to create consistent profile
+                 * picture colours is to store data in the DB, but that would be a waste of space to store info for something 
+                 * as minor as this. And besides, different colours will spice up things anyways :D
+                */
+                window.addEventListener("DOMContentLoaded", () => {
+                    if (sessionStorage.getItem("localUserEmail") == null || 
+                        sessionStorage.getItem("localUserEmail") != userEmail.textContent ||
+                        sessionStorage.getItem("localUserColour") == null) {
+                            profileColour = `rgb(${String(Math.floor(Math.random() * 125))}, ${String(Math.floor(Math.random() * 125))}, ${String(Math.floor(Math.random() * 125))}`;
 
-            window.addEventListener("resize", () => {
-                if (window.innerWidth >= 992 && !profileDropdown.classList.contains("auth-menu-show")) {
-                    dropdownArrow.style.transform = "scaleY(1)";
-                } else {
-                    dropdownArrow.style.transform = "scaleY(-1)";
-                }
-            });
+                            sessionStorage.setItem("localUserEmail", userEmail.textContent);
+                            sessionStorage.setItem("localUserColour", profileColour);
+                    }
 
-            /**
-             * When the user first logs in, picks a random colour to display for their profile pic for this 
-             * entire session between pages + subsequent sessions (that being if they log out and immediately back in).
-             * However, if the user (userA) logs out, another user logs in (userB) and out, then userA signs in again, 
-             * their colour won't be the same as their first session. The only feasible way to create consistent profile
-             * picture colours is to store data in the DB, but that would be a waste of space to store info for something 
-             * as minor as this. And besides, different colours will spice up things anyways :D
-            */
-            window.addEventListener("DOMContentLoaded", () => {
-                if (sessionStorage.getItem("localUserEmail") == null || 
-                    sessionStorage.getItem("localUserEmail") != userEmail.textContent ||
-                    sessionStorage.getItem("localUserColour") == null) {
-                        profileColour = `rgb(${String(Math.floor(Math.random() * 125))}, ${String(Math.floor(Math.random() * 125))}, ${String(Math.floor(Math.random() * 125))}`;
+                    profileIcon.style.backgroundColor = sessionStorage.getItem("localUserColour");
+                });
 
-                        sessionStorage.setItem("localUserEmail", userEmail.textContent);
-                        sessionStorage.setItem("localUserColour", profileColour);
-                }
 
-                profileIcon.style.backgroundColor = sessionStorage.getItem("localUserColour");
-            });
+            }
+            
         </script>
 
         {% block scripts %}{% endblock %}
