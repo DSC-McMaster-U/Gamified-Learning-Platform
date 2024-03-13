@@ -148,12 +148,45 @@ main a:hover::after {
     justify-content: center;
 
     margin-top: 60px;
-    margin-bottom: 20px;
+    margin-bottom: 83px
 }
 
 #heading h1 {
     font: var(--heading-font);
     color: var(--heading-clr);
+}
+
+.role-switch {
+    display: flex;
+    justify-content: center;
+    left: 0;
+    right: 0;
+    top: -63px;  /* adjust this value as necessary for radio btn placement*/
+    position: absolute;
+}
+
+.role-switch input[type="radio"] {
+    display: none;
+}
+
+.role-switch label {
+    position: relative;
+    padding: 10px 20px;
+    border: 2px solid #5B83EB;
+    cursor: pointer;
+    font: var(--body-font);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transition effect for smooth color change */
+}
+
+/* Hover effect for unselected labels */
+.role-switch label:hover {
+    background-color: #d1d9eb; /* Light blue shade, adjust as needed */
+}
+
+.role-switch input[type="radio"]:checked + label {
+    background-color: #5B83EB;
+    color: white;
+    font-weight: bold;
 }
 
 #register-box {
@@ -164,8 +197,8 @@ main a:hover::after {
     margin: auto;
     margin-bottom: 30px;
     padding: 28.8px 33.9px 33.3px 33.9px;
-
     background-color: var(--box-clr);
+    position: relative
 }
 
 /* -- register Profile Styling -- */
@@ -448,3 +481,4 @@ select.show-error:focus-visible {
     margin-left: 20px;
     height: fit-content;
 }
+
