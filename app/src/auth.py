@@ -27,6 +27,8 @@ def login_post():
     user = User.query.filter_by(email=email).first()
     teacher = Teacher.query.filter_by(email=email).first()
 
+    account = None
+
     # Determine if the email belongs to a Teacher or a User
     if teacher and not user:
         account = teacher
