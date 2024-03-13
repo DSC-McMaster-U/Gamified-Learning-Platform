@@ -40,6 +40,7 @@
     --heading-clr: #5b83eb;
     --body-clr: rgba(0, 0, 0, 0.4);
     --body-hover-clr: rgba(0, 0, 0, 0.5);
+    --heading-dark-clr: #00245e;
 
     --textbox-txt-clr: #000000;
     --textbox-pl-clr: rgba(0, 0, 0, 0.6);
@@ -155,7 +156,7 @@ main a:hover::after {
 
 #title {
     font: var(--heading-font);
-    color: var(--heading-clr);
+    color: var(--heading-dark-clr);
     font-size: calc(1rem + 3.5vw);
     text-align: center;
     -webkit-text-stroke-width: 2px;
@@ -282,8 +283,6 @@ main a:hover::after {
     text-align: center;
     color: var(--heading-clr);
     opacity: 80%;
-    text-decoration: underline;
-    text-underline-offset: 7px;
 }
 
 #register-button {
