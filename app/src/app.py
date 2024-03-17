@@ -19,6 +19,7 @@ def create_app(test_config=None):
 
     # Configure and initialize database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    app.config['PER_PAGE'] = 10
     app.secret_key = os.getenv('SECRET_KEY')
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(main_blueprint)
@@ -47,40 +48,4 @@ def create_app(test_config=None):
     with app.app_context():
         db.create_all()
         
-    # Pagination configuration
-    PER_PAGE = 10
-
-    def sort_leaderboard():
-        # Implement your sorting logic here
-        # For example, assuming User model has a 'score' field
-        return User.query.order_by(User.score.desc()).all()
-
-    @app.route('/leaderboard', methods=['GET'])
-    def leaderboard():
-        page = request.args.get('page', 1, type=int)
-        per_page = request.args.get('per_page', PER_PAGE, type=int)
-
-        leaderboard_data = sort_leaderboard()
-        total_users = len(leaderboard_data)
-
-        start_index = (page - 1) * per_page
-        end_index = start_index + per_page
-        paginated_data = leaderboard_data[start_index:end_index]
-
-        # Construct JSON response
-        response = {
-            'leaderboard_data': [
-                {
-                    'rank': (page - 1) * per_page + i + 1,
-                    'username': user.username,
-                    'points': user.points
-                } for i, user in enumerate(leaderboard_data)
-            ],
-            'page': page,
-            'per_page': per_page,
-            'total_users': total_users
-        }
-
-        return jsonify(response)
-
         # return app
