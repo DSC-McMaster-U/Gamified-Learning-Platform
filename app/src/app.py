@@ -6,7 +6,7 @@ from .auth import auth as auth_blueprint
 from .main import main as main_blueprint
 from .routes import routes as routes_blueprint
 from .lesson_api import api as api_blueprint
-from .utils.quizSubmit import quiz_api as quiz_blueprint
+from .quizSubmit import quiz as quiz_blueprint
 from dotenv import load_dotenv
 import os
 
