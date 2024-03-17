@@ -12,8 +12,6 @@ Specific Element Styling
     --faq-color: #7396ee;
     --btn-txt-clr: #f5f5f5;
     --btn-bg-clr: rgba(91, 132, 235, 0.7);
-
-    --btn-transition: all 0.7s ease;
 }
 
 main {
@@ -25,7 +23,7 @@ main {
     align-items: center;
     justify-content: center;
 
-    margin-top: 25px;
+    margin-top: 60px;
     margin-bottom: 10px;
 }
 
@@ -37,11 +35,12 @@ main {
 }
 
 #contact-heading {
-    display: flex;
+    display: inline;
     align-items: center;
     text-align: center;
     width: 75%;
     font-weight: 500;
+    margin-bottom: 40px;
 }
 
 #email-button-section {
@@ -59,12 +58,11 @@ main {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: var(--btn-transition);
     margin-bottom: 40px;
 }
 
 #faq-section {
-    margin-top: 10px;
+    margin-top: 40px;
     width: 100%;
 }
 
