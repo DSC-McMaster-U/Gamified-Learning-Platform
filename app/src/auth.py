@@ -14,6 +14,9 @@ def redirectLogin():
 
 @auth.route('/login')
 def login(): 
+    if session.get('login_type') is None:
+        session['login_type'] = None
+
     if current_user.is_authenticated:  # already logged in
         studentCheck = User.query.filter_by(email=current_user.email).first()
         teacherCheck = Teacher.query.filter_by(email=current_user.email).first()
@@ -82,15 +85,8 @@ def login_post():
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
-
-    if current_user.is_authenticated:  # already logged in
-        studentCheck = User.query.filter_by(email=current_user.email).first()
-        teacherCheck = Teacher.query.filter_by(email=current_user.email).first()
-        
-        if teacherCheck and not studentCheck:
-            return redirect('main.teacher_page')
-        else:
-            return redirect('main.profile')
+    if session.get('login_type') is None:
+        session['login_type'] = None
 
     if request.method == "POST":
 

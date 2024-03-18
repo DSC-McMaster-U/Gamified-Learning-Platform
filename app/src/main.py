@@ -9,15 +9,9 @@ main = Blueprint('main', __name__)
 def returnLoggedInData() -> dict:
     # Assuming that registration is implemented correctly and user should only be one of two roles, we check for
     # which role table they exist within
-    print(current_user.email)
     studentCheck = User.query.filter_by(email=current_user.email).first()
     teacherCheck = Teacher.query.filter_by(email=current_user.email).first()
     
-    
-    print(teacherCheck)
-    print(studentCheck)
-    print("Teacher" if teacherCheck and not studentCheck else "Student")
-
     output = {
         "name": current_user.name, 
         "username": current_user.username,

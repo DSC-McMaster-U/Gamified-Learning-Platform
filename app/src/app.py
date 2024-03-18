@@ -38,6 +38,9 @@ def create_app(test_config=None):
 
     @app.route('/')
     def index():
+        if session.get('login_type') is None:
+            session['login_type'] = None
+            
         return render_template('index.html')
     
     @login_manager.user_loader
