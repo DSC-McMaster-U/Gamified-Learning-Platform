@@ -1,35 +1,5 @@
 /**
  * ========
- * Imported Fonts
- * ========
-**/
-
-/* Jeju Gothic (original font in design) */
-@font-face {
-    font-family: "JejuGothic";
-    src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
-}
-
-/* Nanum Gothic (fallback font) */
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Regular.ttf");
-}
-
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Bold.ttf");
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-ExtraBold.ttf");
-    font-weight: bolder;
-}
-
-/**
- * ========
  * Variables
  * ========
 **/
@@ -232,7 +202,7 @@ progress::-webkit-progress-value {
 
 .card-body1 {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     padding-left: 25px;
     padding-right: 25px;
@@ -569,7 +539,40 @@ progress::-webkit-progress-value {
     color: var(--textbox-txt-clr);
 }
 
+/* Quiz Scores Section */
+#quiz-scores-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: var(--textbox-bg-clr);
+    border-radius: 8px;
+    box-shadow: var(--form-item-shadow);
+}
 
+#quiz-scores-section h2 {
+    color: var(--heading-clr); 
+    font-size: 1.5em; 
+    margin-bottom: 10px;
+}
 
+.quiz-score-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0; 
+    border-bottom: 1px solid var(--textbox-pl-clr); 
+    color: var(--body-clr); 
+}
 
+.quiz-score-item:last-child {
+    border-bottom: none; 
+}
 
+.quiz-score-item .quiz-title {
+    color: #000; 
+    font-weight: bold;
+}
+
+.quiz-score-item .quiz-score {
+    color: #000; 
+    font-weight: normal;
+}

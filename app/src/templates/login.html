@@ -3,56 +3,86 @@
 
 {% block styling %}
     <!-- Local Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/authPage.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock %}
 
 {% block content %}
     <main>
-        <div id="heading">
-            <h1>Sign in to Your Account</h1>
+        <!-- Background fixed circles -->
+        <div class="bg-circle" id="top-left-bg">
+            <div class="circle-outline-outer" id="top-left-outer">
+                <div class="circle-outline-inner" id="top-left-inner"></div>
+            </div>
         </div>
 
-        <div id="login-box" class="container">
-
-            <div id="login-profile">
-                <img src="../static/vendor/images/login/blank-portrait.png" alt="">
+        <div class="bg-circle" id="top-right-bg">           
+            <div class="circle-wave-outer" id="top-right-2-outer">
+                <div class="circle-wave-inner" id="top-right-2-inner"></div>
             </div>
 
-            <div id="login-body" class="container">
-                <form id="login-form" action="/login" method="post">
-                    <div id="error-msg">
-                        {% with errors = get_flashed_messages(category_filter=["login_error"]) %}
-                            {% if errors %}
-                                {% for error in errors %}
-                                    {{ error }}
-                                {% endfor %}
-                            {% endif %}
-                        {% endwith %}
-                    </div>
-
-                    <input class="login-form-text body-text" type="text" name="email" id="login-form-user" placeholder="Email Address">        
-                    <div class="login-error" id="err-email"></div>
-
-                    <input class="login-form-text" type="password" name="password" id="login-form-pwd" placeholder="Password">
-                    <div class="login-error" id="err-pass"></div>
-
-                    <button class="login-form-btn body-text" id="login-submit" type="submit" disabled>Sign in</button>
-                </form>
+            <div class="circle-normal" id="top-right-1"></div>
+        </div>
+        
+        <div class="bg-circle" id="bottom-left-bg">
+            <div class="circle-wave-outer" id="bottom-left-1-outer">
+                <div class="circle-wave-inner" id="bottom-left-1-inner"></div>
             </div>
 
-            <div id="login-extras" >
-                <a id="login-forgot" class="body-text" href="/login.html">Forgot Password?</a>
-
-                <span id="login-remember">
-                    <input id="form-remember" type="checkbox" name="remember">
-                    <label id="lbl-remember" for="remember">Remember me</label>
-                </span>
+            <div class="circle-outline-outer" id="bottom-left-2-outer">
+                <div class="circle-outline-inner" id="bottom-left-2-inner"></div>
             </div>
-
+        </div>
+        
+        <div class="bg-circle" id="bottom-right-bg">
+            <div class="circle-wave-outer" id="bottom-right-outer">
+                <div class="circle-wave-inner" id="bottom-right-inner"></div>
+            </div>
         </div>
 
-        <div id="redirect-register">
-            <a href="/register">Create a new account</a>
+        <!-- Main elements -->
+        <div id="login-box" class="auth-box">
+
+            <div id="login-heading" class="auth-heading">
+                <img src="../static/vendor/images/login/gdsc-logo.png" alt="">
+                <h1>Welcome Back</h1>
+                <h3>Please enter your details to sign in.</h3>
+            </div>
+
+            <form id="login-form" class="auth-form" action="/login" method="post">
+                <div id="error-msg">
+                    {% with errors = get_flashed_messages(category_filter=["login_error"]) %}
+                        {% if errors %}
+                            {% for error in errors %}
+                                {{ error }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                <input class="auth-form-text body-text" type="text" name="email" id="login-form-user" placeholder="Email Address">        
+                <div class="auth-error" id="err-email"></div>
+
+                <input class="auth-form-text" type="password" name="password" id="login-form-pwd" placeholder="Password">
+                <div class="auth-error" id="err-pass"></div>
+
+                <div id="login-extras" >
+                    <span id="login-remember">
+                        <input id="form-remember" type="checkbox" name="remember">
+                        <label id="lbl-remember" for="remember">Remember me</label>
+                    </span>
+    
+                    <a id="login-forgot" class="body-text" href="/login.html">Forgot Password?</a>
+                </div>
+
+                <button class="auth-btn" id="login-submit" type="submit" disabled>Sign in</button>
+            </form>
+        </div>
+
+        <div id="redirect-register" class="auth-redirect">
+            <span>
+                Don't have an account yet? <a href="/register">Create a new account</a>
+            </span>
         </div>
     </main>
 {% endblock %}

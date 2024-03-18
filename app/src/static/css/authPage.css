@@ -1,0 +1,485 @@
+/* login.css - contains styling for the login page specifically, barring base elements */
+
+/**
+ * ========
+ * Variables
+ * ========
+**/
+
+:root {
+    /* Main/Recurring Colours */
+    --box-clr: #ffffff;
+    --bg-clr: #f8f8f8;
+    --border-clr: #afafaf;
+    --primary-clr: #5b83eb;
+    --disabled-clr: rgba(91, 131, 235, 0.3);
+
+    /* BG Circle Colours */
+    --bg-circle-clr-r1: rgba(255, 6, 21, 0.4);  /* _1 = inner colour */
+    --bg-circle-clr-r2: rgba(255, 6, 21, 0.3);  /* _2 = outer colour */
+    --bg-circle-clr-b1: rgba(91, 131, 235, 0.8);
+    --bg-circle-clr-b2: rgba(91, 131, 235, 0.3);
+    --bg-circle-clr-b3: rgba(91, 131, 235, 0.6);
+    --bg-circle-clr-g1: rgba(20, 121, 42, 0.6);
+    --bg-circle-clr-g2: rgba(20, 121, 42, 0.3);
+    --bg-circle-clr-y: rgba(251, 188, 4, 0.7);
+
+    /* Text-related Colours */
+    --heading-clr: rgba(89, 89, 89, 1);
+    --subheading-clr: rgba(89, 89, 89, 0.6);
+    --body-clr: rgba(0, 0, 0, 0.5);
+    --textbox-placehold-clr: rgba(0, 0, 0, 0.4);
+    --textbox-clr: rgba(89, 89, 89, 1);
+    --error-txt-clr: rgba(222, 48, 48, 255);
+
+    /* Font Families/Presets */
+    --body-font-family: "NanumGothic";
+    --heading-font-family: "ProductSans";
+
+    --heading-font: normal 700 calc(30px * 0.85)/36px var(--heading-font-family);      /* 30px */
+    --subheading-font: normal 400 calc(20px * 0.85)/20px var(--body-font-family);      /* 20px */
+    --btn-font: normal 700 calc(22px * 0.85)/27px var(--heading-font-family);          /* 22px */
+    --body-general-font: normal 400 calc(18px * 0.85)/18px var(--body-font-family);
+    --error-font: normal 400 12px/normal var(--body-font-family);
+
+    /* Borders */
+    --form-border: 1px solid var(--border-clr);
+    --textbox-border: 1px solid var(--border-clr);
+    --textbox-input-border: 2px solid var(--primary-clr);
+    --textbox-error-border: 3px solid red;
+    --checkbox-border: 2px solid #595959;
+
+    --textbox-shadow: 0px 0px 0px 0.5px var(--border-clr);
+    
+
+    /* Transitions */
+    --link-transition: all 0.2s ease;
+    --underline-transition: transform 0.3s ease-out;
+    --btn-transition-1: all 0.1s linear;
+    --btn-transition-2: all 0.7s ease;
+
+}
+
+/**
+ * ========
+ * General Styling
+ * ========
+**/
+
+.body-text {
+    font: var(--body-font);
+}
+
+input[type="password"] {
+    -webkit-text-security: disc;
+    font-family: Verdana, sans-serif;
+    letter-spacing: 2px;
+    font-size: 15px; /* 17.9px; */
+
+    padding-top: 2.5px;
+    /* padding-bottom: 5px; */
+}
+
+main {
+    position: relative;
+    background: #F8F8F8;
+    min-height: 100vh;
+    height: fit-content;
+    margin-top: -60px;
+    padding-top: 60px;
+}
+
+main a {
+    text-underline-offset: 3px;
+}
+
+/**
+ * ========
+ * BG Circle Styling
+ * ========
+**/
+
+.bg-circle {
+    position: absolute;
+    overflow: hidden;
+}
+
+.bg-circle * {
+    z-index: 0;
+    border-radius: 999px;
+    position: absolute;
+}
+
+/* "Mask layer" containers */
+#top-left-bg {
+    top: 60px;
+    left: 0;
+    width: 144px;
+    height: 147px;
+}
+
+#top-right-bg {
+    top: 60px;
+    right: 0;
+    width: 202px;
+    height: 215px;
+}
+
+#bottom-left-bg {
+    bottom: 0;
+    left: 0;
+    width: 314px;
+    height: 294px;
+}
+
+#bottom-right-bg {
+    bottom: 0;
+    right: 0;
+    width: 183px;
+    height: 170px;
+}
+
+/* Top left circles */
+#top-left-outer {
+    width: 209px;
+    height: 209px;
+    left: -65px;
+    top: -71.81px;
+
+    border: 2px solid var(--bg-circle-clr-y);
+}
+
+#top-left-inner {
+    width: 187.09px;
+    height: 187.09px;
+    right: 10.66px;
+    bottom: 10.66px;
+
+    background-color: var(--bg-circle-clr-y);
+}
+
+/* Top right circles */
+#top-right-1 {
+    width: 128.91px;
+    height: 128.91px;
+    right: 65.75px;
+    top: -46.43px;
+
+    background-color: var(--bg-circle-clr-g1);
+}
+
+#top-right-2-outer {
+    width: 256.11px;
+    height: 256.11px;
+    right: -104.17px;
+    top: -45.78px;
+
+    background-color: var(--bg-circle-clr-b2);
+}
+
+#top-right-2-inner {
+    width: 229.27px;
+    height: 229.27px;
+    left: 13.06px;
+    top: 13.06px;
+
+    background-color: rgba(91, 131, 235, 0.8);
+}
+
+/* Bottom left circles */
+#bottom-left-1-outer {
+    width: 329px;
+    height: 328px;
+    left: -102px;
+    bottom: -80px;
+
+    background-color: var(--bg-circle-clr-r2);
+}
+
+#bottom-left-1-inner {
+    width: 244px;
+    height: 244px;
+    left: 44px;
+    bottom: 43px;
+
+    background-color: var(--bg-circle-clr-r1);
+}
+
+#bottom-left-2-outer {
+    width: 188px;
+    height: 188px;
+    left: 121px;
+    bottom: -87px;
+
+    border: 4px solid var(--bg-circle-clr-b3);
+}
+
+#bottom-left-2-inner {
+    width: 159.34px;
+    height: 159.34px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+
+    background-color: var(--bg-circle-clr-b3);
+}
+
+/* Bottom right circles */
+#bottom-right-outer {
+    width: 321px;
+    height: 321px;
+    right: -143px;
+    bottom: -151px;
+
+    background-color: var(--bg-circle-clr-g2);
+}
+
+#bottom-right-inner {
+    width: 264.97px;
+    height: 264.97px;
+    left: 28px;
+    top: 28px;
+
+    background-color: var(--bg-circle-clr-g1);
+}
+
+/**
+ * ========
+ * Specific Element Styling
+ * ========
+**/
+
+.auth-box {
+    max-width: calc(605px * 0.85); 
+    width: auto;
+    min-height: calc(561px * 0.85); 
+    height: fit-content;
+    margin: auto;
+    padding: calc(50px * 0.85) calc(85px * 0.85) calc(58px * 0.85) calc(85px * 0.85);
+
+    background-color: var(--box-clr);
+    border: var(--form-border);
+    border-radius: 9px;
+    z-index: 999;
+}
+
+.auth-heading {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    height: calc(120px * 0.85);
+}
+
+.auth-heading img {
+    width: calc(57px * 0.85);
+    height: calc(27.48px * 0.85);
+    margin-bottom: calc(23.52px * 0.85);
+}
+
+.auth-heading h1 {
+    font: var(--heading-font);
+    color: var(--heading-clr);
+    margin-bottom: 8px;
+    letter-spacing: 0.7px;
+}
+
+.auth-heading h3 {
+    font: var(--subheading-font);
+    color: var(--subheading-clr);
+    margin-bottom: 0;
+}
+
+/* -- Login Form Styling -- */
+.auth-form {
+    margin: 0;
+    width: 100%;
+    height: fit-content;      
+    padding: 0;
+}
+
+.auth-form input {
+    border-radius: 10px;   
+    margin: 0;
+    /* margin-bottom: calc(25px * 0.85); */
+}
+
+.auth-form input:last-child {
+    margin: calc(29px * 0.85);
+}
+
+.auth-form-text {
+    width: 100%;  
+    height: calc(52px * 0.85); 
+    border: none;
+    padding-left: calc(15px * 0.85);   
+    padding-right: calc(15px * 0.85);   
+    padding-top: 2.5px;    
+    /* vertical-align: middle; */
+
+    color: var(--textbox-clr);
+    font: var(--body-general-font);
+    /* font-family: "NanumGothicBold"; */
+    font-size: calc(19px * 0.85);
+    /* line-height: calc(20px * 0.85); */
+    border: var(--textbox-border);
+    box-shadow: var(--textbox-shadow);
+}
+
+.auth-form-text:focus-visible {
+    border: var(--textbox-input-border);
+    outline: none;
+}
+
+.auth-form-text::placeholder {
+    vertical-align: middle;
+    color: var(--textbox-placehold-clr);
+    font: var(--body-general-font);
+    font-size: calc(19px * 0.85);
+    /* line-height: calc(20px * 0.85); */
+    letter-spacing: normal;
+}
+
+/* -- Login button -- */
+.auth-btn {
+    width: 100%;  
+    height: calc(51px * 0.85); 
+    /* padding-top: calc(12px * 0.85);   */
+
+    color: var(--box-clr);
+    font: var(--btn-font);
+    background-color: var(--disabled-clr);
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    letter-spacing: 0.6px;
+    transition: var(--link-transition); 
+}
+
+/* Added to button when all fields are filled */
+.clickable {
+    cursor: pointer;
+    background-color: var(--primary-clr);
+    border: none;
+    outline: none;
+}
+
+.auth-btn.clickable:hover {
+    background-color: #4a75e1;
+}
+
+.auth-btn.clickable:active {
+    background-color: #183fa1;
+}
+
+/* Work on custom checkbox later */
+input[type=checkbox] {
+    width: calc(20px * 0.85);;
+    height: calc(20px * 0.85);;
+    border: 2px solid #595959;
+    border-radius: 4px;
+
+}
+
+/* -- Auth Page Errors Styling -- */
+#error-msg,
+.auth-error * {
+    display: none;
+}
+
+.auth-error {
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    margin: 0 0 calc(25px * 0.85) 0; 
+    vertical-align: middle;
+}
+
+input.show-error {
+    border: var(--textbox-error-border);
+    border-width: 2px;
+}
+
+input.show-error:focus-visible {
+    border: var(--textbox-error-border);   
+}
+
+.auth-error.show-error {
+    margin-top: 10px;
+    /* margin-bottom: calc(15px * 0.85); */
+}
+
+.auth-error.show-error * {
+    display: block;
+}
+
+.error-img {
+    position: relative;
+}
+
+.error-img img {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    overflow: hidden;
+    top: -0.5px;
+}
+
+.error-msg {
+    color: var(--error-txt-clr);
+    font: var(--error-font);
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 20px;
+    height: fit-content;
+}
+
+/* -- Other Elements -- */
+.auth-redirect {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center; 
+    margin-top: calc(45px * 0.85);
+    padding-bottom: calc(45px * 0.85);
+}
+
+.auth-redirect span {
+    font: var(--body-general-font);
+    font-size: calc(20px * 0.85);
+    color: var(--body-clr);
+    font-family: "NanumGothic";
+    font-weight: 700;
+}
+
+.auth-redirect a {
+    color: var(--primary-clr);
+    transition: var(--link-transition);
+    font-weight: 700;
+}
+
+/**
+ * ========
+ * Media Query Stuff
+ * ========
+**/
+
+@media screen and (max-width: 1000px) {
+    .bg-circle {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .auth-box {
+        transform: scale(0.8);
+    }
+
+    .auth-redirect {
+        transform: scale(0.8);
+        margin-top: -15px;
+    }
+}

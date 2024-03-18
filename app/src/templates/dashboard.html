@@ -119,41 +119,40 @@
                 <div class="card-body3">
                     <div id="leaderboard-card-header">
                         <h4>Weekly Leaderboard</h4>
-                        <!-- <a href="{{ leaderboard_url }}" id="leaderboard-link">
-                            
-                        </a> -->
-                        <!-- put the button line inside the <a> tag above after we set up the dashboard route to send in 
-                            the leaderboard info -->
-                        <button id="view-leaderboard">VIEW ALL</button>
+                        <button id="view-leaderboard" onclick="window.location.href='/leaderboard'">VIEW ALL</button>
                     </div>
                     <ul id="leaderboard-list">
+                        {% for i, user in enumerate(leaderboard_data[:5]) %}
                         <li class="leaderboard-entry">
-                            <span class="leaderboard-rank">1</span>
-                            <span class="leaderboard-name">James Smith</span>
-                            <span class="leaderboard-points">100 XP</span>
+                            <span class="leaderboard-rank">{{ i + 1 }}</span>
+                            <span class="leaderboard-name">{{ user.username }}</span>
+                            <span class="leaderboard-points">{{ user.points.points }} XP</span>
                         </li>
-                        <li class="leaderboard-entry">
-                            <span class="leaderboard-rank">2</span>
-                            <span class="leaderboard-name">John Smith</span>
-                            <span class="leaderboard-points">90 XP</span>
-                        </li>
-                        <li class="leaderboard-entry">
-                            <span class="leaderboard-rank">3</span>
-                            <span class="leaderboard-name">Jane Smith</span>
-                            <span class="leaderboard-points">80 XP</span>
-                        </li>
-                        <li class="leaderboard-entry">
-                            <span class="leaderboard-rank">4</span>
-                            <span class="leaderboard-name">Kevin Smith</span>
-                            <span class="leaderboard-points">70 XP</span>
-                        </li>
-                        <li class="leaderboard-entry">
-                            <span class="leaderboard-rank">5</span>
-                            <span class="leaderboard-name">Mike Smith</span>
-                            <span class="leaderboard-points">60 XP</span>
-                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
+            </div>
+            
+        </div>
+        
+        <!-- Quiz Scores Section -->
+        <div id="quiz-scores-section">
+            <h2>Your Quiz Scores</h2>
+            <div id="quiz-scores-container">
+                <!-- Example quiz score entries -->
+                <div class="quiz-score-item">
+                    <div class="quiz-title">Mathematics Quiz - Algebra</div>
+                    <div class="quiz-score">Score: 85%</div>
+                </div>
+                <div class="quiz-score-item">
+                    <div class="quiz-title">Science Quiz - Chemistry</div>
+                    <div class="quiz-score">Score: 90%</div>
+                </div>
+                <div class="quiz-score-item">
+                    <div class="quiz-title">History Quiz - Ancient Civilizations</div>
+                    <div class="quiz-score">Score: 78%</div>
+                </div>
+                <!-- More quiz score entries can be added here -->
             </div>
         </div>
 

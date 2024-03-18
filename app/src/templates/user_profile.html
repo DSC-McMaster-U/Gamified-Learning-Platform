@@ -29,11 +29,11 @@
         setInterval(userStats, 60000);
     });
 
-        window.addEventListener("DOMContentLoaded", () => {
-            if (sessionStorage.includes("signUpInfo")) {
-                sessionStorage.removeItem("signUpInfo");
-            }
-        })
+    window.addEventListener("DOMContentLoaded", () => {
+        if (sessionStorage.getItem("signUpInfo")) {
+            sessionStorage.removeItem("signUpInfo");
+        }
+    })
     </script>
 </script>
 {% endblock %} {% block content %}
