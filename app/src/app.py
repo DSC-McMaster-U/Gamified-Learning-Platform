@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from .models import db, User, Points, Teacher
@@ -36,9 +37,13 @@ def create_app(test_config=None):
     
     db.init_app(app)
 
+    @app.route('/home')
+    def home():
+        return render_template('home.html')
+
     @app.route('/')
     def index():
-        return render_template('index.html')
+        return redirect(url_for('home'))
     
     @login_manager.user_loader
     def load_user(user_id):

@@ -1,0 +1,318 @@
+/**
+ * ========
+ * Imported Fonts
+ * ========
+**/
+
+/* Jeju Gothic (original font in design) */
+@font-face {
+    font-family: "JejuGothic";
+    src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
+}
+
+/* Nanum Gothic (fallback font) */
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Regular.ttf");
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Bold.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-ExtraBold.ttf");
+    font-weight: bolder;
+}
+
+/**
+ * ========
+ * Variables
+ * ========
+**/
+
+:root {
+    /* Main Colours */
+    --box-clr: rgba(222, 221, 221, 0.3);
+    --heading-clr: #5b83eb;
+    --body-clr: rgba(0, 0, 0, 0.4);
+    --body-hover-clr: rgba(0, 0, 0, 0.5);
+    --heading-dark-clr: #00245e;
+
+    --textbox-txt-clr: #000000;
+    --textbox-pl-clr: rgba(0, 0, 0, 0.6);
+    --textbox-bg-clr: #ffffff;
+
+    --btn-txt-clr: #f5f5f5;
+    --btn-bg-clr: rgba(91, 132, 235, 0.7);
+    --btn-bg-hover-clr: rgba(91, 131, 235, 0.8);
+    --btn-bg-disabled-clr: rgba(112, 151, 249, 0.45);
+
+    --checkbox-clr: #d9d9d9;
+    --link-clr: rgb(99, 138, 236);
+    --link-hover-clr: rgba(91, 131, 235, 0.8);
+
+    --error-txt-clr: rgba(222, 48, 48, 255);
+
+    /* Font Families/Presets */
+    --body-font-family: "JejuGothic", "NanumGothic";
+    --heading-font-family: "JejuGothic", "NanumGothic";
+    --error-font-family: "NanumGothic";
+
+    --heading-font: normal 400 50px / normal var(--heading-font-family);
+    --body-font: normal 400 18px / normal var(--body-font-family);
+    --link-font: normal 00 15.4px / normal var(--body-font-family);
+    --body-sub-font: normal 400 15px / normal var(--body-font-family);
+    --error-font: normal 400 12px / normal var(--error-font-family);
+
+    /* Borders & Shadows */
+    --form-item-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
+        0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+    --btn-shadow-1: 0px 4px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.225) inset;
+    --btn-shadow-2: 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
+
+    --btn-disabled-border: 0.01px rgb(159, 159, 159) solid;
+    --input-border: 0.5px black solid;
+    --error-border: 0.4px red solid;
+
+    /* Transitions */
+    --link-transition: all 0.2s ease;
+    --underline-transition: transform 0.3s ease-out;
+    --btn-transition-1: all 0.1s linear;
+    --btn-transition-2: all 0.7s ease;
+}
+
+/**
+ * ========
+ * General Styling
+ * ========
+**/
+
+.body-text {
+    font: var(--body-font);
+}
+
+main a {
+    position: relative;
+}
+
+main a::after {
+    background-color: var(--textbox-bg-clr);
+    position: absolute;
+    content: "";
+    height: 1.5px;
+    width: 100%;
+    bottom: -2px;
+    left: 0;
+
+    transform: scaleX(0);
+    transform-origin: bottom left;
+    transition: var(--underline-transition);
+}
+
+main a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/**
+ * ========
+ * Specific Element Styling
+ * ========
+**/
+
+#section1 {
+    height: 350px;
+    position: relative; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#section1::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../vendor/images/homepage/home-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.35; /* Apply opacity to the background only */
+    z-index: -1; /* Ensure the background is behind the content */
+}
+
+
+#title-flex-container, #title-description-container, .title-image, #title, #description {
+    position: relative; /* This ensures that these elements are rendered above the pseudo-element */
+    z-index: 1;
+}
+
+#title {
+    font: var(--heading-font);
+    color: var(--heading-dark-clr);
+    font-size: calc(1rem + 3.5vw);
+    text-align: center;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: rgba(0, 0, 0, 0.62);
+}
+
+#description {
+    font: var(--body-font);
+    font-size: calc(0.66rem + 0.66vw);
+    margin-top: 20px;
+    text-align: center;
+}
+
+#title-flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.title-image {
+    width: 18vw;
+    height: auto;
+}
+
+#title-description-container {
+    flex-grow: 1;
+    padding: 0 1vw; /* Dynamic padding based on viewport width */
+}
+
+#features {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 30px;
+    padding-bottom: 10px;
+    background: rgb(229, 229, 229);
+}
+
+#feature-card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap; 
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.feature-card {
+    width: 20vw;
+    padding: 20px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    background: linear-gradient(to bottom, var(--btn-bg-clr) 0%, #d4d4d4 100%);
+    text-align: center;
+    margin-left: 14px;
+    margin-right: 14px;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Add max-height transition */
+    max-height: 190px; /* Initial max-height */
+    overflow: hidden;
+}
+
+.feature-icon {
+    width: 105px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.feature-title {
+    margin: 10px 0;
+    font: var(--heading-font);
+    font-size: 1.4em;
+}
+
+.feature-description {
+    padding-top: 10px;
+    opacity: 0; 
+    transition: opacity 0.5s ease-in-out;
+    text-align: left;
+    font-size: 18px;
+}
+
+#toggleFeatures {
+    width: 30%;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    border-color: #0000006b;
+    background-color: #e3e3e3;
+    font: var(--error-font);
+    font-size: 14px;
+    transition: background-color 0.3s; 
+    box-shadow: 1px 3px 1px 0px rgba(0, 0, 0, 0.135);
+}
+
+#toggleFeatures:hover {
+    background-color: var(--btn-bg-disabled-clr);
+}
+
+.show-description .feature-description {
+    display: block;
+    opacity: 1; /* Make description fully visible */
+}
+
+.show-description {
+    max-height: 500px;
+}
+
+#section3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 50px;
+    background: linear-gradient(to bottom, rgb(229, 229, 229) 0%, #ffffff 100%);
+}
+
+#get-started-text {
+    font: var(--heading-font);
+    font-size: 30px;
+    margin-bottom: 5px;
+    text-align: center;
+    color: var(--heading-clr);
+    opacity: 80%;
+}
+
+#register-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.register-icon {
+    margin-top: 10px;
+    width: 200px; /* Adjust size as needed */
+    height: auto; /* Maintains aspect ratio */
+    opacity: 70%;
+    transition: opacity 0.2s ease-in-out; 
+}
+
+#register-button:hover .register-icon {
+    animation: spin 3s ease-in-out infinite;
+    opacity: 95%;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
