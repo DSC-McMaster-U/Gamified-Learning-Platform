@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, current_app
-from flask_login import login_required, current_user
+from flask import Blueprint, session, render_template, url_for, redirect, request, current_app
+from flask_login import login_required, current_user, logout_user
 from functools import reduce
 from .models import *
 
@@ -9,15 +9,21 @@ main = Blueprint('main', __name__)
 def returnLoggedInData() -> dict:
     # Assuming that registration is implemented correctly and user should only be one of two roles, we check for
     # which role table they exist within
+    print(current_user.email)
     studentCheck = User.query.filter_by(email=current_user.email).first()
     teacherCheck = Teacher.query.filter_by(email=current_user.email).first()
     
+    
+    print(teacherCheck)
+    print(studentCheck)
+    print("Teacher" if teacherCheck and not studentCheck else "Student")
+
     output = {
         "name": current_user.name, 
         "username": current_user.username,
         "email": current_user.email,
         "age": current_user.age,
-        "grade": current_user.grade.value,
+        "grade": None if teacherCheck and not studentCheck else current_user.grade.value,
         "current_user": current_user, 
         "role": "Teacher" if teacherCheck and not studentCheck else "Student",
         "logged_in": True
@@ -157,6 +163,7 @@ def dashboard_page():
         'dashboard.html', 
         user_progress=user_progress, 
         leaderboard_data=leaderboard_data,
+        enumerate=enumerate,     # pass Python's enumerate() function to be used within Jinja2
         **loggedInUser
     )
 
@@ -228,3 +235,13 @@ def teacher_page():
 @login_required
 def contact_page():
     return render_template('contact.html', current_user=current_user, logged_in=True)
+
+
+@main.route('/logout')
+@login_required
+def log_out():
+    logout_user()
+    print(current_user)
+    session["login_type"] = None
+
+    return redirect(url_for('auth.login'))
