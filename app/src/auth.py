@@ -3,6 +3,7 @@ from .models import User, db, GradeEnum, UserProgress, Points, Teacher
 from flask_login import login_user
 from .utils.passwordStrength import check_password_strength
 from .utils.calculateAge import calculate_age
+import re
 
 # Create authentication blueprint for handling relevant routes (signup, login, logout, etc.)
 auth = Blueprint('auth', __name__)
@@ -101,6 +102,9 @@ def register():
         if user_email:
             flash("This email already exists.", "register_error")
             return redirect(url_for("auth.register"))   
+        if not re.search("^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$", email):
+            flash("You must provide a valid email address.", "register_error")
+            return redirect(url_for("auth.register"))
         if confirm_email != email:
             flash("The emails do not match!", "register_error")
             return redirect(url_for("auth.register"))             

@@ -1,81 +1,41 @@
 /**
  * ========
- * Imported Fonts
- * ========
-**/
-
-/* Jeju Gothic (original font in design) */
-@font-face {
-    font-family: "JejuGothic";
-    src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
-}
-
-/* Nanum Gothic (fallback font) */
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Regular.ttf");
-}
-
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Bold.ttf");
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-ExtraBold.ttf");
-    font-weight: bolder;
-}
-
-/**
- * ========
  * Variables
  * ========
 **/
 
 :root {
-    /* Main Colours */
-    --box-clr: rgba(222, 221, 221, 0.3);
-    --heading-clr: #5b83eb;
-    --body-clr: rgba(0, 0, 0, 0.4);
-    --body-hover-clr: rgba(0, 0, 0, 0.5);
+    /* Main/Recurring Colours */
+    --box-clr: #ffffff;
+    --bg-clr: #f8f8f8;
+    --border-clr: #afafaf;
+    --primary-clr: #5b83eb;
+    --disabled-clr: rgba(91, 131, 235, 0.3);
 
-    --textbox-txt-clr: #000000;
-    --textbox-pl-clr: rgba(0, 0, 0, 0.6);
-    --textbox-bg-clr: #ffffff;
-
-    --btn-txt-clr: #f5f5f5;
-    --btn-bg-clr: rgba(91, 132, 235, 0.7);
-    --btn-bg-hover-clr: rgba(91, 131, 235, 0.8);
-    --btn-bg-disabled-clr: rgba(112, 151, 249, 0.45);
-
-    --checkbox-clr: #d9d9d9;
-    --link-clr: rgb(99, 138, 236);
-    --link-hover-clr: rgba(91, 131, 235, 0.8);
-
-    --error-txt-clr: rgba(222, 48, 48, 255);
+    /* Text-related Colours */
+    --heading-clr: #595959;
+    --subheading-clr: var(--primary-clr);
+    --body-clr: rgba(0, 0, 0, 0.5);
+    --body-clr-2: rgba(0, 0, 0, 0.7);
 
     /* Font Families/Presets */
-    --body-font-family: "JejuGothic", "NanumGothic";
-    --heading-font-family: "JejuGothic", "NanumGothic";
-    --error-font-family: "NanumGothic";
+    --body-font-family: "NanumGothic";
+    --heading-font-family: "ProductSans";
+    --subheading-font-family: "NanumGothicBolder";
+    --label-font-family: "JejuGothic";
 
-    --heading-font: normal 400 26px / normal var(--heading-font-family);
-    --body-font: normal 400 18px / normal var(--body-font-family);
-    --link-font: normal 00 15.4px / normal var(--body-font-family);
-    --body-sub-font: normal 400 15px / normal var(--body-font-family);
-    --error-font: normal 400 12px / normal var(--error-font-family);
+    --heading-font: normal 700 calc(30px * 0.9)/36px var(--heading-font-family);      /* 30px */
+    --subheading-font: normal 700 17.5px/20px var(--subheading-font-family);      /* 20px */
+    --btn-font: normal 700 calc(22px * 0.85)/27px var(--heading-font-family);          /* 22px */
+    --body-general-font: normal 400 calc(18px * 0.85)/18px var(--body-font-family);
+    --label-font: normal 400 18px/20px var(--label-font-family);
 
     /* Borders & Shadows */
-    --form-item-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
-        0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-    --btn-shadow-1: 0px 4px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.225) inset;
-    --btn-shadow-2: 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
+    --form-border: 1px solid var(--border-clr);
+    --container-border: 1px solid var(--border-clr);
+    --label-border: 2px solid var(--primary-clr);
 
-    --btn-disabled-border: 0.01px rgb(159, 159, 159) solid;
-    --input-border: 0.5px black solid;
-    --error-border: 0.4px red solid;
+    --container-shadow: 0px 0px 0px 0.5px var(--border-clr);
 
     /* Transitions */
     --link-transition: all 0.2s ease;
@@ -90,31 +50,16 @@
  * ========
 **/
 
+html body {
+    background-color: var(--bg-clr);
+}
+
 .body-text {
     font: var(--body-font);
 }
 
-main a {
-    position: relative;
-}
-
-main a::after {
-    background-color: var(--textbox-bg-clr);
-    position: absolute;
-    content: "";
-    height: 1.5px;
-    width: 100%;
-    bottom: -2px;
-    left: 0;
-
-    transform: scaleX(0);
-    transform-origin: bottom left;
-    transition: var(--underline-transition);
-}
-
-main a:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
+main {
+    transform: scale(0.95);   /* Too lazy to change all the values below... */
 }
 
 /**
@@ -126,78 +71,164 @@ main a:hover::after {
     display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 1210px;
+    width: auto;
+    min-height: 78px;
+    height: fit-content;
+    background-color: var(--box-clr);
 
-    margin-top: 60px;
+    border: 2px solid #afafaf;
+    border-top: 6px solid #5B83EB;
+    box-shadow: 0px 1px 8px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 0px 9px 9px; 
+
+    margin-top: 49px;
     margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 #heading h1 {
     font: var(--heading-font);
     color: var(--heading-clr);
+    margin-bottom: 0;
+    letter-spacing: 0.6px;
+    text-align: center;
+}
+
+.quiz-subheading {
+    position: relative;
+    font: var(--subheading-font);
+    color: var(--subheading-clr);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+
+.quiz-subheading.answer {
+    margin-bottom: 12px;
+}
+
+.quiz-subheading::after {
+    position: absolute;
+    content: "";
+    width: 42px;
+    height: 0px;
+    left: 0;
+    bottom: -8px;
+
+    border: 1px solid #5B83EB;
 }
 
 #quiz-container {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: var(--box-clr);
+    display: flex;
+    justify-content: space-between;
+    max-width: 1210px;
+    width: auto;
+    height: auto;
+    column-gap: 40px;
+    margin: 41px auto;
+    /* background-color: red; */
 }
 
 #quiz-heading {
-    display: flex;
-    align-items: center;
-}
+    max-width: 364px;
+    width: 100%;
+    height: 210px;
 
-#progress-container {
-    border: 1px solid var(--textbox-bg-clr);
-    background-color: var(--textbox-bg-clr);
+    background-color: var(--box-clr);
+    border: var(--container-border);
+    box-shadow: var(--container-shadow);
+    border-radius: 9px;
+
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 40px;
+    padding-bottom: 40px;
 }
 
 .count-box {
-    color: var(--textbox-txt-clr);
-    padding: 8px;
+    color: var(--body-clr-2);
+    font: var(--body-general-font);
+    font-family: "ProductSans";
+    font-size: 17px;
     margin: 0;
+    height: 35px;
+    margin-top: 18.5px;
+    margin-bottom: 17px;
+    padding-top: 8.5px;
+    padding-bottom: 8.5px;
     display: absolute;
 }
 
 #progress-bar {
-    margin: 8px;
-    height: 20px;
-    width: 100px;
-    color: var(--heading-clr);
-    border: 2px solid black;
-    border-radius: 3px;
+    position: relative;
+    width: 100%;
+    height: 32px;
+    color: var(--primary-clr);
+    border: 2px solid #AFAFAF;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+#progress-bar::after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -3px;
+    bottom: 0;
+    margin: auto;
+
+    content: attr(value)"%";
+    color: var(--body-clr-2);
+    font: normal 400 16px/35px "ProductSansBold";
+    text-align: center;
 }
 
 progress::-webkit-progress-value {
-    background: var(--heading-clr);
+    background-color: var(--primary-clr);
     transition: var(--btn-transition-2);
+    transform: scaleX(0.99) scaleY(0.9);
+    border-radius: 999px;
 }
 
 progress::-webkit-progress-bar {
-    background: var(--checkbox-clr);
-}
-
-#questions-title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-bottom: 20px;
-    color: var(--heading-clr);
+    background-color: var(--box-clr);
+    border-radius: 999px;
 }
 
 #quiz-questions {
-    margin-top: 10px;
+    position: relative;
+    max-width: 785px;
+    width: 100%;
+    min-height: calc(651px * 0.9);
+    height: auto;
+
+    border: var(--container-border);
+    box-shadow: var(--container-shadow);
+    background-color: var(--box-clr);
+    border-radius: 9px;
+
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-top: 38px;
+    padding-bottom: 45px;
+    margin-bottom: 140px;
 }
 
 .question-block {
-    display: flex;
-    margin-bottom: 20px;
-    padding: 15px;
+    display: none;
+    /* margin-bottom: 20px; */
+    /* padding: 15px; */
     border: 1px solid var(--input-border);
     border-radius: 5px;
     background-color: var(--textbox-bg-clr);
     flex-direction: column;
+}
+
+.question-block.show-question {
+    display: flex;
 }
 
 .question {
@@ -205,83 +236,329 @@ progress::-webkit-progress-bar {
     font-weight: bold;
 }
 
+.question-content {
+    color: var(--heading-clr);
+    font: var(--heading-font);
+    font-size: 23px;
+    line-height: 35px;
+    letter-spacing: 0.6px;
+    margin-bottom: 43px;
+}
+
 /* Buttons */
 .question-options {
-    display: block;
-    margin-left: 20px;
+    width: 100%;
+}
+
+.question-options input[type="radio"] {
+    display: none;
 }
 
 .question-options label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-input[type="radio"] {
-    margin-right: 8px;
-}
-
-#quiz-form button {
-    width: 100%;
-    height: 38.4px;
-    margin-top: 20px;
-    overflow: hidden;
     position: relative;
-    transition: var(--btn-transition-1);
-    border: var(--btn-disabled-border);
-    color: var(--btn-txt-clr);
-    background-color: var(--btn-bg-disabled-clr);
-    box-shadow: none;
-}
-
-.clickable {
+    margin-top: 15px;
+    width: 100%;  /* 625px */
+    min-height: 75px;
+    height: fit-content;
+    padding-left: 76px;
     cursor: pointer;
-    border: none;
-    color: var(--btn-txt-clr);
-    background-color: var(--btn-bg-clr);
-    box-shadow: var(--btn-shadow-2);
+
+    background-color: #FFFFFF;
+    border: 1.5px solid #AFAFAF;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+
+    transition: all 0.3s ease, outline 0.05s ease; /* Transition effect for smooth color change */
 }
 
-#quiz-form button.clickable {
-    border: none;
-    color: var(--btn-txt-clr);
-    background-color: var(--btn-bg-clr);
-    box-shadow: var(--btn-shadow-2);
+.question-options label>div {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+    padding-top: 2px;
+
+    min-height: 31px;
+    height: fit-content;
+    margin-top: 22px;
+    margin-bottom: 22px;
+    font: var(--label-font);
+    color: #7F7F7F;
 }
 
-#quiz-form button.clickable::before {
-    content: "";
+.question-options label::before {
     position: absolute;
-    width: 100%;
+    width: 26px;
+    height: 42px;
+    left: 26px;
     top: 0;
-    left: 0;
     bottom: 0;
+    margin: auto;
+
+    font-family: "ProductSansBold";
+    font-size: 35px; 
+    line-height: 42px;
+    text-align: center;
+}
+
+/* Label-specific appearance details + hover effects */
+.question-options label.label-0::before {
+    content: "A";
+    color: rgba(20, 121, 42, 0.6);
+}
+
+.question-options label.label-1::before {
+    content: "B";
+    color: rgba(255, 6, 21, 0.7);
+}
+
+.question-options label.label-2::before {
+    content: "C";
+    color: rgba(91, 131, 235, 1);
+}
+
+.question-options label.label-3::before {
+    content: "D";
+    color: rgba(251, 188, 4, 1);
+}
+
+.question-options label.label-0:hover {
+    background-color: rgba(20, 121, 42, 0.1);
+}
+
+.question-options label.label-1:hover {
+    background-color: rgba(255, 6, 21, 0.1);
+}
+
+.question-options label.label-2:hover {
+    background-color: rgba(24, 102, 253, 0.1);
+}
+
+.question-options label.label-3:hover {
+    background-color: rgba(251, 188, 4, 0.1);
+}
+
+.question-options input[type="radio"]:checked + label {
+    border: 1.5px solid rgba(175, 175, 175, 0);
+}
+
+.question-options input[type="radio"]:checked + label.label-0 {
+    background-color: rgba(20, 121, 42, 0.2);
+    outline: 3px solid #14792A;
+    box-shadow: 3px 3px 0px 2px #14792A;
+}
+
+.question-options input[type="radio"]:checked + label.label-1 {
+    background-color: rgba(255, 6, 21, 0.2);
+    outline: 3px solid #C6000C;
+    box-shadow: 3px 3px 0px 2px #C6000C;
+}
+
+.question-options input[type="radio"]:checked + label.label-2 {
+    background-color: rgba(24, 102, 253, 0.2);
+    outline: 3px solid #5B83EB;
+    box-shadow: 3px 3px 0px 2px #5B83EB;
+}
+
+.question-options input[type="radio"]:checked + label.label-3 {
+    background-color: rgba(251, 188, 4, 0.2);
+    outline: 3px solid #CC9800;
+    box-shadow: 3px 3px 0px 2px #CC9800;
+}
+
+/* -- Buttons -- */
+#quiz-buttons {
+    position: absolute;
+    left: 0;
+    bottom: -157px;
+    max-width: 100%;
+    width: 100%;
+}
+
+#quiz-buttons button, #switch-question > div {
+    font: var(--btn-font);
+    height: 51px;
+    border-radius: 10px;
+    user-select: none;
+}
+
+#switch-question {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+#switch-question div {
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+    width: 300px;
+    padding-left: 3%;
+    padding-right: 3%;
+
+    background: var(--box-clr);
+    border: var(--container-border);
+    box-shadow: var(--container-shadow);
+
+    align-items: center;
+    letter-spacing: 0.6px;
+    transition: var(--btn-transition-1);
+    cursor: pointer;
+}
+
+#switch-question div::after {
+    position: absolute;
+    content: "";
+    left: 0;
     right: 0;
-    z-index: -1;
-    background-color: var(--btn-bg-hover-clr);
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: background-color 0.4s ease;
+}
+
+#switch-question div.clickable {
+    color: var(--heading-clr);
+}
+
+#switch-question div.clickable::after {
+    background-color: transparent;
+}
+
+
+
+#switch-question div.clickable:hover {
+    background: #DEDEDE;
+    transition: all 0.05s linear;
+}
+
+#switch-question div.clickable:active {
+    background: #C5C4C4;
+}
+
+#switch-question > div img {
+    width: 16px;
+    height: auto;
+}
+
+#switch-question + button {
+    width: 100%;
+    margin-top: 20px;
+    color: var(--box-clr);
+    background: var(--disabled-clr);
+    border: none;
+    letter-spacing: 0.6px;
+
     transition: var(--btn-transition-2);
-    transform: scaleX(0);
-    box-shadow: var(--btn-shadow-1);
 }
 
-#quiz-form button.clickable:hover::before,
-#quiz-form button.clickable:active::before {
-    transform: scaleX(1);
-    box-shadow: none;
+#switch-question + button.clickable {
+    background-color: var(--primary-clr);
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-#quiz-form button.clickable:active::before {
-    box-shadow: var(--form-item-shadow);
+#switch-question + button.clickable:hover {
+    background-color: #4a75e1;
 }
 
-#quiz-form button.clickable:active {
-    box-shadow: var(--form-item-shadow);
+#switch-question + button.clickable:active {
+    background-color: #183fa1;
 }
 
-#quiz-form button.clickable:active {
-    transform: translateY(2px) scale(0.99);
+/* -- Media Query Stuff -- */
+@media screen and (max-width: 1400px) {
+    #heading, #quiz-container {
+        margin-left: 95px;
+        margin-right: 95px;
+    }
+    
+    #heading {
+        margin-left: 95px;
+        margin-right: 95px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media screen and (max-width: 1100px) and (min-width: 1001px) {
+    #quiz-buttons {
+        bottom: -228px; 
+    }
+
+    #switch-question {
+        display: block;
+    }
+
+    #switch-question div {
+        width: 100%;
+        padding-left: 25%;
+        padding-right: 25%;
+    }
+
+    #next-question {
+        margin-top: 20px;
+    }
+
+    #quiz-questions {
+        margin-bottom: 211px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    #quiz-container {
+        display: block;
+        column-gap: 0;
+        margin-top: 30px;
+    }
+
+    #quiz-heading {
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #quiz-questions {
+        padding-left: 50px;
+        padding-right: 50px;
+        max-width: 100%;
+        margin-bottom: 191px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    #heading, #quiz-container {
+        margin-left: 60px;
+        margin-right: 60px;
+    }
+
+    #heading h1 {
+        font-size: calc(27px * 0.9)
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #quiz-buttons {
+        bottom: -228px; 
+    }
+
+    #switch-question {
+        display: block;
+    }
+
+    #switch-question div {
+        width: 100%;
+        padding-left: 15%;
+        padding-right: 15%;
+    }
+
+    #next-question {
+        margin-top: 20px;
+    }
+
+    #quiz-questions {
+        margin-bottom: 261px;
+    }
 }
