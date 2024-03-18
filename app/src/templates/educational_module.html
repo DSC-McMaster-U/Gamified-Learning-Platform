@@ -1,0 +1,108 @@
+{% extends "base.html"%}
+{% block title %}Educational Module - Gamified Learning Platform{% endblock %}</title>
+
+{% block styling %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/educational_module.css') }}">
+{% endblock %}
+
+
+{% block content %}
+    <div id="heading">
+        <h1>Educational Module</h1>
+    </div>
+    <div class="content">
+            <div class="sidebar">
+                <ul>
+                    <li>
+                        <span id="preAlgebra">
+                            <span class="unit-number">Pre-Algebra</span>
+                            <span class="unit-title">15 UNITS - 179 SKILLS</span>
+                        </span>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <button class="unit-button" href="#unit1">
+                            <span class="unit-number">UNIT 1</span>
+                            <span class="unit-title">Factors and multiples</span>
+                        </button>
+                    </li>
+                    <li><button class="unit-button" href="#unit2">
+                            <span class="unit-number">UNIT 2</span>
+                            <span class="unit-title">Patterns</span>
+                        </button>
+                    </li>
+                    <li><button class="unit-button" href="#unit3">
+                            <span class="unit-number">UNIT 3</span>
+                            <span class="unit-title">Ratios and rates</span>
+                        </button>
+                    </li>
+                    <li><button class="unit-button" href="#unit4">
+                            <span class="unit-number">UNIT 4</span>
+                            <span class="unit-title">Percentages</span>
+                        </button>
+                    </li>
+                    <li><button class="unit-button" href="#unit5">
+                            <span class="unit-number">UNIT 5</span>
+                            <span class="unit-title">Exponents intro and order of operations</span>
+                        </button>
+                    </li>
+                    <li><button class="unit-button" href="#unit6">
+                            <span class="unit-number">UNIT 6</span>
+                            <span class="unit-title">Variables & expressions</span>
+                        </button>
+                    </li>
+                    <li><button class="unit-button" href="#unit7">
+                            <span class="unit-number">UNIT 7</span>
+                            <span class="unit-title">Equations & inequalities</span>
+                        </button>
+                    </li>
+                    <li><button class="unit-button" href="#unit8">
+                            <span class="unit-number">UNIT 8</span>
+                            <span class="unit-title">Proportional relationships</span>
+                        </button>
+                    </li>
+            </div>
+                <!-- Rectangle container -->
+            <div id="main-container">
+                <div class="content-container">
+                        <div class="content-box" enabled>
+                            
+                            <div class="content-points-upnext">
+                                <div class="content-upnext">Upnext for you</div>
+                                <div class="content-points">Gamified points: 10000</div>
+                            </div>
+                            <div class="content-title">Unit 1: Factors and multiples</div>
+                                <div class="lesson-title">Factors and multiples</div>
+                                <div class="lesson-title">Prime and composite numbers</div>
+                                <div class="lesson-title">Prime factorization</div>
+                                <div class="module-buttons">
+                                    <button class="get-started-button">Get Started</button>
+                                    <button class="start-quiz-button" disabled>Start Quiz</button>
+                                </div>
+                                
+                        </div>
+                    
+                        <div class="content-box">
+                            <div class="content-points-upnext">
+                                <div class="content-upnext"></div>
+                                <div class="content-points">Gamified points: 10000</div>
+                            </div>
+                            <div class="content-title">Unit 2: Patterns</div>
+                                <div class="lesson-title">Math patterns</div>
+                                <div class="lesson-title">Writing expressions</div>
+                                <div class="lesson-title">Number patterns</div>
+                                
+
+                            
+                        </div>
+
+                        
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+    
+{% block scripts %}
+{% endblock %}

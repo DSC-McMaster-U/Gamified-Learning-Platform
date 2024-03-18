@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .result-container {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        .score-icon {
+            font-size: 50px;
+            color: #4CAF50;
+        }
+
+        .score-text {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+
+        .good-score {
+            color: #4CAF50; /* Green color for a good score */
+        }
+
+        .low-score {
+            color: #FF5733; /* Red colour for a bad score */
+        }
+    </style>
+</head>
+<body>
+
+<div class="result-container">
+    <div class="score-icon {% if score >= 70 %}good-score{% else %}low-score{% endif %}">&#10003;</div>
+    <div class="score-text">
+        {% if score >= 70 %}
+            <p>Congratulations!</p>
+        {% else %}
+            <p>Keep practicing</p>
+        {% endif %}
+        <p>Your score: <strong>{{ (score / num_questions) * 100 }}%</strong></p>
+    </div>
+</div>
+
+</body>
+</html>

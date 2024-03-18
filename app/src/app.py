@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from .models import db, User, Points, Teacher
@@ -6,8 +6,9 @@ from .auth import auth as auth_blueprint
 from .main import main as main_blueprint
 from .routes import routes as routes_blueprint
 from .lesson_api import api as api_blueprint
-from .utils.quizSubmit import quiz_api as quiz_blueprint
+from .quizSubmit import quiz as quiz_blueprint
 from dotenv import load_dotenv
+from sqlalchemy import desc
 import os
 
 load_dotenv()
@@ -15,9 +16,11 @@ load_dotenv()
 def create_app(test_config=None):
 
     app = Flask(__name__)
-    # Configure and initalize database
+
+    # Configure and initialize database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-    app.secret_key = os.getenv('SECRET_KEY') or 'SECRET_KEY'
+    app.config['PER_PAGE'] = 10
+    app.secret_key = os.getenv('SECRET_KEY')
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(main_blueprint)
     app.register_blueprint(routes_blueprint)
@@ -47,5 +50,5 @@ def create_app(test_config=None):
 
     with app.app_context():
         db.create_all()
-
-    return app
+        
+        # return app

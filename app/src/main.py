@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, current_app
 from flask_login import login_required, current_user
 from functools import reduce
 from .models import *
@@ -151,7 +151,14 @@ def dashboard_page():
 
     user_progress = current_user.progress
     user_points = current_user.points
-    return render_template('dashboard.html', show_footer=True, user_progress=user_progress, **loggedInUser)
+    leaderboard_data = Points.get_leaderboard()
+
+    return render_template(
+        'dashboard.html', 
+        user_progress=user_progress, 
+        leaderboard_data=leaderboard_data,
+        **loggedInUser
+    )
 
 @main.route('/test/dashboard')
 def test_dashboard():
@@ -164,8 +171,12 @@ def test_dashboard():
 def leaderboard_page():
     loggedInUser = returnLoggedInData()
 
+    page = request.args.get('page', 1, type=int)
+    per_page = current_app.config['PER_PAGE']
 
-    leaderboard_data = Points.get_leaderboard()
+    leaderboard_page = User.query.join(Points).order_by(Points.points.desc()).paginate(page=page, per_page=per_page,
+                            error_out=False)
+
     user_ranking = None
     
     user_points = Points.query.filter_by(user_id=current_user.id).first()
@@ -174,8 +185,11 @@ def leaderboard_page():
     
     return render_template(
         'leaderboard.html', 
-        leaderboard_data=leaderboard_data, 
+        leaderboard_data=leaderboard_page.items, 
         user_ranking=user_ranking,
+        current_page=page,
+        has_next=leaderboard_page.has_next,
+        next_page=page + 1 if leaderboard_page.has_next else None,
         **loggedInUser
     )
 
@@ -209,3 +223,8 @@ def teacher_page():
         'teachers.html', 
         **loggedInUser
     )
+    
+@main.route('/contact')
+@login_required
+def contact_page():
+    return render_template('contact.html', current_user=current_user, logged_in=True)
