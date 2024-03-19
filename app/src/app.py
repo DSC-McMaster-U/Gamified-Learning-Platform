@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from .models import db, User, Points, Teacher
@@ -36,12 +36,16 @@ def create_app(test_config=None):
     
     db.init_app(app)
 
-    @app.route('/')
-    def index():
+    @app.route('/home')
+    def home():
         if session.get('login_type') is None:
             session['login_type'] = None
             
-        return render_template('index.html')
+        return render_template('home.html')
+
+    @app.route('/')
+    def index():          
+        return redirect(url_for('home'))
     
     @login_manager.user_loader
     def load_user(user_id):

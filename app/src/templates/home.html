@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Home - Gamified Learning Platform{% endblock %}
+{% block styling %}
+    <!-- Local Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<main>
+    <div id="section1">
+        <div id="title-flex-container">
+            <img src="../static/vendor/images/homepage/gdsc-left.png" alt="Image 1" class="title-image">
+            <div id="title-description-container">
+                <h1 id="title">Welcome to Our Gamified Learning Platform</h1>
+                <p id="description">The McMaster GDSC team has developed a dynamic Gamified Learning Platform, offering students an interactive space to effortlessly learn and absorb new content</p>
+            </div>
+            <img src="../static/vendor/images/homepage/gdsc-right.png" alt="Image 2" class="title-image">
+        </div>
+    </div>
+    <div id="features">
+        <div id="feature-card-container">
+            <div id="feature1" class="feature-card">
+                <img src="../static/vendor/images/homepage/teach_stu.png" alt="Feature 1" class="feature-icon">
+                <h2 id="feature1-title" class="feature-title">Teachers & Students</h2>
+                <p id="feature1-description" class="feature-description">Distinct dashboards and accounts for teachers and students, enabling efficient interaction. Teachers manage courses, Lessons, and quizzes. Students access materials, submit work, and track progress.</p>
+            </div>
+            <div id="feature2" class="feature-card">
+                <img src="../static/vendor/images/homepage/lessons.png" alt="Feature 2" class="feature-icon">
+                <h2 id="feature2-title" class="feature-title">Lessons</h2>
+                <p id="feature2-description" class="feature-description">Interactive lessons where students can engage with educational content by watching instructional videos, reading detailed notes, exploring textbooks, and participating in gamified memorization exercises.</p>
+            </div>
+            <div id="feature3" class="feature-card">
+                <img src="../static/vendor/images/homepage/quizzes.png" alt="Feature 3" class="feature-icon">
+                <h2 id="feature3-title" class="feature-title">Quizzes</h2>
+                <p id="feature3-description" class="feature-description">Challenging quizzes for students to assess their knowledge on various subjects. Teachers can use these quizzes to gauge their students' understanding and track their progress.</p>
+            </div>
+            <div id="feature4" class="feature-card">
+                <img src="../static/vendor/images/homepage/leaderboard.png" alt="Feature 4" class="feature-icon">
+                <h2 id="feature4-title" class="feature-title">Ranking System</h2>
+                <p id="feature4-description" class="feature-description">Students on the platform earn points by completing modules and quizzes, which helps them track their progress and stay motivated while learning. A leaderboard shows the best performing students.</p>
+            </div>
+        </div>
+        <button id="toggleFeatures" onclick="toggleFeatureDescriptions()">Show More</button>
+    </div>
+    <div id="section3">
+        <p id="get-started-text">Get started by clicking below</p>
+        <a href="/register" id="register-button">
+            <img src="../static/vendor/images/homepage/game-controller.png" alt="Register" class="register-icon">
+        </a>
+    </div>
+</main>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <!-- Insert local scripts here, if necessary -->
+    <script src="../static/js/home.js"></script>
+{% endblock %}
