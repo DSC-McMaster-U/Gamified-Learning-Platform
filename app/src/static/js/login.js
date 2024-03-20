@@ -10,6 +10,7 @@ let fieldsContent;
 const errorMapping = {
     "This account is locked." : "err-pass",
     "Incorrect password." : "err-pass",
+    "The email address is associated with multiple roles. Please contact support." : "err-email",
     "A user with this email does not exist!" : "err-email"
 }
 

@@ -1,0 +1,73 @@
+{% extends "base.html" %} {% block title %}Contact - Gamified Learning Platform{% endblock %} {%
+block styling %}
+<!-- Local Stylesheets -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}" />
+{% endblock %} {% block scripts %}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Add more FAQs as necessary
+        const faqs = [
+            {
+                question: "What is GDSC?",
+                answer: "Google Developer Student Club (GDSC) is a Google Developers program for university students to learn web, mobile, and google technologies in a peer-to-peer learning environment. Our club is a space for students to explore new ideas and collaborate.",
+            },
+            {
+                question: "What is this application?",
+                answer: "Standard online learning platforms often lack creative and interactive elements which can lead to distracted learning and low engagement rates among students. This platform will include educational modules that will gain you points for completing tasks, have leaderboards and badges to help track the process and a reward redemption system.",
+            },
+            {
+                question: "Where can I find co-ops?",
+                answer: "Check out our GitHub page for Co-ops! https://github.com/DSC-McMaster-U/Canadian-Internships.",
+            },
+        ];
+
+        const faqContainer = document.getElementById("faq-questions");
+
+        function renderFAQs() {
+            faqs.forEach((faq, index) => {
+                const faqItem = document.createElement("div");
+                faqItem.classList.add("faq-item");
+
+                const question = document.createElement("div");
+                question.classList.add("question");
+                question.textContent = faq.question;
+
+                const answer = document.createElement("div");
+                answer.classList.add("answer");
+                answer.textContent = faq.answer;
+
+                faqItem.appendChild(question);
+                faqItem.appendChild(answer);
+
+                faqContainer.appendChild(faqItem);
+            });
+        }
+
+        renderFAQs();
+    });
+</script>
+{% endblock %} {% block content %}
+<main>
+    <div id="heading">
+        <h1>Contact Us</h1>
+    </div>
+    <div id="contact-section">
+        <h4 id="contact-heading">
+            Have a question for the team? Any suggestions to improve the app? Bugs found? Feel free
+            to email us below!
+        </h4>
+    </div>
+    <div id="email-button-section">
+        <a href="mailto:dscmcmaster@email.ca">
+            <button type="button" id="email-button">EMAIL</button></a
+        >
+    </div>
+    <div id="faq-section">
+        <div id="faq-header"><h1>FAQ</h1></div>
+        <br />
+        <div id="faq-questions"></div>
+    </div>
+</main>
+{% endblock %}

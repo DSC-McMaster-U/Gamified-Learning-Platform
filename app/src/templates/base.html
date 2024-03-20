@@ -77,7 +77,7 @@
                     <div id="content-body" class="offcanvas-body">
                         {% if logged_in %} {# Insert header design for logged in user here #}
                         <ul class="content-main navbar-nav">
-                            <a href="/dashboard">
+                            <a href="{% if role == 'Teacher' %}/teacher{% else %}/dashboard{% endif %}">
                                 <li id="main-dashboard" class="main-link navbar-item">Dashboard</li>
                             </a>
                             <a href="">
@@ -87,19 +87,64 @@
                                 <li id="main-leaderboard" class="main-link navbar-item">Leaderboard</li>
                             </a>
                         </ul>
-
                         <!-- NOTE: Complete logged-in auth navlist (probably profile pic with dropdown menu?) -->
-                        <ul class="content-auth navbar-nav">
+                        <div class="content-auth navbar-nav">
                             <hr class="sidebar-break" />
                             <div class="content-auth-msg">Welcome, {{ current_user.username }}.</div>
-                            <a href="/profile">
-                                <li id="auth-login" class="auth-link navbar-item">Profile</li>
-                            </a>
-                        </ul>
+                            <div class="auth-menu navbar-item">
+                                <!-- Dropdown button -->
+                                <div class="auth-dropdown">
+                                    <div class="dropdown-left">
+                                        <div class="dropdown-img">
+                                            <span>{{ current_user.username[0]|upper }}</span>
+                                        </div>
+                                        <div class="dropdown-text">
+                                            <div class="dropdown-title">
+                                                {% if current_user.username | length <= 12 %} 
+                                                    {{ current_user.username }}
+                                                {% else %}
+                                                    {{ current_user.username[:13] }}...
+                                                {% endif %}
+                                            </div>
+                                            <div class="dropdown-subtitle">
+                                                {{ role }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <img class="dropdown-right dropdown-arrow" src="../static/vendor/images/base/select-arrow.png" alt="">
+                                </div>
+
+                                <!-- Actual absolute-positioned dropdown menu -->
+                                <div class="auth-menu-container">   <!-- toggle profile menu visibility with "auth-menu-show" -->
+                                    <div class="auth-menu-text">
+                                        <div class="auth-menu-title">Hi, {{ current_user.name }}.</div>
+                                        <div class="auth-menu-subtitle">{{ current_user.email }}</div>
+                                    </div>
+
+                                    <hr class="auth-menu-break" />
+
+                                    <div class="auth-menu-group">
+                                        <a href="/profile">
+                                            <div id="auth-profile" class="auth-menu-item">Go to Profile</div>
+                                        </a>
+                                        <a href="">
+                                            <div id="auth-badge" class="auth-menu-item">Your Badges</div>
+                                        </a>
+                                    </div>
+
+                                    <hr class="auth-menu-break" />
+
+                                    <a href="/logout">
+                                        <div id="auth-sign-out" class="auth-menu-item">Sign Out</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         {% else %}
                         <!-- PLACEHOLDER: Change these links to ones suitable for not being logged in -->
                         <ul class="content-main navbar-nav">
-                            <a href="">
+                            <a href="/home">
                                 <li id="main-home" class="main-link navbar-item">Home</li>
                             </a>
                             <a href="">
@@ -110,7 +155,7 @@
                             </a>
                         </ul>
 
-                        <ul class="content-auth navbar-nav">
+                        <ul class="content-auth navbar-nav is-new-user">
                             <hr class="sidebar-break" />
                             <div class="content-auth-msg">You are not signed in.</div>
                             <a href="/login">
@@ -132,7 +177,7 @@
         </div>
 
         <!-- Footer -->
-
+        {% if show_footer %} {# Toggle whether to show footer or not #}
         <hr class="footer-break" />
 
         <footer id="footer" class="container">
@@ -179,7 +224,82 @@
             </ul>
         </footer>
 
+        {% endif %}
+
         <!-- Insert local scripts here, if necessary -->
+        <script>
+            const profileMenu = document.querySelector(".auth-menu-container");
+            const userEmail = document.querySelector(".auth-menu-subtitle");
+
+            let profileDropdown = document.querySelector(".auth-dropdown");
+
+            if (profileDropdown != null) {
+                let dropdownArrow = profileDropdown.querySelector(".dropdown-arrow");
+                let profileIcon = profileDropdown.querySelector(".dropdown-img");
+
+                let profileColour;
+
+                // Toggle menu
+                profileDropdown.addEventListener("click", () => {
+                    if (window.innerWidth >= 992 && !profileDropdown.classList.contains("auth-menu-show") || 
+                        (window.innerWidth < 992 && profileDropdown.classList.contains("auth-menu-show")) ) {
+                        dropdownArrow.style.transform = "scaleY(-1)";
+                    } else {
+                        dropdownArrow.style.transform = "scaleY(1)";
+                    }
+
+                    profileDropdown.classList.toggle("auth-menu-show");
+                    profileMenu.classList.toggle("auth-menu-show");
+                });
+
+                // If open, closes profile dropdown menu when clicking outside of it or the dropdown btn
+                window.addEventListener('click', (e) => {
+                    if (!profileDropdown.contains(e.target) && (!profileMenu.contains(e.target))){
+                        if (window.innerWidth >= 992) {
+                            dropdownArrow.style.transform = "scaleY(1)";
+                        } else {
+                            dropdownArrow.style.transform = "scaleY(-1)";
+                        }
+
+                        profileDropdown.classList.remove("auth-menu-show");
+                        profileMenu.classList.remove("auth-menu-show");
+                    } 
+                });
+
+                window.addEventListener("resize", () => {
+                    if (window.innerWidth >= 992 && !profileDropdown.classList.contains("auth-menu-show")) {
+                        dropdownArrow.style.transform = "scaleY(1)";
+                    } else {
+                        dropdownArrow.style.transform = "scaleY(-1)";
+                    }
+                });
+
+                /**
+                 * When the user first logs in, picks a random colour to display for their profile pic for this 
+                 * entire session between pages + subsequent sessions (that being if they log out and immediately back in).
+                 * However, if the user (userA) logs out, another user logs in (userB) and out, then userA signs in again, 
+                 * their colour won't be the same as their first session. The only feasible way to create consistent profile
+                 * picture colours is to store data in the DB, but that would be a waste of space to store info for something 
+                 * as minor as this. And besides, different colours will spice up things anyways :D
+                */
+                window.addEventListener("DOMContentLoaded", () => {
+                    if (sessionStorage.getItem("localUserEmail") == null || 
+                        sessionStorage.getItem("localUserEmail") != userEmail.textContent ||
+                        sessionStorage.getItem("localUserColour") == null) {
+                            profileColour = `rgb(${String(Math.floor(Math.random() * 125))}, ${String(Math.floor(Math.random() * 125))}, ${String(Math.floor(Math.random() * 125))}`;
+
+                            sessionStorage.setItem("localUserEmail", userEmail.textContent);
+                            sessionStorage.setItem("localUserColour", profileColour);
+                    }
+
+                    profileIcon.style.backgroundColor = sessionStorage.getItem("localUserColour");
+                });
+
+
+            }
+            
+        </script>
+
         {% block scripts %}{% endblock %}
 
         <!-- Vendor Scripts (Bootstrap 5 with Popper) -->
