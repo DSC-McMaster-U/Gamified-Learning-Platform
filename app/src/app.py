@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
-
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from .models import db, User, Points, Teacher
@@ -7,7 +6,7 @@ from .auth import auth as auth_blueprint
 from .main import main as main_blueprint
 from .routes import routes as routes_blueprint
 from .lesson_api import api as api_blueprint
-from .quizSubmit import quiz as quiz_blueprint
+from .utils.quizSubmit import quiz_api as quiz_blueprint
 from dotenv import load_dotenv
 from sqlalchemy import desc
 import os
@@ -39,10 +38,13 @@ def create_app(test_config=None):
 
     @app.route('/home')
     def home():
+        if session.get('login_type') is None:
+            session['login_type'] = None
+            
         return render_template('home.html')
 
     @app.route('/')
-    def index():
+    def index():          
         return redirect(url_for('home'))
     
     @login_manager.user_loader
@@ -50,10 +52,16 @@ def create_app(test_config=None):
         # Check both User and Teacher tables for the user_id
         user = User.query.get(int(user_id))
         teacher = Teacher.query.get(int(user_id))
-        # Return the user or teacher, whichever is found
-        return user if user else teacher
+        # Return the user or teacher, depending on the login type from session
+        if session["login_type"] == "teacher":
+            return teacher
+        elif session["login_type"] == "student":
+            return user
+        else:
+            return None
+
 
     with app.app_context():
         db.create_all()
         
-        # return app
+        return app

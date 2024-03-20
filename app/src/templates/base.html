@@ -77,7 +77,7 @@
                     <div id="content-body" class="offcanvas-body">
                         {% if logged_in %} {# Insert header design for logged in user here #}
                         <ul class="content-main navbar-nav">
-                            <a href="/dashboard">
+                            <a href="{% if role == 'Teacher' %}/teacher{% else %}/dashboard{% endif %}">
                                 <li id="main-dashboard" class="main-link navbar-item">Dashboard</li>
                             </a>
                             <a href="/lesson/0">  <!-- Temporary link here for now -->
@@ -139,7 +139,7 @@
 
                                     <hr class="auth-menu-break" />
 
-                                    <a href="/login">
+                                    <a href="/logout">
                                         <div id="auth-sign-out" class="auth-menu-item">Sign Out</div>
                                     </a>
                                 </div>
