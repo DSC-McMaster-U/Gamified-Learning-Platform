@@ -24,7 +24,7 @@ def login():
         if teacherCheck and not studentCheck:
             return redirect(url_for('main.teacher_page'))
         else:
-            return redirect(url_for('main.profile'))
+            return redirect(url_for('main.dashboard_page'))
         
     return render_template('login.html', logged_in=False) # Temporary logged-in value for now, changes header appearance
 
@@ -74,7 +74,7 @@ def login_post():
         flash('Successfully logged in! Redirecting to dashboard...', 'login_success')
         if isinstance(account, User):
             session['login_type'] = "student"
-            return redirect(url_for('main.profile'))
+            return redirect(url_for('main.dashboard_page'))
         else:  # account is an instance of Teacher
             session['login_type'] = "teacher"
             return redirect(url_for('main.teacher_page'))
@@ -191,6 +191,6 @@ def register():
             if teacherCheck and not studentCheck:
                 return redirect(url_for('main.teacher_page'))
             else:
-                return redirect(url_for('main.profile'))
+                return redirect(url_for('main.dashboard_page'))
 
         return render_template("register.html", logged_in=False)
