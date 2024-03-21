@@ -1,414 +1,75 @@
-/* login.css - contains styling for the login page specifically, barring base elements */
 
-/**
- * ========
- * Imported Fonts
- * ========
-**/
-
-/* Jeju Gothic (original font in design) */
-@font-face {
-    font-family: "JejuGothic";
-    src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
-}
-
-/* Nanum Gothic (fallback font) */
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Regular.ttf");
-}
-
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Bold.ttf");
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-ExtraBold.ttf");
-    font-weight: bolder;
-}
-
-/**
- * ========
- * Variables
- * ========
-**/
-
-:root {
-    /* Main Colours */
-    --box-clr: rgba(222, 221, 221, 0.30);
-    --heading-clr: #5B83EB;
-    --body-clr: rgba(0, 0, 0, 0.40);
-    --body-hover-clr: rgba(0, 0, 0, 0.50);
-
-    --textbox-txt-clr: #000000;
-    --textbox-text-pl-clr: rgba(0, 0, 0, 0.6);
-    --textbox-bg-clr: #FFFFFF;
-
-    --btn-txt-clr: #F5F5F5;
-    --btn-txt-disabled-clr: rgba(0, 0, 0, 0.27);
-    --btn-bg-clr: rgba(91, 132, 235, 0.7);
-    --btn-bg-hover-clr: rgba(91, 131, 235, 0.8);
-    --btn-bg-disabled-clr: rgba(112, 151, 249, 0.45);
-
-    --checkbox-clr: #D9D9D9;
-    --link-clr: rgb(99, 138, 236);  /* rgba(91, 131, 235, 0.50); */
-    --link-hover-clr: rgba(91, 131, 235, 0.8); 
-
-    --error-txt-clr: rgba(222, 48, 48, 255);
-
-    /* Font Families/Presets */
-    --body-font-family: "JejuGothic", "NanumGothic";
-    --heading-font-family: "JejuGothic", "NanumGothic";
-    --error-font-family: "NanumGothic";
-
-    --heading-font: normal 400 26px/normal var(--heading-font-family);  /* 36px */
-    --body-font: normal 400 18px/normal var(--body-font-family);          /* 28px */
-    --link-font: normal 400 15.4px/normal var(--body-font-family);           /* 24px */
-    --body-sub-font: normal 400 15px/normal var(--body-font-family);        /* 20px */
-    --error-font: normal 400 12px/normal var(--error-font-family);
-
-    /* Borders & Shadows */
-    --form-item-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-    --btn-shadow-1: 0px 4px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.225) inset;
-    --btn-shadow-2: 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
-    
-    --btn-disabled-border: 0.01px rgb(159, 159, 159) solid;
-    --input-border: 0.5px black solid;
-    --error-border: 0.4px red solid;
-
-    /* Transitions */
-    --link-transition: all 0.2s ease;
-    --underline-transition: transform 0.3s ease-out;
-    --btn-transition-1: all 0.1s linear;
-    --btn-transition-2: all 0.7s ease;
-
-}
-
-/**
- * ========
- * General Styling
- * ========
-**/
-
-.body-text {
-    font: var(--body-font);
-}
-
-/* input:focus {
-    outline: none;
-} */
-
-input[type="password"] {
-    -webkit-text-security: disc;
-    font-family: Verdana, sans-serif;
-    letter-spacing: 2px;
-    font-size: 17.9px;
-
-    padding-top: 2.5px;
-    /* padding-bottom: 5px; */
-}
-
-input[type="text"] {
-    padding-top: 10px;
-}
-
-main a {
-    position: relative;
-}
-
-main a::after {
-    background-color: var(--textbox-bg-clr);
-    position: absolute;
-    content: '';
-    height: 1.5px;
-    width: 100%;
-    bottom: -2px;
-    left: 0;
-
-    transform: scaleX(0);
-    transform-origin: bottom left;
-    transition: var(--underline-transition);
-}
-
-main a:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-}
-
-/**
- * ========
- * Specific Element Styling
- * ========
-**/
-
-#heading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin-top: 60px;
-    margin-bottom: 20px;
-}
-
-#heading h1 {
-    font: var(--heading-font);
-    color: var(--heading-clr);
-}
-
+/* -- Login form main styling -- */
 #login-box {
-    max-width: 425px; /* 666px * 0.64 */
-    width: auto;
-    min-height: 496px;  /* 775px * 0.64 */
-    height: fit-content;
-    margin: auto;
-    margin-bottom: 30px;
-    padding: 28.8px 33.9px 33.3px 33.9px;   /* 45px 53px 52px 53px; */
-
-    background-color: var(--box-clr);
-    /* transform: scale(0.8); */
+    margin-top: 15vh;
 }
 
-/* -- Login Profile Styling -- */
-#login-profile {
-    display: flex;
-    align-items: center;
-    vertical-align: middle;
-    width: 100%;
-    height: 147px;   /* 230px = 170px picture + 60px bottom margin */
-    
-    padding: auto;
-    margin-bottom: 32px;  /* Originally 60px/40px, didn't scale well */
+#login-form {
+    min-height: calc(275px * 0.85);
 }
 
-#login-profile img {
-    margin: auto;
-    width: auto;
-    height: 90%;
+#login-heading {
+    margin-bottom: calc(58px * 0.85);
 }
 
-@media screen and (max-width: 700px) {
-    #heading {  
-        margin-bottom: 20px;
-    }
+#redirect-register {
+    padding-bottom: 10vh;
 }
 
-/* -- Login Body Styling -- */
-#login-body {
-    width: 100%;
-    min-height: 187.8px;
-    height: fit-content;      
-    margin-bottom: 38.4px;  
-}
-
-#login-form input {
-    border-radius: 1px;   
-}
-
-#login-form:last-child {
-    margin: 0;
-}
-
-.login-form-text {
-    width: 100%;  
-    height: 41.6px; 
-    border: none;
-    padding-left: 8.3px;   
-    padding-top: 6.4px;         
-    vertical-align: middle;
-
-    color: var(--textbox-txt-clr);
-    background-color: var(--textbox-bg-clr);
-    box-shadow: var(--form-item-shadow);
-}
-
-.login-form-text:focus-visible {
-    outline: var(--input-border);
-}
-
-.login-form-text::placeholder {
-    vertical-align: middle;
-    color: var(--textbox-text-pl-clr);
-    font: var(--body-font);
-    letter-spacing: normal;
-}
-
-#login-form-pwd::placeholder {
-    padding-bottom: 10px;
-}
-
-.login-form-btn {
-    width: 100%;  
-    height: 38.4px; 
-    padding-top: 3.2px;  
-    overflow: hidden;
-    position: relative;
-
-    z-index: 1;
-    transition: var(--btn-transition-1);
-    border: var(--btn-disabled-border);
-    color: var(--btn-txt-clr);
-    background-color: var(--btn-bg-disabled-clr);
-    box-shadow: none;
-}
-
-/* Added to button when all fields are filled */
-.clickable {
-    cursor: pointer;
-    border: none;
-    color: var(--btn-txt-clr);
-    background-color: var(--btn-bg-clr);
-    box-shadow: var(--btn-shadow-2);
-}
-
-.login-form-btn.clickable::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-
-    z-index: -1;
-    background-color: var(--btn-bg-hover-clr);
-    transition: var(--btn-transition-2);
-    transform: scaleX(0);
-    box-shadow: var(--btn-shadow-1);
-    /* transform-origin: left; */       /* Comment in for left-to-right swipe animation */
-
-}
-
-.login-form-btn.clickable:hover::before,
-.login-form-btn.clickable:active::before {
-    transform: scaleX(1);
-    box-shadow: none;
-}
-
-.login-form-btn.clickable:active::before {
-    box-shadow: var(--form-item-shadow);
-}
-
-.login-form-btn.clickable:active {
-    box-shadow: var(--form-item-shadow);
-}
-
-.login-form-btn.clickable:active {
-    transform: translateY(2px) scale(0.99);
-}
-
-/* -- Login Extras Styling -- */
+/* -- Login Extras Styling -- */ 
 #login-extras {
     display: flex;
-    flex-direction: column;
-    margin: auto;
-    align-items: center;
-
-    height: 51.2px;  
+    justify-content: space-between;
+    vertical-align: middle;
+    margin-bottom: calc(44px * 0.85);
 }
 
 #login-forgot {
-    text-decoration: none;
-    font-size: 17px;
-    color: var(--body-clr);
-    transition: var(--link-transition);
-    margin-bottom: 16px;  
-}
-
-#login-forgot::after {
-    background-color: var(--body-hover-clr);
-}
-
-#login-forgot:hover {
-    color: var(--body-hover-clr);
-}
-
-#lbl-remember {
-    font: var(--body-sub-font);
-    color: var(--body-clr);
-}
-
-/* --Other Elements-- */
-#redirect-register {
+    height: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 24px;  
+    font: var(--body-general-font);
+    font-weight: 700;
+    text-decoration-line: underline;
+    text-align: right;
+
+    color: var(--primary-clr);
 }
 
-#redirect-register a {
-    font: var(--body-sub-font);
-    color: var(--btn-bg-clr);
-    text-decoration: none;
-    transition: var(--link-transition);
-}
-
-#redirect-register a:hover {
-    color: var(--link-hover-clr);
-}
-
-#redirect-register a::after {
-    background-color: var(--link-hover-clr);
-    height: 1px;
-}
-
-@media screen and (max-width: 700px) {
-    #redirect-register {  
-        margin-bottom: 0;
-    }
-}
-
-/* -- Login Errors Styling -- */
-#error-msg,
-.login-error * {
-    display: none;
-}
-
-.login-error {
+#login-remember {
     display: flex;
-    width: 100%;
-    height: fit-content;
-    margin: 0 0 34.6px 0;   /* 0 0 54px 0 */
+    height: 100%;
     vertical-align: middle;
 }
 
-input.show-error {
-    border: var(--error-border);
-}
-
-input.show-error:focus-visible {
-    outline: var(--error-border);   
-}
-
-.login-error.show-error {
-    margin: 10px 0 24.6px 0;
-}
-
-.login-error.show-error * {
-    display: block;
-}
-
-.error-img {
-    position: relative;
-}
-
-.error-img img {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    overflow: hidden;
-    top: -0.5px;
-}
-
-.error-msg {
-    color: var(--error-txt-clr);
-    font: var(--error-font);
+#form-remember {
     margin-top: auto;
     margin-bottom: auto;
-    margin-left: 20px;
-    height: fit-content;
 }
 
+#lbl-remember {
+    width: 145px;
+    height: 100%;
+    margin-left: calc(8px * 0.85);
 
+    font: var(--body-general-font);
+    font-family: "NanumGothic";
+    font-weight: 700;
+    color: var(--body-clr);
+}
+
+/* -- Login errors -- */
+#err-pass {
+    margin-bottom: calc(29px * 0.85);
+}
+
+#err-pass.show-error {  
+    margin-bottom: calc(25px * 0.85);
+}
+
+@media screen and (max-width: 700px) {
+    #login-box {
+        margin-top: 10vh;
+    }
+}

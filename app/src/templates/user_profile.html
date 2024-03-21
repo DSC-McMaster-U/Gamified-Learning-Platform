@@ -29,11 +29,11 @@
         setInterval(userStats, 60000);
     });
 
-        window.addEventListener("DOMContentLoaded", () => {
-            if (sessionStorage.includes("signUpInfo")) {
-                sessionStorage.removeItem("signUpInfo");
-            }
-        })
+    window.addEventListener("DOMContentLoaded", () => {
+        if (sessionStorage.getItem("signUpInfo")) {
+            sessionStorage.removeItem("signUpInfo");
+        }
+    })
     </script>
 </script>
 {% endblock %} {% block content %}
@@ -65,7 +65,7 @@
         </div>
 
     <div id="user-logout">
-        <a href="/login.html">Logout</a>
+        <a href="/logout">Logout</a>
     </div>
 </main>
 {% endblock %}

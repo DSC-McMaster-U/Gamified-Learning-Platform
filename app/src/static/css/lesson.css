@@ -1,35 +1,5 @@
 /**
  * ========
- * Imported Fonts
- * ========
-**/
-
-/* Jeju Gothic (original font in design) */
-@font-face {
-    font-family: "JejuGothic";
-    src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
-}
-
-/* Nanum Gothic (fallback font) */
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Regular.ttf");
-}
-
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Bold.ttf");
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: "NanumGothic";
-    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-ExtraBold.ttf");
-    font-weight: bolder;
-}
-
-/**
- * ========
  * Variables
  * ========
 **/
@@ -44,6 +14,9 @@
     --tab-topic-clr: #14792a;
     --tab-activity-clr: #fbbc04;
 
+    --bg-clr: #f8f8f8;
+    --box-clr: #ffffff;
+    --border-clr: #afafaf;    
     --tab-title-clr: #000000;
     --tab-subtitle-clr: rgba(0, 0, 0, 0.50);
 
@@ -52,13 +25,19 @@
     --panel-body-clr: black;
 
     /* Font Families/Presets */
-    --general-font-family: "JejuGothic", "NanumGothic";
+    --subtitle-font-family: "NanumGothicBold";
+    --body-font-family: "ProductSans";
+    --heading-font-family: "ProductSans";
+    --subheading-font-family: "NanumGothicBolder";
 
-    --tab-title-font: normal 400 17px / normal var(--general-font-family);
-    --tab-subtitle-font: normal 400 14px / normal var(--general-font-family);
-    --body-font: normal 400 14px / normal var(--general-font-family);
-    --heading-3-font: normal 400 22px / normal var(--general-font-family);
-    --heading-4-font: normal 400 20px / normal var(--general-font-family); 
+    --heading-font: normal 700 calc(30px * 0.9)/36px var(--heading-font-family);      /* 30px */
+    --subheading-font: normal 700 17.5px/20px var(--subheading-font-family);      /* 20px */
+
+    --tab-title-font: normal 400 17px / normal var(--heading-font-family);
+    --tab-subtitle-font: normal 400 14px / normal var(--subtitle-font-family);
+    --body-font: normal 400 16px / normal var(--body-font-family);
+    --heading-3-font: normal 700 26px / normal var(--heading-font-family);
+    --heading-4-font: normal 400 20px / normal var(--body-font-family); 
 
     /* Shadows */
     --tab-text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
@@ -76,6 +55,10 @@
  * ========
 **/
 
+html body {
+    background-color: var(--bg-clr);
+}
+
 :target {
     scroll-margin-top: 100px;
 }
@@ -85,10 +68,11 @@ main {
     flex-direction: row;
     /* overflow: auto; */
 
-    margin-top: 70px;
+    margin-top: 45px;
     margin-left: auto;
     margin-right: auto;
     width: 90%;
+    transform: scale(0.95);
 }
 
 .tabs-wrapper {
@@ -109,11 +93,28 @@ main {
 .lesson-wrapper h3 {
     color: var(--panel-h3-clr);
     font: var(--heading-3-font);
+    letter-spacing: 0.6px;
 }
 
 .lesson-wrapper h4 {
-    color: var(--panel-h4-clr);
-    font: var(--heading-4-font);
+    position: relative;
+    font: var(--subheading-font);
+    color: var(--tab-module-clr);
+    text-transform: uppercase;
+    margin-bottom: 23px;
+}
+
+.lesson-wrapper h4::after {
+    position: absolute;
+    content: "";
+    width: 61px;
+    height: 0px;
+    left: 0;
+    right: 0;
+    bottom: -8px;
+    margin: auto;
+
+    border: 1px solid #5B83EB;
 }
 
 .tabs-wrapper ul {
@@ -170,25 +171,29 @@ main {
 .tab-title {
     font: var(--tab-title-font);
     color: var(--tab-title-clr);
-    text-shadow: var(--tab-text-shadow);
+    /* text-shadow: var(--tab-text-shadow); */
 }
 
 .tab-subtitle {
     font: var(--tab-subtitle-font);
     color: var(--tab-subtitle-clr);
-    text-shadow: var(--tab-text-shadow);
+    letter-spacing: -0.4px;
+    /* text-shadow: var(--tab-text-shadow); */
 }
 
 .tabs-wrapper button {
     border: none;
-    background: none;
+    background: #ffffff;
     width: 100%;
     text-align: left;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
 }
 
 .tabs-unit-menu {
-    border-right: 0.5px #dedddd solid;
+    border-right: 2px #c3c3c3 solid;
+    border-bottom: 2px #c3c3c3 solid;
+    border-radius: 9px;
+    overflow: hidden;
 }
 
 li.tabs-unit {
@@ -203,7 +208,7 @@ li.tabs-unit {
     padding-left: 20px;
 
     border-left: 10px var(--tab-module-clr) solid;
-    background-color: #f5f5f5;
+    background-color: var(--box-clr);
     transition: var(--tab-bg-transition);
 }
 
@@ -236,23 +241,27 @@ ul.tabs-unit-menu {
 .tabs-unit-menu li button::before,
 .tabs-topic-menu li button::before,
 .tabs-activity-menu li button::before {
-    background-color: #dedddd;
+    background-color: #c3c3c3;
     position: absolute;
     content: "";
-    height: 2px;
+    height: 1px;
     width: 100%;
     right: 0;
     top: 0;
+}
+
+.tabs-module button::before {
+    height: 2px;
 }
 
 .tabs-module button::after,
 .tabs-unit-menu li button::after,
 .tabs-topic-menu li button::after,
 .tabs-activity-menu li button::after {
-    background-color: #dedddd;
+    background-color: #c3c3c3;
     position: absolute;
     content: "";
-    height: 2px;
+    height: 1px;
     width: 100%;
     right: 0;
     bottom: 0;
@@ -336,28 +345,32 @@ ul.tabs-unit-menu {
 }
 
 .panel-wrapper {
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; */
-    background-color: rgba(222, 221, 221, 0.30);
+    background-color: var(--box-clr);
+    border: 1px solid var(--border-clr);
+    border-radius: 9px;
+    box-shadow: 0px 0px 0px 0.5px var(--border-clr);
     width: 100%;
-    padding-top: 25px;
-    padding-bottom: 20px;
+    padding-top: 31px;
+    padding-bottom: 36px;
 }
 
 .panel-wrapper > * {
-    background-color: #ffffff;
-    border: 2px solid #D4D4D4;
+    background-color: var(--box-clr);
+    border: 1px solid var(--border-clr);
+    box-shadow: 0px 0px 0px 0.5px var(--border-clr), 3px 3px 0px var(--border-clr);
+    border-radius: 9px;
 }
 
 .lesson-heading {
     width: 100%;
+    height: 78px;
     border: 2px solid #afafaf;
     border-top: 6px solid rgb(91, 131, 235);
+    background-color: var(--box-clr);
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 0px 9px 9px; 
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 29px;
 }
 
 .lesson-heading h3 {
@@ -374,7 +387,8 @@ ul.tabs-unit-menu {
     border-width: 3px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0px 0px 0px 0.5px var(--tab-module-clr);
 
     padding-top: 20px;
     padding-bottom: 5px;
@@ -398,7 +412,7 @@ ul.tabs-unit-menu {
 
 .lesson-obj li,
 .textbook-pages li {
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     overflow-wrap: anywhere;
     word-break: normal;
     color: var(--panel-body-clr);
@@ -407,7 +421,7 @@ ul.tabs-unit-menu {
 .lesson-video,
 .lesson-text,
 .lesson-textbook {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .lesson-video {
@@ -418,14 +432,10 @@ ul.tabs-unit-menu {
     max-width: 700px;
     width: 75%;
 
-    padding-top: 15px;
+    padding-top: 20px;
     padding-bottom: 25px;
     margin-left: auto;
     margin-right: auto;
-}
-
-.lesson-video h4 {
-    margin-bottom: 15px;
 }
 
 .lesson-video .video-wrapper {
@@ -452,10 +462,6 @@ ul.tabs-unit-menu {
     margin-right: auto;
 }
 
-.lesson-textbook h4 {
-    margin-bottom: 15px;
-}
-
 .textbook-link {
     display: flex;
     justify-content: space-evenly;
@@ -465,9 +471,9 @@ ul.tabs-unit-menu {
 }
 
 .textbook-link span {
-    font: var(--heading-4-font);
+    /* font: var(--heading-4-font); */
     color: #13348b;
-    font-size: 15px;
+    font-size: 16px;
     margin-top: auto;
     margin-bottom: auto;
 }
@@ -475,9 +481,11 @@ ul.tabs-unit-menu {
 a.textbook-download {
     cursor: pointer;
     text-decoration: underline;
-    font: var(--body-font);
-    font-size: 15px;
+    font: var(--heading-4-font);
+    font-family: "JejuGothic";
+    font-size: 16px;
     color: #a6a3cd;
+    letter-spacing: -0.3px;
 }
 
 .textbook-pages ul {
@@ -503,15 +511,11 @@ a.textbook-download {
     text-indent: 30pt;
 }
 
-@media screen and (min-width: 1300px) {
-    .lesson-wrapper h3 {
-        font-size: 24px;
-    }
-
+/* @media screen and (min-width: 1300px) {
     .lesson-wrapper h4 {
         font-size: 22px;
     }
-}
+} */
 
 @media screen and (max-width: 600px) {
     .textbook-link span {

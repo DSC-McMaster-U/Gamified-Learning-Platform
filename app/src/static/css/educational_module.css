@@ -1,0 +1,410 @@
+/* educational_module.css - contains styling for the educational module page specifically, barring base elements */
+
+/**
+ * ========
+ * Imported Fonts
+ * ========
+**/
+
+/* Jeju Gothic (original font in design) */
+@font-face {
+    font-family: "JejuGothic";
+    src: url("../vendor/fonts/JejuGothic/jejugothic-regular.ttf");
+}
+
+/* Nanum Gothic (fallback font) */
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Regular.ttf");
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-Bold.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "NanumGothic";
+    src: url("../vendor/fonts/NanumGothicBold/NanumGothic-ExtraBold.ttf");
+    font-weight: bolder;
+}
+
+/**
+ * ========
+ * Variables
+ * ========
+**/
+
+:root {
+
+    /* Main Colours */
+    --box-clr: rgba(222, 221, 221, 0.30);
+    --heading-clr: #5B83EB;
+    --body-clr: rgba(0, 0, 0, 0.40);
+    --body-hover-clr: rgba(0, 0, 0, 0.50);
+    --textbox-txt-clr: #000000;
+    --textbox-text-pl-clr: rgba(0, 0, 0, 0.6);
+    --textbox-bg-clr: #FFFFFF;
+    --btn-txt-clr: #F5F5F5;
+    --btn-bg-clr: rgba(91, 131, 235, 0.50);
+    --btn-bg-hover-clr: rgba(91, 131, 235, 0.6);
+    --checkbox-clr: #D9D9D9;
+    --link-clr: rgb(99, 138, 236);
+    --link-hover-clr: rgba(91, 131, 235, 0.8);
+
+    /* Font Families/Presets */
+    --body-font-family: "JejuGothic", "NanumGothic";
+    --heading-font-family: "JejuGothic", "NanumGothic";
+
+    --heading-font: normal 400 26px/normal var(--heading-font-family);
+    --body-font: normal 400 18px/normal var(--body-font-family);
+    --link-font: normal 00 15.4px/normal var(--body-font-family);
+    --body-sub-font: normal 400 15px/normal var(--body-font-family);
+
+    /* Borders & Shadows */
+    --form-item-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+    --btn-shadow-1: 0px 4px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.225) inset;
+    --btn-shadow-2: 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
+
+    /* Transitions */
+    --link-transition: all 0.2s ease;
+    --underline-transition: transform 0.3s ease-out;
+    --btn-transition-1: all 0.1s linear;
+    --btn-transition-2: all 0.7s ease;
+}
+
+/**
+ * ========
+ * General Styling
+ * ========
+**/
+
+main a {
+    position: relative;
+}
+
+main a::after {
+    background-color: var(--textbox-bg-clr);
+    position: absolute;
+    content: '';
+    height: 1.5px;
+    width: 100%;
+    bottom: -2px;
+    left: 0;
+
+    transform: scaleX(0);
+    transform-origin: bottom left;
+    transition: var(--underline-transition);
+}
+
+main a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/**
+ * ========
+ * Specific Element Styling
+ * ========
+**/
+
+#heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 60px;
+    margin-bottom: 20px;
+}
+
+#heading h1 {
+    font: var(--heading-font);
+    color: var(--heading-clr);
+}
+
+@media screen and (max-width: 700px) {
+    #heading {  
+        margin-bottom: 20px;
+    }
+}
+.body-text {
+    font: var(--body-font);
+}
+
+
+/* Adjustments for educational module */
+.content {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+
+.sidebar {
+    width: 30%;
+    padding: 20px;
+/*     background-color: #F9F9F9; */
+    margin-left: 15px;
+    position: relative;
+}
+
+.sidebar::after {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 47px;
+    background: #5B83EB;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.sidebar h2 {
+    color: #333;
+}
+
+.sidebar-unit {
+    margin-bottom: 15px; /* Adjust margin as needed for spacing between units */
+}
+
+/* Rectangle button styling */
+.sidebar-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #DEDDDD;
+    color: rgba(0, 0, 0, 0.75);
+    font-family: JejuGothic;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: normal;
+    border: none;
+    cursor: pointer;
+}
+
+.sidebar-button:hover {
+    background-color: #d6d6d6;
+}
+
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.unit-button,
+#preAlgebra{
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #FFFFFF;
+    border: 3px solid #DEDDDD;
+    font-family: JejuGothic;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+    cursor: pointer;
+    text-align: left;
+    margin-block: -2px;
+    border-left: #FFFFFF;
+    border-right: #FFFFFF;
+    width: 100%;
+}
+
+#preAlgebra {
+    color: #000000; /* Set the text color to black */
+    border-left: 7px solid #5B83EB;
+    background-color: rgba(222, 221, 221, 0.30);
+    padding: 15px 20px;
+    margin-bottom: -30px;
+    border-top: #FFFFFF;
+    
+}
+
+.unit-number,
+#preAlgebra .unit-title{
+    display: block;
+    color: var(--main-link-clr); /* Use the color you want */
+    font-size: 16px;
+    
+}
+
+#preAlgebra .unit-number{
+    color: #000000;
+    display: block;
+    font-size: 21px;
+}
+
+
+.unit-title {
+    display: block;
+    color: var(--main-link-hover-clr); /* Use the color you want */
+}
+
+/* Rectangle beside sidebox */
+#main-container {
+    display: flex;
+    width: 100%;
+    padding: 30px;
+    background-color: #F9F9F9;
+    margin-left: 15px;
+    position: relative;
+}
+
+#main-container #sidebox {
+    display: flex;
+    float: right;
+    margin-right: 10px; /* Adjust the margin as needed for spacing */
+    background-color: #f4f4f4;
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    
+}
+
+.content-box{
+    flex-grow: 1;
+    background: #FFFFFF;
+    border: 3px solid #DEDDDD;
+    position: relative;
+    margin-bottom: 30px; /* Adjust the margin between the two lessons boxes */
+    
+}
+
+.content-box[enabled] {
+    border-top: 7px solid #5B83EB;
+}
+
+.content-title {
+    display: flex;
+    padding: 10px 20px;
+    background-color: #FFFFFF;
+    border-bottom: 3px solid #DEDDDD;
+    font-family: JejuGothic;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: left; /* Center text */
+    width: 95%; /* Set width to 50% */
+    margin: auto; /* Center horizontally */
+    margin-top: 50px;
+}
+
+.lesson-title {
+    display: flex;
+    padding: 10px 20px;
+    background-color: #FFFFFF;
+    font-family: JejuGothic;
+    font-size: 18px;
+    font-weight: 400;
+    text-align: left; /* Center text */
+    width: 95%; /* Set width to 50% */
+    margin: auto; /* Center horizontally */
+}
+
+.content-points-upnext {
+    color: #000000;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    display: flex;
+    padding: 20px;
+    background-color: #FFFFFF;
+    font-family: JejuGothic;
+    font-size: 17px;
+    font-weight: 400;
+    width: 95%;
+    margin: auto; /* Center horizontally */
+    margin-bottom: -70px;
+    margin-top: 20px;
+    justify-content: space-between;
+    
+}
+
+.content-upnext{
+    color: #5B83EB;
+}
+
+.content-points{
+    border-bottom: 3px solid #DEDDDD;
+}
+
+.unit-button:hover{
+    background-color: #d6d6d6;
+}
+
+.module-buttons {
+    display: flex;
+    justify-content: space-between; /* Align buttons to the left and right */
+    width: 95%;
+    padding: 20px;
+    margin: auto; /* Center horizontally */
+    
+}
+
+.get-started-button,
+.start-quiz-button {
+    font-size: 20px;
+    font-weight: 400;
+    border: none;
+    color: var(--btn-txt-clr);
+    background-color: var(--btn-bg-clr);
+    box-shadow: var(--form-item-shadow);
+    transition: var(--btn-transition-1);
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 48%; /* Set width to 48% to leave some space between buttons */
+}
+
+.get-started-button::before,
+.start-quiz-button::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    z-index: -1;
+    background-color: var(--btn-bg-hover-clr);
+    transition: var(--btn-transition-2);
+    transform: scaleX(0);
+}
+
+
+.get-started-button:hover::before,
+.start-quiz-button:hover::before,
+.get-started-button:active::before,
+.start-quiz-button:active::before {
+    transform: scaleX(1);
+    box-shadow: var(--btn-shadow-1);
+}
+.get-started-button:hover,
+.start-quiz-button:hover{
+    background-color: #d6d6d6;
+}
+
+.get-started-button:active::before,
+.start-quiz-button:active::before  {
+    box-shadow: none;
+}
+
+
+.get-started-button:active,
+.start-quiz-button:active {
+    box-shadow: var(--btn-shadow-2);
+    transform: translateY(2px) scale(0.99);
+}
+
+.get-started-button[disabled],
+.start-quiz-button[disabled]{
+    pointer-events: none;
+    opacity: 0.5; /* Optional: reduce opacity for a disabled look */
+    /* Add more specific styles as needed */
+}
+
+
+/* Add more specific styles as needed */
