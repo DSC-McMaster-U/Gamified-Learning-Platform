@@ -1,5 +1,5 @@
 import os
-from .models import db, Course, Module, Topic, Lesson, Subject, User
+from .models import db, Course, Module, Topic, Lesson, Subject, User, Points, UserProgress, GradeEnum
 
 def create_file_paths(course_id, module_id, topic_id):
     # This creates the file path for the video/thumbnails of a given course, still need to manually add in the video/
@@ -20,16 +20,48 @@ def load_database():
     most_recent_user = User.query.order_by(User.registration_date.desc()).first()
     pre_algebra_course = Course.query.filter_by(name="Pre-Algebra").first()
 
+    # Keep track of user whose courses attribute we want to update, whether it is an existing user or a new test user
+    user_to_update = most_recent_user
+
+    # Create a test user if no user exists in the database, which will allow us to test functionality of features without having to create new user
+    if not most_recent_user:
+        new_user = User(
+            email="johndoe@gmail.com",
+            username="johndoe",
+            name="John Doe",
+            grade=GradeEnum.NINTH,
+            age=14
+        )
+
+        password = "John@123"
+        new_user.set_password(password)
+        db.session.add(new_user)
+        db.session.commit()
+            
+        new_user_points = Points(user_id=new_user.id)
+
+        db.session.add(new_user_points)
+        db.session.commit()
+            
+        new_user_progress = UserProgress(
+            user_id=new_user.id,
+            xp=0,
+            level=1,
+            next_level_xp=1000,
+            current_streak=0,
+            longest_streak=0
+        )
+    
+        db.session.add(new_user_progress)
+        db.session.commit()
+
+        user_to_update = new_user
+        
     # Since this function will run inside of app.py everytime Flask is run, we want to ensure that the database only gets populated by this script
     # if the course does not already exist
-
     if not pre_algebra_course:
         course = Course(name="Pre-Algebra", subject_type=Subject.BIOLOGY)
         db.session.add(course)
-        db.session.commit()
-
-        print(f"Course ID: {course.id}")
-        most_recent_user.courses.append(pre_algebra_course)
         db.session.commit()
 
         module1 = Module(name="Factors & Multiples", course_id=course.id)
@@ -145,10 +177,15 @@ def load_database():
         db.session.add(module8)
         db.session.commit()
 
+        # View Course ID in console for testing purposes, can also use flask shell command created in run_app.py
+        print(f"Course ID: {course.id}")
+        user_to_update.courses.append(course)
+        db.session.commit()
+
         print("Database populated.")
     else:
-        if pre_algebra_course not in most_recent_user.courses:
-            most_recent_user.courses.append(pre_algebra_course)
+        if pre_algebra_course not in user_to_update.courses:
+            user_to_update.courses.append(pre_algebra_course)
             db.session.commit()
         print("The Pre-Algebra course already exists in the database.")
 

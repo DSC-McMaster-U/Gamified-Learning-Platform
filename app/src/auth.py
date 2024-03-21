@@ -126,7 +126,7 @@ def register():
         
         new_user_points = Points(user_id=new_user.id)
 
-        db.session.add(new_user_progress)
+        db.session.add(new_user_points)
         db.session.commit()
 
         flash("Registration Successful!")
