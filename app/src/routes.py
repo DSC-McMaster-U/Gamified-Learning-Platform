@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 from .models import * 
 from flask_login import login_required, current_user
 from sqlalchemy import or_, and_
@@ -380,24 +380,26 @@ def modify_user_lesson():
 def leaderboard_api():
     # Return JSON response to dynamically view more users on leaderboard page
     page = request.args.get('page', 1, type=int)
-    users_per_page = 20 # render 20 users per page
+    per_page = current_app.config['PER_PAGE']
 
     # retrieve the next users from leaderboard, set error_out to False so that the application does not return a 404 error when there are no remaining users
-    leaderboard_next_users = User.query.join(Points).order_by(Points.points.desc()).paginate(page=page, per_page=users_per_page,
+    leaderboard_page = User.query.join(Points).order_by(Points.points.desc()).paginate(page=page, per_page=per_page,
                             error_out=False)
-    leaderboard_users = leaderboard_next_users.items
 
-    users_json = []
-    for user in leaderboard_users:
-        user_data = {
-            'name': user.name,
-            'points': user.points.points
-        }
-        users_json.append(user_data)
+    response = {
+        'leaderboard': [
+            {
+                'rank': (page - 1) * per_page + i + 1,
+                'username': user.username,
+                'points': user.points
+            } for i, user in enumerate(leaderboard_page.items)
+        ],
+        # check if there is another page of users when sending the JSON response
+        'has_next': leaderboard_page.has_next,
+        'next_page': page + 1 if leaderboard_page.has_next else None,
+        'has_prev': leaderboard_page.has_prev,
+        'prev_page': page + 1 if leaderboard_page.has_prev else None,
+        'total_users': leaderboard_page.total
+    }
 
-    # check if there is another page of users when sending the JSON response
-    return jsonify({
-        'leaderboard': users_json,
-        'has_next': leaderboard_next_users.has_next,
-        'next_page': page + 1 if leaderboard_next_users.has_next else None
-    })
+    return jsonify(response)

@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, session, url_for, request, flash
 from .models import User, db, GradeEnum, UserProgress, Points, Teacher
-from flask_login import login_user
+from flask_login import login_user, current_user
 from .utils.passwordStrength import check_password_strength
 from .utils.calculateAge import calculate_age
+import re
 
 # Create authentication blueprint for handling relevant routes (signup, login, logout, etc.)
 auth = Blueprint('auth', __name__)
@@ -13,11 +14,22 @@ def redirectLogin():
 
 @auth.route('/login')
 def login(): 
+    if session.get('login_type') is None:
+        session['login_type'] = None
+
+    if current_user.is_authenticated:  # already logged in
+        studentCheck = User.query.filter_by(email=current_user.email).first()
+        teacherCheck = Teacher.query.filter_by(email=current_user.email).first()
+        
+        if teacherCheck and not studentCheck:
+            return redirect(url_for('main.teacher_page'))
+        else:
+            return redirect(url_for('main.dashboard_page'))
+        
     return render_template('login.html', logged_in=False) # Temporary logged-in value for now, changes header appearance
 
 @auth.route('/login', methods=['POST'])
 def login_post():
-
     # Retrieve inputted login details
     email = request.form.get('email')
     password = request.form.get('password')
@@ -61,9 +73,11 @@ def login_post():
         db.session.commit()
         flash('Successfully logged in! Redirecting to dashboard...', 'login_success')
         if isinstance(account, User):
-            return redirect(url_for('main.profile'))
+            session['login_type'] = "student"
+            return redirect(url_for('main.dashboard_page'))
         else:  # account is an instance of Teacher
-            return render_template('temp_teacher_redirect.html')
+            session['login_type'] = "teacher"
+            return redirect(url_for('main.teacher_page'))
     else:
         flash('This account is locked. Please contact support to unlock your account and reset your password.', 'login_error')
         return redirect(url_for('auth.login'))
@@ -71,6 +85,8 @@ def login_post():
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
+    if session.get('login_type') is None:
+        session['login_type'] = None
 
     if request.method == "POST":
 
@@ -101,6 +117,9 @@ def register():
         if user_email:
             flash("This email already exists.", "register_error")
             return redirect(url_for("auth.register"))   
+        if not re.search("^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$", email):
+            flash("You must provide a valid email address.", "register_error")
+            return redirect(url_for("auth.register"))
         if confirm_email != email:
             flash("The emails do not match!", "register_error")
             return redirect(url_for("auth.register"))             
@@ -165,4 +184,13 @@ def register():
         return redirect(url_for("auth.login"))
 
     else:
+        if current_user.is_authenticated:  # already logged in
+            studentCheck = User.query.filter_by(email=current_user.email).first()
+            teacherCheck = Teacher.query.filter_by(email=current_user.email).first()
+            
+            if teacherCheck and not studentCheck:
+                return redirect(url_for('main.teacher_page'))
+            else:
+                return redirect(url_for('main.dashboard_page'))
+
         return render_template("register.html", logged_in=False)

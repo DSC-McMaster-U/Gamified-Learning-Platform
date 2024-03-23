@@ -20,6 +20,7 @@ const errorMapping = {
     "This username already exists." : "err-username",
     "You must provide a username." : "err-username",
     "This email already exists." : "err-email",
+    "You must provide a valid email address." : "err-email",
     "The emails do not match!" : "err-confirm-email",
     "You must provide a password." : "err-pass",
     "Password is not strong enough." : "err-pass",
@@ -112,7 +113,7 @@ function updateField() {
     });
 
     inputFields.forEach((inputField) => {
-        if (inputField.classList.contains("auth-form-date")) {
+        if (inputField.classList.contains("register-form-date")) {
             ;["blur", "change"].forEach((event) => {
                 inputField.addEventListener(event, () => {
                     if (inputField.value && inputField.value != "") {
@@ -230,12 +231,10 @@ function retainFieldInfo() {
 function toggleGradeField() {
     const gradeField = document.getElementById("form-grade");
     if (selectedRole === "teacher") {
-        // gradeField.style.display = "none";
-        gradeField.classList.add("role-hidden");
+        gradeField.style.display = "none";
         gradeField.removeAttribute("required"); // Remove the 'required' attribute for teacher role
     } else {
-        gradeField.classList.remove("role-hidden");
-        // gradeField.style.display = "block";
+        gradeField.style.display = "block";
         gradeField.setAttribute("required", ""); // Set the 'required' attribute for student role
     }
 }
