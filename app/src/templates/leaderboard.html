@@ -6,7 +6,7 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
-    const userPanel = document.querySelector("#personal-info");
+    const userPanel = document.getElementById("personal-info");
     const profileIconPage = userPanel.querySelector(".dropdown-img");
     
     let profileIconHeader = profileDropdown.querySelector(".dropdown-img");
@@ -27,10 +27,15 @@
     }
 
     $(document).ready(function () {
-        userStats();
+        if (document.querySelector(".dropdown-subtitle").textContent.trim() == "Student") {
+            userStats();
 
-        // Update every minute
-        setInterval(userStats, 60000);
+            // Update every minute
+            setInterval(userStats, 60000);
+        } else {
+            userPanel.querySelector("#points").textContent = "Points: - -";
+            userPanel.querySelector("#streak").textContent = "Streak: - -";
+        }
     });
 
     window.addEventListener("DOMContentLoaded", () => {
