@@ -149,8 +149,11 @@ def quiz_page(quiz_id):
 def dashboard_page():
     loggedInUser = returnLoggedInData()
 
-    user_progress = current_user.progress
-    user_points = current_user.points
+    if loggedInUser["role"] == "Teacher":
+        return redirect(url_for("main.teacher_page"))
+
+    user_progress = current_user.progress 
+    user_points = current_user.points 
     leaderboard_data = Points.get_leaderboard()
 
     return render_template(
@@ -219,6 +222,9 @@ def teacher_page():
         logged_in=True)
         '''
     loggedInUser = returnLoggedInData()
+
+    if loggedInUser["role"] == "Student":
+        return redirect(url_for("main.dashboard_page"))
     
     return render_template(
         'teachers.html', 
