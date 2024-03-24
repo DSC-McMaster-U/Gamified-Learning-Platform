@@ -1,9 +1,13 @@
 services:
   web:
-    build: .
+    build: 
+      context: .
     ports:
       - "8080:8080"
     volumes:
-      - .:/app
+      - db-data:/instance
     environment:
-      FLASK_DEBUG: "true"
+      - SECRET_KEY=${SECRET_KEY}
+      - FLASK_DEBUG=true
+volumes:
+  db-data:
