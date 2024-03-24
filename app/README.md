@@ -13,7 +13,7 @@ What things you need to install the software and how to install them.
 
 ### Installing
 
-A step by step series of examples that tell you how to create and manage the application through a local Docker image.
+A step by step guide on how to create and manage the application through a local Docker image.
 
 ### Building and Running a Docker Image
 
@@ -26,7 +26,7 @@ docker compose up
 
 Upon executing this command for the first time, Docker will package the project within a local image, installing any dependencies needed to run—this can take anywhere from 20 seconds up to a minute. Afterwards, a new container environment will be set up and the packaged application will immediately run in it, starting up a local server at `127.0.0.1:8080`. Note that Docker only needs to compile an image once; subsequent startups of the same image will execute within a matter of seconds.
 
-Some additional things you can do at startup:
+Some additional options you have at startup:
 - To run an application in the background while freeing up the terminal for other commands, append a `-d` flag to the end of the above command.
 - To access an interactive bash shell within the container, run the following:
 
@@ -34,7 +34,7 @@ Some additional things you can do at startup:
   docker compose up -d
   docker compose exec web sh
   ```
-  This can be useful, in the case you need to execute any Flask shell commands while the server is running (e.g. `cd app; flask --app run_app.py clear-db`). To exit this shell, just run the `exit` command.
+  This can be useful, especially in the case you need to execute any Flask shell commands while the server is running (e.g. `cd app; flask --app run_app.py clear-db`). To exit this shell, just run the `exit` command.
 
 ### Terminating the Application and Removing the Image
 If the server is running directly in a terminal, then simply enter `Ctrl + C` to stop the application and shut down the container.
