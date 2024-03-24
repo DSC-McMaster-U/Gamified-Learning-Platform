@@ -1,4 +1,5 @@
 # calculateRankings.py - uses certain algorithms and data structures to sort and organize member points in the order to be displayed on the leaderboard
+# None of this ever ended up getting used... rip :(
 
 """
 Plan:

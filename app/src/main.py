@@ -152,14 +152,20 @@ def dashboard_page():
     if loggedInUser["role"] == "Teacher":
         return redirect(url_for("main.teacher_page"))
 
+    page = request.args.get('page', 1, type=int)
+    per_page = current_app.config['PER_PAGE']
+
     user_progress = current_user.progress 
     user_points = current_user.points 
     leaderboard_data = Points.get_leaderboard()
+    leaderboard_page = User.query.join(Points).order_by(Points.points.desc()).paginate(page=page, per_page=per_page,
+                            error_out=False)
 
     return render_template(
         'dashboard.html', 
         user_progress=user_progress, 
-        leaderboard_data=leaderboard_data,
+        # leaderboard_data=leaderboard_data,
+        leaderboard_data=leaderboard_page.items,
         enumerate=enumerate,     # pass Python's enumerate() function to be used within Jinja2
         **loggedInUser
     )
@@ -177,19 +183,31 @@ def leaderboard_page():
 
     page = request.args.get('page', 1, type=int)
     per_page = current_app.config['PER_PAGE']
-
     leaderboard_page = User.query.join(Points).order_by(Points.points.desc()).paginate(page=page, per_page=per_page,
                             error_out=False)
+    leaderboard_data=leaderboard_page.items
 
     user_ranking = None
-    
     user_points = Points.query.filter_by(user_id=current_user.id).first()
+
     if user_points:
         user_ranking = Points.query.filter(Points.points > user_points.points).count() + 1
     
+    # Add dummy spots to fill up the leaderboard, if there's less than 6 users and only one page
+    if not leaderboard_page.has_next and page == 1 and len(leaderboard_data) < 7:
+        prev_length = len(leaderboard_data)
+
+        for i in range(7 - prev_length):
+            leaderboard_data.append({
+                "name": "---", 
+                "points": {
+                    "points": "---"
+                }
+            })
+
     return render_template(
         'leaderboard.html', 
-        leaderboard_data=leaderboard_page.items, 
+        leaderboard_data=leaderboard_data, 
         user_ranking=user_ranking,
         current_page=page,
         has_next=leaderboard_page.has_next,

@@ -6,6 +6,11 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
+    const userPanel = document.querySelector("#personal-info");
+    const profileIconPage = userPanel.querySelector(".dropdown-img");
+    
+    let profileIconHeader = profileDropdown.querySelector(".dropdown-img");
+
     // User stats
     function userStats() {
         $.ajax({
@@ -28,16 +33,30 @@
         setInterval(userStats, 60000);
     });
 
-        window.addEventListener("DOMContentLoaded", () => {
-            if (sessionStorage.includes("signUpInfo")) {
-                sessionStorage.removeItem("signUpInfo");
-            }
-        })
+    window.addEventListener("DOMContentLoaded", () => {
+        if (sessionStorage.getItem("signUpInfo") != null) {
+            sessionStorage.removeItem("signUpInfo");
+        }
+
+        if (profileIconHeader != null) {
+            profileIconPage.style.backgroundColor = profileIconHeader.style.backgroundColor   
+        }
+    })
     </script>
-{% endblock %} {% block content %}
+{% endblock %} 
+
+{% block content %}
 <main>
+    <div id="heading">
+        <h1>Leaderboard</h1>
+    </div>
+
     <div id="leaderboard-section">
         <div id="personal-info">
+            <div class="dropdown-img">
+                <span>{{ current_user.username[0]|upper }}</span>
+            </div>
+
             <h1 id="name">{{ name }}</h1>
             <h3 id="username">{{ username }}</h1>
 
@@ -53,9 +72,6 @@
             {% endif %}
         </div>
         <div id="leaderboard-table-div">
-            <div id="heading">
-                <h1>Leaderboard</h1>
-            </div>
             <table id="leaderboard-table">
                 <thead>
                     <tr id="table-heading">
@@ -67,10 +83,17 @@
                 <tbody id="table-body">
                 {% for entry in leaderboard_data %}
                     <tr class="table-entry" id="rank-{{ loop.index }}">
-                        <td class="entry-ranking">{{ loop.index }}</td>
+                        <td class="entry-ranking">#{{ loop.index }}</td>
                         <td class="entry-username">{{ entry.name }}</td>
                         <td class="entry-points">{{ entry.points.points }}</td>
                     </tr>
+                    {% if loop.index == 3 and current_page == 1 %}
+                    <tr class="table-entry" id="divider">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
