@@ -24,7 +24,7 @@ Afterwards, navigate to the root of the project and run:
 docker compose up
 ```
 
-Upon executing this command for the first time, Docker will package the project within a local image, installing any dependencies needed to run—this can take anywhere from 20 seconds up to a minute. Afterwards, a new container environment will be set up and the packaged application will immediately run in it, starting up a local server at `127.0.0.1:8080`. Note that Docker only needs to compile an image once; subsequent startups of the same image will execute within a matter of seconds.
+Upon executing this command for the first time, Docker will package the project within a local image, installing any dependencies needed to run—this can take anywhere from 10 seconds up to a minute. Afterwards, a new container environment will be set up and the packaged application will immediately run in it, starting up a local server at `127.0.0.1:8080`. Note that Docker only needs to compile an image once; subsequent startups of the same image will execute within a matter of seconds.
 
 Some additional options you have at startup:
 - To run an application in the background while freeing up the terminal for other commands, append a `-d` flag to the end of the above command.
