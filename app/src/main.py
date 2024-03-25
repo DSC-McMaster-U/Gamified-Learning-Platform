@@ -307,9 +307,8 @@ def teacher_page():
     )
     
 @main.route('/contact')
-@login_required
 def contact_page():
-    return render_template('contact.html', current_user=current_user, logged_in=True)
+    return render_template('contact.html')
 
 
 @main.route('/logout')
