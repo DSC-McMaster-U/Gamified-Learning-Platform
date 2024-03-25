@@ -105,11 +105,13 @@ function pageSetup() {
         let video = videoElement.querySelector("video");
         let source = videoElement.querySelector("source");
         let videoPathID = video.id.slice(6);
+        let videoFilename = video.getAttribute('data-video-filename')
+        let thumbnailFilename = video.getAttribute('data-thumbnail-filename')
         let videoPath = `../static/vendor/lesson-videos/${videoPathID}/`;
         let videoPlayer;
 
-        source.src = videoPath + "video.mp4";
-        video.setAttribute("data-poster", videoPath + "thumbnail.png");
+        source.src = videoPath + videoFilename;
+        video.setAttribute("data-poster", videoPath + thumbnailFilename);
         video.load();
 
         videoPlayer = new Plyr(`#${video.id}`);

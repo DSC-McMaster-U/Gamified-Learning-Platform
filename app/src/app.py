@@ -10,6 +10,7 @@ from .utils.quizSubmit import quiz_api as quiz_blueprint
 from dotenv import load_dotenv
 from sqlalchemy import desc
 import os
+from .seed_script import load_database
 
 load_dotenv()
 
@@ -63,5 +64,6 @@ def create_app(test_config=None):
 
     with app.app_context():
         db.create_all()
-        
-        return app
+        load_database()
+
+    return app
