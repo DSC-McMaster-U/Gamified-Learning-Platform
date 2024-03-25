@@ -11,3 +11,7 @@ python3-virtualenv/
 .coverage
 app/src/instance/
 app/instance/
+app/src/static/vendor/lesson-videos/*
+!app/src/static/vendor/lesson-videos/placeholder/
+app/src/static/vendor/textbooks/*
+!app/src/static/vendor/textbooks/placeholder/
