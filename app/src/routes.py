@@ -403,3 +403,9 @@ def leaderboard_api():
     }
 
     return jsonify(response)
+
+# Temp route for daily challenge
+@routes.route("/daily_challenge", methods=['GET'])
+@login_required
+def daily_challenge():
+    return "Need to create"
