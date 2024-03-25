@@ -1,7 +1,12 @@
 import os
+from shutil import copyfile
 from .models import db, Course, Module, Topic, Lesson, Subject, User, Points, UserProgress, GradeEnum
 
-def create_file_paths(course_id, module_id, topic_id):
+VIDEO_PLACEHOLDER = "static/vendor/lesson-videos/placeholder/video.mp4"
+THUMBNAIL_PLACEHOLDER = "static/vendor/lesson-videos/placeholder/thumbnail.png"
+TEXTBOOK_PLACEHOLDER = "static/vendor/textbooks/placeholder/sample.pdf"
+
+def create_file_paths(course_id, module_id, topic_id, is_video_lesson=True):
     # This creates the file path for the video/thumbnails of a given course, still need to manually add in the video/
     # thumbnails into the created directory
 
@@ -13,8 +18,13 @@ def create_file_paths(course_id, module_id, topic_id):
     print("Lesson Video Path:", lesson_video_path)
     print("Textbook Path:", textbook_path)
 
-    os.makedirs(lesson_video_path, exist_ok=True)
     os.makedirs(textbook_path, exist_ok=True)
+    copyfile(os.path.join(script_dir, TEXTBOOK_PLACEHOLDER), os.path.join(textbook_path, "sample.pdf"))
+
+    if is_video_lesson:
+        os.makedirs(lesson_video_path, exist_ok=True)
+        copyfile(os.path.join(script_dir, VIDEO_PLACEHOLDER), os.path.join(lesson_video_path, "video.mp4"))
+        copyfile(os.path.join(script_dir, THUMBNAIL_PLACEHOLDER), os.path.join(lesson_video_path, "thumbnail.png"))
 
 def load_database():
     most_recent_user = User.query.order_by(User.registration_date.desc()).first()
@@ -148,34 +158,31 @@ def load_database():
         db.session.commit()
 
         create_file_paths(course.id, module1.id, module1_topic1.id)
+        create_file_paths(course.id, module1.id, module1_topic2.id, is_video_lesson=False)
+        create_file_paths(course.id, module1.id, module1_topic3.id)
 
         module2 = Module(name="Patterns", course_id=course.id)
         db.session.add(module2)
         db.session.commit()
 
-        module3 = Module(name="Ratios and Rates", course_id=course.id)
-        db.session.add(module3)
+        module2_topic1 = Topic(name="Pattern Rules", module_id=module2.id)
+        db.session.add(module2_topic1)
         db.session.commit()
 
-        module4 = Module(name="Percentages", course_id=course.id)
-        db.session.add(module4)
+        module2_topic1_lesson = Lesson(
+            title="Pattern Rules",
+            learning_objective="<li>Understand and Identify Factors</li><li>Apply factorization in real world contexts</li><li>Utilize factors to Simplify Fractions</li><li>Explore and apply prime factorization</li>",
+            video_filename="video.mp4",
+            thumbnail_filename="thumbnail.png",
+            textbook_name="sample.pdf",
+            textbook_pages="<li>Chapter 3 - Read Pages 44 to 66</li><li>Complete Exercises 1-10</li>",
+            practice_content="Spaced repetition learning here, maybe through some mini interactable question module here (for no marks, just practice)?",
+            topic_id=module2_topic1.id
+        )
+        db.session.add(module2_topic1_lesson)
         db.session.commit()
 
-        module5 = Module(name="Exponents Intro & Order of Operations", course_id=course.id)
-        db.session.add(module5)
-        db.session.commit()
-
-        module6 = Module(name="Variables & Expressions", course_id=course.id)
-        db.session.add(module6)
-        db.session.commit()
-
-        module7 = Module(name="Equations & Inequalities", course_id=course.id)
-        db.session.add(module7)
-        db.session.commit()
-
-        module8 = Module(name="Proportional Relationships", course_id=course.id)
-        db.session.add(module8)
-        db.session.commit()
+        create_file_paths(course.id, module2.id, module2_topic1.id)
 
         # View Course ID in console for testing purposes, can also use flask shell command created in run_app.py
         print(f"Course ID: {course.id}")
