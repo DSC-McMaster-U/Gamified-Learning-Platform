@@ -2,6 +2,7 @@ from flask import Blueprint, session, render_template, url_for, redirect, reques
 from flask_login import login_required, current_user, logout_user
 from functools import reduce
 from .models import *
+from sqlalchemy import or_
 
 main = Blueprint('main', __name__)
 
@@ -59,7 +60,7 @@ def quiz_page(quiz_id):
     # Workaround if there are no quizzes or related questions right now, just to prevent an error
     if not quiz or not questions:
         # Delete any temp sample tests similar to the one that will be created below
-        deleteQuizzes = Quiz.query.filter_by(title="Test Activity Debug 2").all()
+        deleteQuizzes = Quiz.query.filter(or_(Quiz.title=="Prime Factorization", Quiz.title=="Test Activity Debug 2")).all()
 
         for deleteQuiz in deleteQuizzes:
             deleteQuizQs = QuizQuestion.query.filter_by(quiz_id = deleteQuiz.id).all()
@@ -78,7 +79,7 @@ def quiz_page(quiz_id):
 
         # Temporary for now...? Add a sample quiz w/ 2 Q's, 4 answers each as a placeholder in case of errors/invalid quiz ID query
         sampleQuiz = Quiz(
-            title="Test Activity Debug 2",
+            title="Prime Factorization",
             subject_type=Subject.COMPSCI,
             # id=sampleActivity.id,
             active=False,
@@ -88,47 +89,103 @@ def quiz_page(quiz_id):
 
         db.session.add(sampleQuiz)
         db.session.commit()
-        quiz: Quiz = Quiz.query.filter_by(title="Test Activity Debug 2").first()
+        quiz: Quiz = Quiz.query.filter_by(title="Prime Factorization").first()
 
         sampleQ1 = QuizQuestion(
             quiz_id=quiz.id,
-            question_content="This is a sample question for you to answer. What is the answer?"
+            question_content="Which of the following is not a prime number?"
         )
 
         sampleQ2 = QuizQuestion(
             quiz_id=quiz.id,
-            question_content="Test question #2:"
+            question_content="What is the prime factorization of 150?"
         )
 
-        db.session.add_all([sampleQ1, sampleQ2])
+        sampleQ3 = QuizQuestion(
+            quiz_id=quiz.id,
+            question_content="Making a factor tree is not an effective way to demonstrate the prime factorization of a number."
+        )
+
+        db.session.add_all([sampleQ1, sampleQ2, sampleQ3])
         db.session.commit()
         questions = {
             qNum: question for qNum, question in enumerate(QuizQuestion.query.filter_by(quiz_id = quiz.id).order_by().all())
         }
         # print(questions)
-
         sampleQ1Ans = [
             QuizAnswer(
                 quiz_id=quiz.id,
                 quiz_question_id=questions[0].id,
-                correct = True if ansNum == 4 else False,
-                answer_content=f"Answer #1-{ansNum}"
-            ) for ansNum in range(1, 5)
+                correct = False,
+                answer_content="2"
+            ),
+            QuizAnswer(
+                quiz_id=quiz.id,
+                quiz_question_id=questions[0].id,
+                correct = False,
+                answer_content="3"
+            ),
+            QuizAnswer(
+                quiz_id=quiz.id,
+                quiz_question_id=questions[0].id,
+                correct = True,
+                answer_content="4"
+            ),
+            QuizAnswer(
+                quiz_id=quiz.id,
+                quiz_question_id=questions[0].id,
+                correct = False,
+                answer_content="5"
+            ),
         ]
 
         sampleQ2Ans = [
             QuizAnswer(
                 quiz_id=quiz.id,
                 quiz_question_id=questions[1].id,
-                correct = True if ansNum == 2 else False,
-                answer_content=f"Answer #2-{ansNum}"
-            ) for ansNum in range(1, 5)
+                correct = True,
+                answer_content="2 × 3 × 5²"
+            ),
+            QuizAnswer(
+                quiz_id=quiz.id,
+                quiz_question_id=questions[1].id,
+                correct = False,
+                answer_content="2² × 3² × 5²"
+            ),
+            QuizAnswer(
+                quiz_id=quiz.id,
+                quiz_question_id=questions[1].id,
+                correct = False,
+                answer_content="3² + 4² + 5³"
+            ),
+            QuizAnswer(
+                quiz_id=quiz.id,
+                quiz_question_id=questions[1].id,
+                correct = False,
+                answer_content="2³ × 3 × 5²"
+            ),
+        ]
+
+        sampleQ3Ans = [
+            QuizAnswer(
+                quiz_id=quiz.id,
+                quiz_question_id=questions[2].id,
+                correct = True,
+                answer_content="True"
+            ),
+            QuizAnswer(
+                quiz_id=quiz.id,
+                quiz_question_id=questions[2].id,
+                correct = False,
+                answer_content="False"
+            )
         ]
 
         db.session.add_all(sampleQ1Ans)
         db.session.add_all(sampleQ2Ans)
+        db.session.add_all(sampleQ3Ans)
         db.session.commit()
-
+    
         answers = {
             quizQ[0]: QuizAnswer.query.filter_by(quiz_id = quiz.id, quiz_question_id = quizQ[1].id).all() for quizQ in list(questions.items())
         }

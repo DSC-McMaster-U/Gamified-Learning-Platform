@@ -47,7 +47,11 @@
                         </a> -->
                         <!-- put the button line inside the <a> tag above after we set up the dashboard route to send in 
                             the user's current lesson url (need to update the route in main.py/update models?) -->
-                        <button id="continue-lesson">CONTINUE</button>
+                        
+                        <!-- V  Due to the lack of time, this is a link directing to a placeholder lesson...  V -->
+                        <a href="/lesson/1" id="continue-lesson-link">
+                            <button id="continue-lesson">CONTINUE</button>
+                        </a>
                     </div>
                     <div id="circular-progress-bar">
                         <!-- use inline style to set the progress value after setting up models to get percentage (create conic gradient here and not in css) -->
@@ -94,7 +98,7 @@
                 <div class="card-body2">
                     <h4>Test Yourself!</h4>
                     <p class="card-caption">Continue where you left off. Click to begin.</p>
-                    <a id="continue-quizzes-button">
+                    <a id="continue-quizzes-button" href="/quiz/0" style="text-decoration: none;">
                         <div class="button-content-left-align">
                             <!-- add in icon for each quiz unit later? -->
                             <span class="button-content-text">Unit 1: Prime Factorization</span>

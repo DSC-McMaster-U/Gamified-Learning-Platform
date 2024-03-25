@@ -130,7 +130,7 @@
             totalCount - answered
         }`;
 
-        progressBar.value = (answered / totalCount) * 100;
+        progressBar.value = Math.round((answered / totalCount) * 100);
 
         if (progressBar.value == 100) {
             let submitButton = document.getElementById("submit-quiz");

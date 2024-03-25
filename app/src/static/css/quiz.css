@@ -202,7 +202,7 @@ progress::-webkit-progress-bar {
     position: relative;
     max-width: 785px;
     width: 100%;
-    min-height: calc(651px * 0.9);
+    min-height: calc(350px * 0.9);
     height: auto;
 
     border: var(--container-border);
