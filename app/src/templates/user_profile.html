@@ -28,8 +28,8 @@
         if (document.querySelector(".dropdown-subtitle").textContent.trim() == "Student") {
             userStats();
 
-            // Update every minute
-            setInterval(userStats, 60000);
+            // Update every 30 seconds
+            setInterval(userStats, 30000);
         } else {
             infoPanel.querySelector("#pointsDisplay").textContent = "- -";
             infoPanel.querySelector("#streakDisplay").textContent = "- -";
