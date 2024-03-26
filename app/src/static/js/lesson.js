@@ -28,7 +28,13 @@ function togglePanel() {
             otherPanel.classList.remove("show-panel");
 
             if (otherPanel.getAttribute("panel-type") == "video") {
-                let video = otherPanel.querySelector("video");
+                let videoWrapper = otherPanel.querySelector(".video-wrapper")
+
+                if (videoWrapper.dataset.videoType == "file") {
+                    video = videoWrapper.querySelector("video");
+                } else {
+                    video = videoWrapper.querySelector("div");
+                }
 
                 videoPlayers[video.id].stop();
             }
@@ -102,20 +108,28 @@ function pageSetup() {
 
     // Plyr.js Elements - Add in proper video sources + thumbnails, and initialize Plyr objects using video element IDs
     for (let videoElement of videoElements) {
-        let video = videoElement.querySelector("video");
-        let source = videoElement.querySelector("source");
-        let videoPathID = video.id.slice(6);
-        let videoFilename = video.getAttribute('data-video-filename')
-        let thumbnailFilename = video.getAttribute('data-thumbnail-filename')
-        let videoPath = `../static/vendor/lesson-videos/${videoPathID}/`;
+        let videoType = videoElement.querySelector(".video-wrapper").dataset.videoType;
         let videoPlayer;
+        let video;
 
-        source.src = videoPath + videoFilename;
-        video.setAttribute("data-poster", videoPath + thumbnailFilename);
-        video.load();
+        if (videoType == "file") {
+            video = videoElement.querySelector("video");
+            let source = videoElement.querySelector("source");
+            let videoPathID = video.id.slice(6);
+            let videoFilename = video.getAttribute('data-video-filename')
+            let thumbnailFilename = video.getAttribute('data-thumbnail-filename')
+            let videoPath = `../static/vendor/lesson-videos/${videoPathID}/`;
+    
+            source.src = videoPath + videoFilename;
+            video.setAttribute("data-poster", videoPath + thumbnailFilename);
+            video.load();
+        } else {
+            video = videoElement.querySelector(".video-wrapper div");
+        }
 
         videoPlayer = new Plyr(`#${video.id}`);
         videoPlayers[video.id] = videoPlayer;
+
     }
 
     // Depending on if url contains hashtagged element, automatically open the respective lesson and its tabs

@@ -6,10 +6,9 @@ VIDEO_PLACEHOLDER = "static/vendor/lesson-videos/placeholder/video.mp4"
 THUMBNAIL_PLACEHOLDER = "static/vendor/lesson-videos/placeholder/thumbnail.png"
 TEXTBOOK_PLACEHOLDER = "static/vendor/textbooks/placeholder/sample.pdf"
 
-def create_file_paths(course_id, module_id, topic_id, is_video_lesson=True):
+def create_file_paths(course_id, module_id, topic_id, is_video_lesson=True, videoFileName=""):
     # This creates the file path for the video/thumbnails of a given course, still need to manually add in the video/
     # thumbnails into the created directory
-
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     lesson_video_path = os.path.join(script_dir, f"static/vendor/lesson-videos/{course_id}-{module_id}-{topic_id}")
@@ -21,7 +20,7 @@ def create_file_paths(course_id, module_id, topic_id, is_video_lesson=True):
     os.makedirs(textbook_path, exist_ok=True)
     copyfile(os.path.join(script_dir, TEXTBOOK_PLACEHOLDER), os.path.join(textbook_path, "sample.pdf"))
 
-    if is_video_lesson:
+    if is_video_lesson and videoFileName[:8] != "youtube:":
         os.makedirs(lesson_video_path, exist_ok=True)
         copyfile(os.path.join(script_dir, VIDEO_PLACEHOLDER), os.path.join(lesson_video_path, "video.mp4"))
         copyfile(os.path.join(script_dir, THUMBNAIL_PLACEHOLDER), os.path.join(lesson_video_path, "thumbnail.png"))
@@ -85,7 +84,7 @@ def load_database():
         module1_topic1_lesson = Lesson(
             title="Factors & Multiples",
             learning_objective="<li>Understand and Identify Factors</li><li>Apply factorization in real world contexts</li><li>Utilize factors to Simplify Fractions</li><li>Explore and apply prime factorization</li>",
-            video_filename="video.mp4",
+            video_filename="youtube:5xe-6GPR_qQ",
             thumbnail_filename="thumbnail.png",
             textbook_name="sample.pdf",
             textbook_pages="<li>Chapter 3 - Read Pages 44 to 66</li><li>Complete Exercises 1-10</li>",
@@ -147,7 +146,7 @@ def load_database():
         module1_topic3_lesson = Lesson(
             title="Factors & Multiples",
             learning_objective="<li>Understand and Identify Factors</li><li>Apply factorization in real world contexts</li><li>Utilize factors to Simplify Fractions</li><li>Explore and apply prime factorization</li>",
-            video_filename="video.mp4",
+            video_filename="youtube:ZKKDTfHcsG0",
             thumbnail_filename="thumbnail.png",
             textbook_name="sample.pdf",
             textbook_pages="<li>Chapter 3 - Read Pages 44 to 66</li><li>Complete Exercises 1-10</li>",
@@ -157,9 +156,9 @@ def load_database():
         db.session.add(module1_topic3_lesson)
         db.session.commit()
 
-        create_file_paths(course.id, module1.id, module1_topic1.id)
+        create_file_paths(course.id, module1.id, module1_topic1.id, videoFileName=module1_topic1_lesson.video_filename)
         create_file_paths(course.id, module1.id, module1_topic2.id, is_video_lesson=False)
-        create_file_paths(course.id, module1.id, module1_topic3.id)
+        create_file_paths(course.id, module1.id, module1_topic3.id, videoFileName=module1_topic3_lesson.video_filename)
 
         module2 = Module(name="Patterns", course_id=course.id)
         db.session.add(module2)
@@ -182,7 +181,7 @@ def load_database():
         db.session.add(module2_topic1_lesson)
         db.session.commit()
 
-        create_file_paths(course.id, module2.id, module2_topic1.id)
+        create_file_paths(course.id, module2.id, module2_topic1.id, videoFileName=module2_topic1_lesson.video_filename)
 
         # View Course ID in console for testing purposes, can also use flask shell command created in run_app.py
         # print(f"Course ID: {course.id}")
