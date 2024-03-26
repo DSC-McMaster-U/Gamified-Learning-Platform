@@ -6,6 +6,46 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
 {% endblock %} 
 
+{% block scripts %}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    const pointsPanel = document.querySelector("#dashboard-heading .points");
+    
+    // User stats
+    function userStats() {
+        $.ajax({
+            url: "/user_points",
+            method: "GET",
+            success: function (data) {
+                $("#pointsDisplay").text(data.points);
+            },
+            error: function (error) {
+                console.error("Error fetching user stats:", error);
+            },
+        });
+    }
+
+    $(document).ready(function () {
+        if (document.querySelector(".dropdown-subtitle").textContent.trim() == "Student") {
+            userStats();
+
+            // Update every minute
+            setInterval(userStats, 60000);
+        } else {
+            pointsPanel.querySelector("#pointsDisplay").textContent = "0";
+        }
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+        if (sessionStorage.getItem("signUpInfo") != null) {
+            sessionStorage.removeItem("signUpInfo");
+        }
+    })
+</script>
+{% endblock %}
+
 {% block content %}
 <main>
     <div id="heading">
@@ -21,7 +61,7 @@
                     src="../static/vendor/images/dashboard/points-logo.png"
                     alt=""
                 />
-                <span class="number-points">500</span>
+                <span class="number-points" id="pointsDisplay">500</span>
             </div>
             <div id="user-level">
                 <div id="level-progress-container">
@@ -114,7 +154,7 @@
                                         src="../static/vendor/images/dashboard/points-logo.png"
                                         alt=""
                                     />
-                                    <span class="number-points">500</span>
+                                    <span class="number-points">100</span>
                                 </div>
                             </div>
                         </div>
