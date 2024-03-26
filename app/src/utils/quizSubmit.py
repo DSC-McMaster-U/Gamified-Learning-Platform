@@ -1,9 +1,8 @@
 import json, re
-from flask import render_template
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, redirect, url_for, session
 from flask_login import current_user, login_required
 from datetime import datetime
-from app.src.main import returnLoggedInData
+from app.src.app import db
 
 quiz_api = Blueprint("quiz_api", __name__)
 
@@ -21,6 +20,7 @@ except IOError:
             "name": "Prime Factorization",
             "num_questions": 3,
             "revision": "2024-03-24",
+            "max_xp_points": 100,
             "questions": [
                 {
                     "number": 1,
@@ -50,7 +50,7 @@ except IOError:
 
         json.dump(data, f)
         # data = json.load(f)
-        # exit()    
+        # exit()
 
 try:
     # Pulling json data from "responses.json"
@@ -124,12 +124,18 @@ def SubmitQuiz():
                 json.dump(listObj, f, indent=4, separators=(",", ": "))
         except IOError:
             print("responses.json file not found")
-            exit()
+            redirect(url_for("main.dashboard_page"))
 
-    loggedInUser: dict = returnLoggedInData()
-    return render_template(
-        "quizResults.html", score=score, num_questions=totalNumQs, **loggedInUser
-    )
+    # Update current user's points based off of their score and max XP points given from quiz
+    current_user.points.points += round(chosenQuiz["max_xp_points"] * (score / totalNumQs))
+    print(current_user.points.points)
+    db.session.commit()
+
+    # Store user's quiz results in local Flask session to be used + rendered in redirected route
+    session["quiz_num_q"] = totalNumQs
+    session["quiz_score"] = score
+
+    return redirect(url_for("main.quiz_results"))
 
 
 @quiz_api.route("/submissions", methods=["GET"])

@@ -6,6 +6,7 @@
       "name": "Mathematics",
       "num_questions": 2,
       "revision": "2017-08-13",
+      "max_points": 9000,
       "questions": [
         {
           "number": 1,
@@ -36,6 +37,7 @@
       "name": "Prime Factorization",
       "num_questions": 3,
       "revision": "2024-03-24",
+      "max_xp_points": 100,
       "questions": [
         {
           "number": 1,

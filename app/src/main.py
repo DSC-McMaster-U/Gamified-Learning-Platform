@@ -18,7 +18,6 @@ def returnLoggedInData() -> dict:
         "age": current_user.age,
         "username": current_user.username,
         "email": current_user.email,
-        "age": current_user.age,
         "grade": None if teacherCheck and not studentCheck else current_user.grade.value,
         "current_user": current_user, 
         "role": "Teacher" if teacherCheck and not studentCheck else "Student",
@@ -216,6 +215,20 @@ def quiz_page(quiz_id):
     # print(questions)
     # print(answers)
     return render_template('quiz.html', show_footer=True, quiz=quiz, questions=questions, answers=answers, **loggedInUser)
+
+@main.route('/quiz-result', methods=['GET'])
+@login_required
+def quiz_results():
+    loggedInUser = returnLoggedInData()
+    user_score = session["quiz_score"]
+    totalNumQs = session["quiz_num_q"]
+
+    return render_template(
+        "quizResults.html", 
+        score=user_score, 
+        num_questions=totalNumQs, 
+        **loggedInUser
+    )
 
 @main.route('/dashboard')
 @login_required
