@@ -1,6 +1,8 @@
 {
-    "module": {
+  "module": [
+    {
       "number": 1,
+      "topic": 1,
       "name": "Mathematics",
       "num_questions": 2,
       "revision": "2017-08-13",
@@ -27,5 +29,46 @@
           "correct_answer": 5
         }
       ]
+    },
+    {
+      "number": 1,
+      "topic": 2,
+      "name": "Prime Factorization",
+      "num_questions": 3,
+      "revision": "2024-03-24",
+      "questions": [
+        {
+          "number": 1,
+          "question": "Which of the following is not a prime number?",
+          "answers": [
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "correct_answer": "4"
+        },
+        {
+          "number": 2,
+          "question": "What is the prime factorization of 150?",
+          "answers": [
+            "2 × 3 × 5²",
+            "2² × 3² × 5²",
+            "3² + 4² + 5³",
+            "2³ × 3 × 5²"
+          ],
+          "correct_answer": "2 × 3 × 5²"
+        },
+        {
+          "number": 2,
+          "question": "Making a factor tree is not an effective way to demonstrate the prime factorization of a number.",
+          "answers": [
+            "True",
+            "False"
+          ],
+          "correct_answer": "False"
+        }
+      ]
     }
-  }
+  ]
+}

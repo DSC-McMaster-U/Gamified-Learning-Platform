@@ -15,8 +15,8 @@ def create_file_paths(course_id, module_id, topic_id, is_video_lesson=True):
     lesson_video_path = os.path.join(script_dir, f"static/vendor/lesson-videos/{course_id}-{module_id}-{topic_id}")
     textbook_path = os.path.join(script_dir, f"static/vendor/textbooks/{course_id}")
     
-    print("Lesson Video Path:", lesson_video_path)
-    print("Textbook Path:", textbook_path)
+    # print("Lesson Video Path:", lesson_video_path)
+    # print("Textbook Path:", textbook_path)
 
     os.makedirs(textbook_path, exist_ok=True)
     copyfile(os.path.join(script_dir, TEXTBOOK_PLACEHOLDER), os.path.join(textbook_path, "sample.pdf"))
@@ -185,7 +185,7 @@ def load_database():
         create_file_paths(course.id, module2.id, module2_topic1.id)
 
         # View Course ID in console for testing purposes, can also use flask shell command created in run_app.py
-        print(f"Course ID: {course.id}")
+        # print(f"Course ID: {course.id}")
         user_to_update.courses.append(course)
         db.session.commit()
 

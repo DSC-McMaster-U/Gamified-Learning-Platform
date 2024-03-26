@@ -402,7 +402,6 @@ progress::-webkit-progress-bar {
     align-items: center;
     letter-spacing: 0.6px;
     transition: var(--btn-transition-1);
-    cursor: pointer;
 }
 
 #switch-question div::after {
@@ -422,6 +421,7 @@ progress::-webkit-progress-bar {
 
 #switch-question div.clickable {
     color: var(--heading-clr);
+    cursor: pointer;
 }
 
 #switch-question div.clickable::after {

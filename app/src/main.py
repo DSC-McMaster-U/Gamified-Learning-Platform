@@ -15,6 +15,7 @@ def returnLoggedInData() -> dict:
     
     output = {
         "name": current_user.name, 
+        "age": current_user.age,
         "username": current_user.username,
         "email": current_user.email,
         "age": current_user.age,
@@ -263,8 +264,8 @@ def leaderboard_page():
     user_points = Points.query.filter_by(user_id=current_user.id).first()
 
     if user_points:
-        user_ranking = Points.query.filter(Points.points > user_points.points).count() + 1
-    
+        user_ranking = Points.query.filter(Points.points >= user_points.points).filter(Points.user_id < current_user.id).count() + 1
+        print(current_user.id)
     # Add dummy spots to fill up the leaderboard, if there's less than 6 users and only one page
     if not leaderboard_page.has_next and page == 1 and len(leaderboard_data) < 7:
         prev_length = len(leaderboard_data)

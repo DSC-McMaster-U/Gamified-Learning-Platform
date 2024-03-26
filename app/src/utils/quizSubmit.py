@@ -1,7 +1,9 @@
-import json
+import json, re
 from flask import render_template
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
+from flask_login import current_user, login_required
 from datetime import datetime
+from app.src.main import returnLoggedInData
 
 quiz_api = Blueprint("quiz_api", __name__)
 
@@ -12,6 +14,8 @@ try:
          
 except IOError:
     print("questions.json file not found")
+    with open("../json/questions.json", "x") as f:
+        json.dump({}, f)
     exit()
 
 try:
@@ -21,30 +25,50 @@ try:
 
 except IOError:
     print("responses.json file not found")
-    exit()
+    with open("../json/responses.json", "x") as f:
+        json.dump({}, f)
+    # exit()
 
 @quiz_api.route("/submit")
+@login_required
 def SubmitQuiz():
+    queryStr = request.query_string.decode()
+    print(queryStr)
+    
+    # Currently hardcoded to choose quiz #2 (Prime Factorization) every single time for the demo; 
+    # we would change this to be dynamic in the future (send through query string of what quiz number)
+    moduleNum = 1
+    topicNum = 2
+    userAnswers = {
+        (int(re.findall("\d+", answer)[0]) - 1) : (int(re.findall("\d+", answer)[2])) for answer in queryStr.split("&")
+    }
+    chosenQuiz = [
+        quiz for quiz in data["module"] if quiz["number"] == moduleNum and quiz["topic"] == topicNum
+    ][0]
+    totalNumQs = chosenQuiz["num_questions"]
+
     # Initializing new submission with timestamp
     timestamp = str(datetime.now())
     score = 0
     # individual question data stored as list
     listObj[timestamp] = {"data":[]}
-    listObj[timestamp]["module"] = str(data["module"]["number"])
+    listObj[timestamp]["module"] = str(chosenQuiz["number"])
+    listObj[timestamp]["topic"] = str(chosenQuiz["topic"])
+    listObj[timestamp]["user_id"] = current_user.id
 
     # Created for loop to iterate for all the questions defined in "questions.json"
-    for i in range(data["module"]["num_questions"]):
-        # Initialized response variable with dummy data (Should hold user's selection)
-        response = "0.018"
+    for i in range(totalNumQs):
+        # Initialized response variable with user's response
+        response = chosenQuiz["questions"][i]["answers"][userAnswers[i]]
         # Pulling expected value from "questions.json" file
-        correct_resp = str(data["module"]["questions"][i]["correct_answer"])
+        correct_resp = str(chosenQuiz["questions"][i]["correct_answer"])
 
         try:
             # Appending user response to "responses.json"
             listObj[timestamp]["data"].append({
-                "number": str(data["module"]["questions"][i]["number"]),
-                "question": str(data["module"]["questions"][i]["question"]),
-                "answers": str(data["module"]["questions"][i]["answers"]),
+                "number": str(chosenQuiz["questions"][i]["number"]),
+                "question": str(chosenQuiz["questions"][i]["question"]),
+                "answers": str(chosenQuiz["questions"][i]["answers"]),
                 "user_answer": response,
                 "correct" : response == correct_resp
             })
@@ -55,12 +79,15 @@ def SubmitQuiz():
             # Implement logic for the case where user enters the wrong response
                 pass
             listObj[timestamp]["points"] = score 
-            listObj[timestamp]["score"] = "{}/{}".format(score, i + 1)
-            with open("json/responses.json", 'w') as f:
+            listObj[timestamp]["score"] = "{}/{}".format(score, totalNumQs)
+            with open("../json/responses.json", 'w') as f:
                 json.dump(listObj, f, indent = 4, separators=(',',': '))
         except IOError:
             print("responses.json file not found")
             exit()
+
+    loggedInUser: dict = returnLoggedInData()
+    return render_template("quizResults.html", score=score, num_questions=totalNumQs, **loggedInUser)
 
 @quiz_api.route("/submissions", methods=["GET"])
 def GetSubmissions():

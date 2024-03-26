@@ -14,7 +14,7 @@
             <progress value="0" max="100" id="progress-bar" />
         </div>
         <div id="quiz-questions">
-            <form id="quiz-form">
+            <form id="quiz-form" action="/submit">
                 <!-- Temporary workaround since there are no quizzes. DO NOT MODIFY THE IF STATEMENT -->
                 {% if quiz and questions %} 
                     {% for question_num, question in questions.items() %}

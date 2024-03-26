@@ -1,5 +1,6 @@
 from app.src.app import create_app, db
 from app.src.models import User, Course
+import json
 
 # To run the app, type "flask --app run_app.py run" into the terminal
 app = create_app()
@@ -9,6 +10,17 @@ def clear_db_command():
     if input("The database will be fully cleared. Are you sure? (y/n): ").lower() == "y":
         db.drop_all()
         db.create_all()
+
+        try:
+            # Pulling json data from "responses.json"
+            with open("../json/responses.json", "w") as f:
+                json.dump({}, f)
+
+        except IOError:
+            print("responses.json file not found, creating new response.json")
+            with open("../json/responses.json", "x") as f:
+                json.dump({}, f)
+                
         print("Database cleared.")
     else:
         print("Canceled command.")
