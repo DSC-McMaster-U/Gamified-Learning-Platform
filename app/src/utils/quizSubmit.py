@@ -16,7 +16,7 @@ except IOError:
     print("questions.json file not found")
     with open("../json/questions.json", "x") as f:
         json.dump({}, f)
-    exit()
+    # exit()
 
 try:
     # Pulling json data from "responses.json"
