@@ -285,7 +285,7 @@ def leaderboard_page():
 
         for i in range(7 - prev_length):
             leaderboard_data.append({
-                "name": "---", 
+                "username": "---", 
                 "points": {
                     "points": "---"
                 }
