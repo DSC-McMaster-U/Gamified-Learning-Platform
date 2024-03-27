@@ -68,8 +68,8 @@
                 {% for entry in leaderboard_data %}
                     <tr class="table-entry" id="rank-{{ loop.index }}">
                         <td class="entry-ranking">{{ loop.index }}</td>
-                        <td class="entry-username">{{ entry.user.name }}</td>
-                        <td class="entry-points">{{ entry.points }}</td>
+                        <td class="entry-username">{{ entry.username }}</td>
+                        <td class="entry-points">{{ entry.points.points }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

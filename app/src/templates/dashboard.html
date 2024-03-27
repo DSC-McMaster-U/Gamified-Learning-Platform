@@ -42,10 +42,9 @@
                             <!-- replace with actual lesson progress -->
                             <p id="current-lesson">2/4</p>
                         </div>
-                        
-                        <!-- Below is new line, should take you to lessons route when button is clicked-->
-                            <button id="continue-lesson" onclick="location.href='{{ url_for(routes.get_lessons) }}'">CONTINUE</button>
-
+                        <a href="lesson/1" id="continue-lesson-link">
+                            <button id="continue-lesson">CONTINUE</button>
+                        </a> 
                         <!-- put the button line inside the <a> tag above after we set up the dashboard route to send in 
                             the user's current lesson url (need to update the route in main.py/update models?) -->
                         
@@ -70,7 +69,7 @@
                         />
                     </div>
                     <p class="card-caption">Solve exciting daily challenges for points!</p>
-                    <a id="challenge-button">
+                    <a href="/daily_challenge" id="challenge-button">
                         <div class="button-content">
                             <span class="button-content-text">Factors and Multiples</span>
                             <span id="challenge-question">Number of CDs in Box</span>
@@ -84,9 +83,7 @@
                                 <span class="number-points">1000</span>
                             </div>
                         </div>
-                        <!-- New temp route, non functional -->
-                    </a href="{{ url_for('routes.daily_challenge') }}" id="challenge-button">
-                        <div class="button-content">
+                    </a>
                     <!-- add in href="{{ challenge_page_url }}" to the <a> tag after we set up the dashboard route to send in 
                         the daily challenge page url (need to update the route in main.py/update models?) -->
                     <!-- add in specific data using Jinja for the challenge topic, question, and points amount after -->
@@ -97,7 +94,7 @@
                 <div class="card-body2">
                     <h4>Test Yourself!</h4>
                     <p class="card-caption">Continue where you left off. Click to begin.</p>
-                    <a id="continue-quizzes-button">
+                    <a href="/quiz/1" id="continue-quizzes-button">
                         <div class="button-content-left-align">
                             <!-- add in icon for each quiz unit later? -->
                             <span class="button-content-text">Unit 1: Prime Factorization</span>
@@ -122,8 +119,7 @@
                 <div class="card-body3">
                     <div id="leaderboard-card-header">
                         <h4>Weekly Leaderboard</h4>
-                        <!-- Below is new button line that references leaderboard route on click-->
-                        <button id="view-leaderboard" onclick="location.href='{{ url_for(routes.leaderboard_api) }}'">VIEW ALL</button>
+                        <button id="view-leaderboard" onclick="window.location.href='/leaderboard'">VIEW ALL</button>
                     </div>
                     <ul id="leaderboard-list">
                         {% for i, user in enumerate(leaderboard_data[:5]) %}
@@ -135,8 +131,7 @@
                         {% endfor %}
                     </ul>
                 </div>
-            </div>
-            
+            </div>  
         </div>
         
         <!-- Quiz Scores Section -->

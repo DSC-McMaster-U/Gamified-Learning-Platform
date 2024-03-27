@@ -324,6 +324,7 @@ progress::-webkit-progress-value {
     border-radius: 4px;
     cursor: pointer;
     transition: var(--btn-transition-1);
+    text-decoration: none;
 }
 
 #challenge-button:hover {
@@ -358,6 +359,7 @@ progress::-webkit-progress-value {
     border-radius: 4px;
     cursor: pointer;
     transition: var(--btn-transition-1);
+    text-decoration: none;
 }
 
 #continue-quizzes-button:hover {
