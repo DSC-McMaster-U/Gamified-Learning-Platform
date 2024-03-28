@@ -84,8 +84,19 @@
                 <div class="lesson-video">
                     <h4>Video Lesson</h4>
                     <!-- Current video folder format (placeholder): "video-[course ID - 4 digits]-[moduleID - 2 digits]-[topicID - 2 digits]" -->
-
-                    <div class="video-wrapper">
+                    {% if 'youtube:' in lesson.video_filename|string %}
+                    <div class="video-wrapper" data-video-type="youtube">
+                        <div id="video-{{ course.id }}-{{ module.id }}-{{ topic.id }}" class="plyr__video-embed" id="player">
+                            <iframe
+                              src="https://www.youtube.com/embed/{{ lesson.video_filename[8:] }}?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;autohide=1&amp;enablejsapi=1"
+                              allowfullscreen
+                              allowtransparency
+                              allow="autoplay"
+                            ></iframe>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="video-wrapper" data-video-type="file">
                         <video id="video-{{ course.id }}-{{ module.id }}-{{ topic.id }}" playsinline crossorigin data-video-filename="{{ lesson.video_filename }}" 
                         data-thumbnail-filename="{{ lesson.thumbnail_filename }}" data-poster="">
                             <!-- Note: video path and thumbnail are added dynamically through JS, based on the numbers in the video ID 
@@ -93,6 +104,7 @@
                             <source src="" type="video/mp4" />
                         </video>
                     </div>
+                    {% endif %}
                 </div>
                 {% endif %}
 

@@ -1,7 +1,7 @@
 <!-- With the introduction of a new Teacher role, we need to add some functionality specific to teachers. 
 Design and create a teacher dashboard which displays relevant information (list of courses they are instructing, 
 list of students they are instructing, class progress, etc.) 
--- >
+-->
 
 {% extends "base.html" %} 
 {% block title %}Teacher Dashboard{% endblock %} 
@@ -45,7 +45,9 @@ list of students they are instructing, class progress, etc.)
                             <p id="unit-number">CALCULUS I</p>
                         </div>
                     </div>
-                    <button id="see-course">See Course</button>
+                    <a href="/lesson/1">
+                        <button id="see-course">See Course</button>
+                    </a>
                     <button id="see-course">Edit Course</button>
                     <div class="dropdown">
                         <button id="dropbtn">Switch Course</button>
