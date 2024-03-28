@@ -40,6 +40,8 @@
     --link-clr: rgb(99, 138, 236);
     --link-hover-clr: rgba(91, 131, 235, 0.8);
 
+    --border-clr: #afafaf;
+
     /* Font Families/Presets */
     --body-font-family: "JejuGothic", "NanumGothic";
     --heading-font-family: "JejuGothic", "NanumGothic";
@@ -53,6 +55,9 @@
     --btn-shadow-1: 0px 4px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.225) inset;
     --btn-shadow-2: 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
 
+    --container-border: 1px solid var(--border-clr);
+    --container-shadow: 0px 0px 0px 0.5px var(--border-clr);
+    
     /* Transitions */
     --link-transition: all 0.2s ease;
     --underline-transition: transform 0.3s ease-out;
@@ -69,18 +74,6 @@
 
 .body-text {
     font: var(--body-font);
-}
-
-input[type="password"] {
-    -webkit-text-security: disc;
-    font-family: Verdana, sans-serif;
-    letter-spacing: 2px;
-    font-size: 17.9px;
-    padding-top: 2.5px;
-}
-
-input[type="text"] {
-    padding-top: 10px;
 }
 
 main a {
@@ -115,65 +108,111 @@ main a:hover::after {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 60px;
-    margin-bottom: 20px;
+    max-width: 1149px;
+    width: auto;
+    min-height: 74px;
+    height: fit-content;
+    background-color: #fff;
+
+    border: 2px solid #afafaf;
+    border-top: 6px solid #5B83EB;
+    box-shadow: 0px 1px 8px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 0px 9px 9px; 
+
+    margin: 72px auto 30px auto;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 #heading h1 {
-    font: var(--heading-font);
-    color: var(--heading-clr);
-}
-
-#user-profile-box {
-    max-width: 425px;
-    width: auto;
-    min-height: 496px;
-    height: fit-content;
-    margin: auto;
-    margin-bottom: 30px;
-    padding: 28.8px 33.9px 33.3px 33.9px;
-    background-color: var(--box-clr);
-}
-
-#user-profile-info {
-    display: flex;
-    flex-direction: column;
+    font: normal 700 calc(30px * 0.9)/36px "ProductSans";
+    color: #595959;
+    margin-bottom: 0;
+    letter-spacing: 0.8px;
+    text-align: center;
     width: 100%;
-    height: auto;
-    margin-bottom: 32px;
+    margin: 0 40px;
 }
 
-#user-profile-info p {
-    font: var(--body-font);
-    color: var(--textbox-txt-clr);
-    margin: 10px 0;
+#info-container {
+    max-width: 1149px;
+    margin: 0 auto 20px;
+    padding: 41px 40px 30px;
+    background-color: #fff;
+    border: var(--container-border);
+    box-shadow: var(--container-shadow);
+    border-radius: 9px;
+}
+
+#info-container * {
+    font-family: "ProductSans";
+    letter-spacing: 0.8px;
+    font-size: 18px;
+}
+
+#btn-container {
+    display: block;
+    height: 51px;
+    max-width: 1149px;
+
+    margin: 30px auto 100px auto;
 }
 
 #user-logout {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 24px;  /* 30px */
+    font: normal 700 calc(22px * 0.85)/27px "ProductSans";
+    height: 51px;
+    border-radius: 10px;
+    user-select: none;
+
+    width: 100%;
+
+    color: #595959;
+    background-color: #ffffff;
+    border: var(--container-border);
+    box-shadow: var(--container-shadow);
+    letter-spacing: 1px;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-#user-logout a {
-    font: var(--body-sub-font);
-    color: var(--btn-bg-clr);
-    text-decoration: none;
-    transition: var(--link-transition);
+#user-logout:hover {
+    background-color: #DEDEDE;
+    transition: all 0.05s linear;
 }
 
-#user-logout a:hover {
-    color: var(--link-hover-clr);
+#user-logout:active {
+    background-color: #C5C4C4;
 }
 
-#user-logout a::after {
-    background-color: var(--link-hover-clr);
-    height: 1px;
+@media screen and (max-width: 1400px) {
+    #heading {
+        margin: 72px 95px 30px;
+    }
+
+    #info-container {
+        margin-left: 95px;
+        margin-right: 95px;
+    }
+
+    #btn-container {
+        margin: 30px 95px 100px;
+    }
 }
 
-@media screen and (max-width: 700px) {
-    #user-logout {  
-        margin-bottom: 0;
+@media screen and (max-width: 450px) {
+    #heading {
+        transform: scale(0.8);
+        margin: 72px auto 30px;
+    }
+
+    #info-container {
+        transform: scale(0.8);
+        margin: -50px auto 0;
+    }
+
+    #btn-container {
+        margin: -20px auto 0;
+        transform: scale(0.8);
     }
 }

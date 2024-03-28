@@ -213,6 +213,10 @@ li.tabs-unit {
     transition: var(--tab-bg-transition);
 }
 
+.tabs-module button:not(:disabled) {
+    cursor:default ;
+}
+
 .tabs-module button:hover {
     background-color: #f0f0f0;
 }

@@ -7,16 +7,18 @@
 :root {
     /* Main Colours */
     --box-clr: rgba(222, 221, 221, 0.3);
+    --bg-clr: #f8f8f8;
     --heading-clr: #5b83eb;
     --body-clr: rgba(0, 0, 0, 0.4);
     --body-hover-clr: rgba(0, 0, 0, 0.5);
+    --border-clr: #afafaf;
 
-    --textbox-txt-clr: #000000;
+    --textbox-txt-clr: #323232;
     --textbox-pl-clr: rgba(0, 0, 0, 0.6);
     --textbox-bg-clr: #ffffff;
 
     --btn-txt-clr: #f5f5f5;
-    --btn-bg-clr: rgba(91, 132, 235, 0.7);
+    --btn-bg-clr: #5B83EB; /* rgba(91, 132, 235, 0.7);*/
     --btn-bg-hover-clr: rgba(91, 131, 235, 0.8);
     --btn-bg-disabled-clr: rgba(112, 151, 249, 0.45);
 
@@ -46,6 +48,8 @@
     --btn-disabled-border: 0.01px rgb(159, 159, 159) solid;
     --input-border: 0.5px black solid;
     --error-border: 0.4px red solid;
+    --container-border: 1px solid var(--border-clr);
+    --container-shadow: 0px 0px 0px 0.5px var(--border-clr);
 
     /* Transitions */
     --link-transition: all 0.2s ease;
@@ -59,6 +63,11 @@
  * General Styling
  * ========
 **/
+
+html body {
+    background-color: var(--bg-clr);
+}
+
 
 .body-text {
     font: var(--body-font);
@@ -92,34 +101,60 @@ main a:hover::after {
  * Specific Element Styling
  * ========
 **/
+
 #heading {
     display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 1380px;
+    width: auto;
+    min-height: 74px;
+    height: fit-content;
+    background-color: #fff;
 
-    margin-top: 25px;
-    margin-bottom: 10px;
+    border: 2px solid #afafaf;
+    border-top: 6px solid #5B83EB;
+    box-shadow: 0px 1px 8px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 0px 9px 9px; 
+
+    margin: 72px auto 30px auto;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 #heading h1 {
-    font: var(--heading-font);
-    color: var(--heading-clr);
+    font: normal 700 calc(30px * 0.9)/36px "ProductSans";
+    color: #595959;
+    margin-bottom: 0;
+    letter-spacing: 0.8px;
+    text-align: center;
+    width: 100%;
+    margin: 0 40px;
 }
 
 #dashboard-container {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 10px;
-    background-color: var(--box-clr);
+    max-width: 1380px;
+    margin: 0 auto 80px auto;
+    padding: 25px 40px;
+    background-color: #fff;
+    border: var(--container-border);
+    box-shadow: var(--container-shadow);
+    border-radius: 9px;
 }
 
 #dashboard-heading {
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding-left: 20px;
-    padding-right: 20px;
-    background-color: var(--textbox-bg-clr);
+    justify-content: center;
+    height: 80px;
+    gap: 100px;
+    padding: 7px 20px 10px;
+    margin-bottom: 20px;
+    /* background-color: var(--textbox-bg-clr); */
+
+    background-color: #ffffff;
+    border: 1px solid #afafaf;
+    border-radius: 9px;
+    box-shadow: 0px 0px 0px 0.5px #afafaf, 3px 3px 0px #afafaf;
 }
 
 .points {
@@ -135,13 +170,19 @@ main a:hover::after {
 
 .number-points {
     font: var(--body-font);
-    color: var(--heading-clr);
+    color: #fff;
+}
+
+#dashboard-heading .number-points {
+    color: var(--textbox-txt-clr)
 }
 
 #user-level {
+    max-width: 476px;
+    width: 100%;
     display: inline-flex;
     flex-direction: column;
-    margin-left: 100px;
+    /* margin-left: 100px; */
     padding-top: 10px;
 }
 
@@ -150,6 +191,7 @@ main a:hover::after {
     align-items: center;
     justify-content: center;
     width: 100%;
+    max-width: 476px;
 }
 
 #user-level label {
@@ -160,8 +202,14 @@ main a:hover::after {
     flex-shrink: 0; 
 }
 
+#xp-space {
+    width: 56.2px;
+    margin-right: 20px;
+}
+
 #progress-bar {
-    width: 400px;
+    max-width: 400px;
+    width: 100%;
     height: 15px;
     color: var(--heading-clr);
     border: none;
@@ -179,11 +227,17 @@ progress::-webkit-progress-value {
     border-radius: 10px;
 }
 
+#xp-container {
+    display: flex;
+    width: 100%;
+}
+
 #remaining-xp {
+    width: 100%;
+    text-align: center;
     font: var(--body-font);
     color: var(--textbox-txt-clr);
     margin-top: 10px;
-    margin-left: 150px;
 }
 
 #cards-container {
@@ -195,14 +249,19 @@ progress::-webkit-progress-value {
 }
 
 .card {
-    background-color: var(--box-clr);
+    background-color: #ffffff;
+    border: 1px solid #afafaf;
+    border-radius: 9px;
+    box-shadow: 0px 0px 0px 0.5px #afafaf, 3px 3px 0px #afafaf;
+
+    /* background-color: var(--box-clr);
     border-radius: 8px;
-    box-shadow: var(--form-item-shadow);
+    box-shadow: var(--form-item-shadow); */
 }
 
 .card-body1 {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     padding-left: 25px;
     padding-right: 25px;
@@ -236,7 +295,6 @@ progress::-webkit-progress-value {
 }
 
 #circular-progress-bar {
-    margin-left: 200px;
     width: 190px;
     height: 190px;
     border-radius: 50%;
@@ -249,12 +307,15 @@ progress::-webkit-progress-value {
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 
 #inner-circle {
     position: absolute;
-    width: 160px;
-    height: 160px;
+    width: 100%;
+    height: 100%;
+    max-width: 160px;
+    max-height: 160px;
     border-radius: 50%;
     background-color: var(--textbox-bg-clr);
 }
@@ -398,6 +459,7 @@ progress::-webkit-progress-value {
 
 #leaderboard-card-header {
     display: flex;
+    width: 100%;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
@@ -406,7 +468,6 @@ progress::-webkit-progress-value {
 #view-leaderboard {
     width: 100px;
     height: 30px;
-    margin-left: 250px;
     font: var(--body-font);
     color: var(--btn-txt-clr);
     background-color: var(--btn-bg-clr);
@@ -461,6 +522,9 @@ progress::-webkit-progress-value {
     padding: 10px;
     margin-top: 20px;
     background-color: #cbc3e3;
+    border: 1px solid #afafaf;
+    border-radius: 9px;
+    box-shadow: 0px 0px 0px 0.5px #afafaf, 3px 3px 0px #afafaf;
 }
 
 #tracker-title {
@@ -475,7 +539,7 @@ progress::-webkit-progress-value {
     text-align: center;
     font: var(--body-sub-font);
     color: var(--textbox-txt-clr);
-    width: 92.5%;
+    width: 1165.5px;
     margin-bottom: 5px;
 }
 
@@ -483,7 +547,7 @@ progress::-webkit-progress-value {
     display: grid;
     grid-template-columns: repeat(53, 1fr); 
     gap: 2px; 
-    width: 100%;
+    width: 1260px;
 }
 
 .week {
@@ -543,9 +607,10 @@ progress::-webkit-progress-value {
 #quiz-scores-section {
     margin-top: 30px;
     padding: 20px;
-    background-color: var(--textbox-bg-clr);
-    border-radius: 8px;
-    box-shadow: var(--form-item-shadow);
+    background-color: #ffffff;
+    border: 1px solid #afafaf;
+    border-radius: 9px;
+    box-shadow: 0px 0px 0px 0.5px #afafaf, 3px 3px 0px #afafaf;
 }
 
 #quiz-scores-section h2 {
@@ -575,4 +640,64 @@ progress::-webkit-progress-value {
 .quiz-score-item .quiz-score {
     color: #000; 
     font-weight: normal;
+}
+
+@media screen and (max-width: 1420px) {
+    #heading {
+        margin: 72px 40px 30px;
+    }
+
+    #streak-tracker {
+        overflow-x: scroll;
+    }
+
+    #dashboard-container {
+        margin: 0 40px 80px 40px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    #dashboard-heading {
+        gap: 40px;
+        justify-content: space-evenly;
+    }
+
+    #cards-container {
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    #xp-container {
+        display: none;
+    }
+    
+    #user-level {
+        margin: auto;
+        padding-top: 0px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #dashboard-container {
+        transform: scale(0.8);
+        margin: -140px 0 0 0;
+    }
+
+    #heading {
+        margin-bottom: 20px;
+    }
+
+    #heading h1 {
+        font-size: 20px;
+        line-height: 22px;
+        margin: 0 10px;
+    }
+
+    #circular-progress-bar {
+        transform: scale(0.8);
+    }
+
 }

@@ -1,12 +1,14 @@
 {% extends "base.html" %} {% block title %}User Profile - Gamified Learning Platform{% endblock %}
 {% block styling %}
 <!-- Local Stylesheets -->
-<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user_profile.css') }}" />
 {% endblock %} {% block scripts %}
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
+    const infoPanel = document.getElementById("user-stats");
+    
     // User stats
     function userStats() {
         $.ajax({
@@ -23,18 +25,22 @@
     }
 
     $(document).ready(function () {
-        userStats();
+        if (document.querySelector(".dropdown-subtitle").textContent.trim() == "Student") {
+            userStats();
 
-        // Update every minute
-        setInterval(userStats, 60000);
+            // Update every 30 seconds
+            setInterval(userStats, 30000);
+        } else {
+            infoPanel.querySelector("#pointsDisplay").textContent = "- -";
+            infoPanel.querySelector("#streakDisplay").textContent = "- -";
+        }
     });
 
     window.addEventListener("DOMContentLoaded", () => {
-        if (sessionStorage.getItem("signUpInfo")) {
+        if (sessionStorage.getItem("signUpInfo") != null) {
             sessionStorage.removeItem("signUpInfo");
         }
     })
-    </script>
 </script>
 {% endblock %} {% block content %}
 <main>
@@ -42,30 +48,26 @@
         <h1>User Profile</h1>
     </div>
 
-    <div id="user-info" class="container">
-        <p><strong>Name:</strong> {{ name }}</p>
-        <p><strong>Username:</strong> {{ username }}</p>
-        <p><strong>Date of Birth:</strong> {{ date_of_birth }}</p>
-        <p><strong>Grade:</strong> {{ grade }}</p>
-        <p><strong>Email Address:</strong> {{ email }}</p>
-    </div>
-
+    <div id="info-container">
         <div id="user-info" class="container">
             <p><strong>Name:</strong> {{ name }}</p>
             <p><strong>Username:</strong> {{ username }}</p>
-            <p><strong>Age:</strong> {{ age }}</p>   <!-- Tentative change, as age is stored in the database instead of DoB -->
-            <!-- <p><strong>Date of Birth:</strong> {{ date_of_birth }}</p> -->
+            <p><strong>Age:</strong> {{ age }}</p>
             <p><strong>Grade:</strong> {{ grade }}</p>
             <p><strong>Email Address:</strong> {{ email }}</p>
         </div>
-
+    
         <div id="user-stats" class="container">
             <p><strong>Streak:</strong> <span id="streakDisplay"></span></p>
             <p><strong>Points:</strong> <span id="pointsDisplay"></span></p>
         </div>
-
-    <div id="user-logout">
-        <a href="/logout">Logout</a>
     </div>
+
+    <a href="/logout" id="btn-container">
+        <button id="user-logout">
+            Log Out
+        </button>
+    </a>
+
 </main>
 {% endblock %}

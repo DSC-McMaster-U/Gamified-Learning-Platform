@@ -1,57 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Results</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-        }
+{% extends "base.html" %} 
+{% block title %}Quiz Results{% endblock %} 
+{% block styling %}
+<style>
+    body {
+        font-family: "ProductSans", sans-serif;
+        background-color: var(--bg-clr);
+    }
 
+    .result-container {
+        text-align: center;
+        background-color: #f4f4f4;
+        margin-top: 75px;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 400px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        border: 2px solid #afafaf;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .result-container > * {
+        max-width: 356px;
+        /* width: 100%; */
+    }
+
+    .score-icon {
+        font-size: 50px;
+        color: #4CAF50;
+    }
+
+    .score-text {
+        font-family: "ProductSans";
+        letter-spacing: 0.6px;
+        font-size: 24px;
+        margin-top: 10px;
+    }
+
+    .good-score {
+        color: #4CAF50; /* Green color for a good score */
+    }
+
+    .low-score {
+        color: #FF5733; /* Red colour for a bad score */
+    }
+
+    #btn-container {
+        display: block;
+        height: 51px;
+        max-width: 400px;
+
+        margin: 30px auto 0;
+    }
+
+    #dashboard-btn {
+        font: normal 700 calc(22px * 0.85)/27px "ProductSans";
+        height: 51px;
+        border-radius: 10px;
+        user-select: none;
+
+        width: 100%;
+
+        color: #fff;
+        background-color: #5b83eb;
+        border: none;
+        letter-spacing: 1px;
+
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    #dashboard-btn:hover {
+        background-color: #4a75e1;
+    }
+
+    #dashboard-btn:active {
+        background-color: #183fa1;
+    }
+
+    @media screen and (max-width: 550px) {
         .result-container {
-            margin-top: 50px;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: inline-block;
+            margin: 75px 75px 0;
+            /* width: 100%; */
         }
 
-        .score-icon {
-            font-size: 50px;
-            color: #4CAF50;
+        #btn-container {
+            margin: 30px 75px 0;
+        }
+    }
+
+    @media screen and (max-width: 450px) {
+        .result-container {
+            transform: scale(0.8);
+            margin: 75px auto 0;
         }
 
-        .score-text {
-            font-size: 24px;
-            margin-top: 10px;
+        #btn-container {
+            margin: 0px auto 0;
+            transform: scale(0.8);
         }
+    }
 
-        .good-score {
-            color: #4CAF50; /* Green color for a good score */
-        }
 
-        .low-score {
-            color: #FF5733; /* Red colour for a bad score */
-        }
-    </style>
-</head>
-<body>
+</style>
+{% endblock %}
 
+{% block content %}
 <div class="result-container">
-    <div class="score-icon {% if score >= 70 %}good-score{% else %}low-score{% endif %}">&#10003;</div>
+    <div class="score-icon {% if (score / num_questions) * 100 >= 70 %}good-score{% else %}low-score{% endif %}">&#10003;</div>
     <div class="score-text">
-        {% if score >= 70 %}
+        {% if (score / num_questions) * 100 >= 70 %}
             <p>Congratulations!</p>
         {% else %}
-            <p>Keep practicing</p>
+            <p>Keep practicing!</p>
         {% endif %}
-        <p>Your score: <strong>{{ (score / num_questions) * 100 }}%</strong></p>
+        <p>Your score: <strong>{{ ((score / num_questions) * 100)|round(1, 'common') }}%</strong></p>
     </div>
 </div>
 
-</body>
-</html>
+<a href="/dashboard" id="btn-container">
+    <button id="dashboard-btn">
+        Return to Dashboard
+    </button>
+</a>
+{% endblock %}
