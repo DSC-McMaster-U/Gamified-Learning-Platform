@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from .models import db, User, Points, Teacher
+from .lesson_models import *
 from .auth import auth as auth_blueprint
 from .main import main as main_blueprint
 from .routes import routes as routes_blueprint
@@ -20,6 +21,7 @@ def create_app(test_config=None):
 
     # Configure and initialize database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lesson_page.db'
     app.config['PER_PAGE'] = 10
     app.secret_key = os.getenv('SECRET_KEY')
     app.register_blueprint(auth_blueprint)
